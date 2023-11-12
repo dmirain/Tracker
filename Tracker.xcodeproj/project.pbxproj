@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		79860B4A2AF96CE000B95344 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B492AF96CE000B95344 /* AppDelegate.swift */; };
 		79860B4C2AF96CE000B95344 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B4B2AF96CE000B95344 /* SceneDelegate.swift */; };
-		79860B4E2AF96CE000B95344 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B4D2AF96CE000B95344 /* ViewController.swift */; };
+		79860B4E2AF96CE000B95344 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B4D2AF96CE000B95344 /* TrackerViewController.swift */; };
 		79860B532AF96CE200B95344 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 79860B522AF96CE200B95344 /* Assets.xcassets */; };
 		79860B562AF96CE200B95344 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79860B542AF96CE200B95344 /* LaunchScreen.storyboard */; };
 		79860B612AF96CE200B95344 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B602AF96CE200B95344 /* TrackerTests.swift */; };
@@ -19,6 +19,9 @@
 		79860B982AF975DD00B95344 /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B862AF975DD00B95344 /* UIColor+Extensions.swift */; };
 		79860B9A2AF975DD00B95344 /* BaseUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B882AF975DD00B95344 /* BaseUIViewController.swift */; };
 		79860BA22AF97C8600B95344 /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860BA12AF97C8600B95344 /* UIImage+Extensions.swift */; };
+		79860BA52B00BCA600B95344 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 79860BA42B00BCA600B95344 /* Swinject */; };
+		79860BA72B00BD1700B95344 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860BA62B00BD1700B95344 /* TabBarController.swift */; };
+		79860BA92B00BE9200B95344 /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860BA82B00BE9200B95344 /* StatisticViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,7 +45,7 @@
 		79860B462AF96CE000B95344 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79860B492AF96CE000B95344 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		79860B4B2AF96CE000B95344 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		79860B4D2AF96CE000B95344 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		79860B4D2AF96CE000B95344 /* TrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerViewController.swift; sourceTree = "<group>"; };
 		79860B522AF96CE200B95344 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		79860B552AF96CE200B95344 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		79860B572AF96CE200B95344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -55,6 +58,8 @@
 		79860B862AF975DD00B95344 /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Extensions.swift"; sourceTree = "<group>"; };
 		79860B882AF975DD00B95344 /* BaseUIViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseUIViewController.swift; sourceTree = "<group>"; };
 		79860BA12AF97C8600B95344 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		79860BA62B00BD1700B95344 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		79860BA82B00BE9200B95344 /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				79860BA52B00BCA600B95344 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,8 +113,10 @@
 			children = (
 				79860B822AF975DD00B95344 /* Helpers */,
 				79860B492AF96CE000B95344 /* AppDelegate.swift */,
+				79860BA62B00BD1700B95344 /* TabBarController.swift */,
 				79860B4B2AF96CE000B95344 /* SceneDelegate.swift */,
-				79860B4D2AF96CE000B95344 /* ViewController.swift */,
+				79860B4D2AF96CE000B95344 /* TrackerViewController.swift */,
+				79860BA82B00BE9200B95344 /* StatisticViewController.swift */,
 				79860B792AF96EA100B95344 /* Resources */,
 			);
 			path = Tracker;
@@ -168,6 +176,9 @@
 			dependencies = (
 			);
 			name = Tracker;
+			packageProductDependencies = (
+				79860BA42B00BCA600B95344 /* Swinject */,
+			);
 			productName = Tracker;
 			productReference = 79860B462AF96CE000B95344 /* Tracker.app */;
 			productType = "com.apple.product-type.application";
@@ -240,6 +251,9 @@
 				Base,
 			);
 			mainGroup = 79860B3D2AF96CE000B95344;
+			packageReferences = (
+				79860BA32B00BCA600B95344 /* XCRemoteSwiftPackageReference "Swinject" */,
+			);
 			productRefGroup = 79860B472AF96CE000B95344 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -282,9 +296,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79860B4E2AF96CE000B95344 /* ViewController.swift in Sources */,
+				79860B4E2AF96CE000B95344 /* TrackerViewController.swift in Sources */,
+				79860BA72B00BD1700B95344 /* TabBarController.swift in Sources */,
 				79860B982AF975DD00B95344 /* UIColor+Extensions.swift in Sources */,
 				79860B952AF975DD00B95344 /* UIView+Extensions.swift in Sources */,
+				79860BA92B00BE9200B95344 /* StatisticViewController.swift in Sources */,
 				79860BA22AF97C8600B95344 /* UIImage+Extensions.swift in Sources */,
 				79860B4A2AF96CE000B95344 /* AppDelegate.swift in Sources */,
 				79860B9A2AF975DD00B95344 /* BaseUIViewController.swift in Sources */,
@@ -622,6 +638,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		79860BA32B00BCA600B95344 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		79860BA42B00BCA600B95344 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 79860BA32B00BCA600B95344 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 79860B3E2AF96CE000B95344 /* Project object */;
 }

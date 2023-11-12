@@ -1,12 +1,36 @@
 import UIKit
+import Swinject
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
+    private var container = Container()
+
+    override init() {
+        super.init()
+
+        container.register(TrackerViewController.self) { diResolver in
+            TrackerViewController()
+        }
+        
+        container.register(StatisticViewController.self) { diResolver in
+            StatisticViewController()
+        }
+
+        container.register(TabBarController.self) { diResolver in
+            TabBarController(
+                trackerViewController: diResolver.resolve(TrackerViewController.self)!,
+                statisticViewController: diResolver.resolve(StatisticViewController.self)!
+            )
+        }
+    }
+
+    
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = ViewController()
+        window?.rootViewController = container.resolve(TabBarController.self)
         window?.makeKeyAndVisible()
     }
 
