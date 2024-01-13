@@ -1,6 +1,6 @@
 import UIKit
 
-class StatisticViewController: BaseUIViewController {
+final class StatisticViewController: BaseUIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

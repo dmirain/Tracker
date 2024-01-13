@@ -1,7 +1,7 @@
 import UIKit
 import Swinject
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private var container = Container()
@@ -9,8 +9,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     override init() {
         super.init()
 
+        container.register(TrackerView.self) { diResolver in
+            TrackerView()
+        }
+
         container.register(TrackerViewController.self) { diResolver in
-            TrackerViewController()
+            TrackerViewController(contentView: diResolver.resolve(TrackerView.self)!)
         }
         
         container.register(StatisticViewController.self) { diResolver in
@@ -24,8 +28,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         }
     }
-
-    
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }

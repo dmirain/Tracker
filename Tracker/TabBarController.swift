@@ -15,11 +15,19 @@ final class TabBarController: UITabBarController {
 
         viewControllers = [self.trackerViewController, self.statisticViewController]
 
-        self.trackerViewController.tabBarItem = UITabBarItem(title: "Трекеры", image: UIImage.trackerTab, selectedImage: nil)
-        self.statisticViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage.statTab, selectedImage: nil)
-
-        tabBar.tintColor = UIColor.ypWhiteNight
-        tabBar.barTintColor = UIColor.ypBlackNight
+        self.trackerViewController.tabBarItem = UITabBarItem(
+            title: "Трекеры",
+            image: UIImage.trackerTab,
+            selectedImage: nil
+        )
+        self.trackerViewController.tabBarItem.imageInsets = UIEdgeInsets(top: 28, left: 28, bottom: 28, right: 28)
+        
+        self.statisticViewController.tabBarItem = UITabBarItem(
+            title: "Статистика",
+            image: UIImage.statTab,
+            selectedImage: nil
+        )
+        self.statisticViewController.tabBarItem.imageInsets = UIEdgeInsets(top: 28, left: 28, bottom: 28, right: 28)
     }
 
     required init?(coder: NSCoder) {
