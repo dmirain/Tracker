@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		793889D12B52FC2100FD1F92 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793889D02B52FC2100FD1F92 /* Tracker.swift */; };
+		793889D32B52FC3800FD1F92 /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793889D22B52FC3800FD1F92 /* TrackerType.swift */; };
+		793889D52B52FC4800FD1F92 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793889D42B52FC4800FD1F92 /* TrackerCategory.swift */; };
+		793889D72B52FC6200FD1F92 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793889D62B52FC6200FD1F92 /* TrackerRecord.swift */; };
+		793889D92B52FC8700FD1F92 /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793889D82B52FC8700FD1F92 /* WeekDay.swift */; };
 		79860B4A2AF96CE000B95344 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B492AF96CE000B95344 /* AppDelegate.swift */; };
 		79860B4C2AF96CE000B95344 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B4B2AF96CE000B95344 /* SceneDelegate.swift */; };
 		79860B4E2AF96CE000B95344 /* TrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B4D2AF96CE000B95344 /* TrackerViewController.swift */; };
@@ -42,6 +47,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		793889D02B52FC2100FD1F92 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
+		793889D22B52FC3800FD1F92 /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
+		793889D42B52FC4800FD1F92 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
+		793889D62B52FC6200FD1F92 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
+		793889D82B52FC8700FD1F92 /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		79860B462AF96CE000B95344 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		79860B492AF96CE000B95344 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		79860B4B2AF96CE000B95344 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +98,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		793889CF2B52FBF700FD1F92 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				793889D02B52FC2100FD1F92 /* Tracker.swift */,
+				793889D22B52FC3800FD1F92 /* TrackerType.swift */,
+				793889D42B52FC4800FD1F92 /* TrackerCategory.swift */,
+				793889D62B52FC6200FD1F92 /* TrackerRecord.swift */,
+				793889D82B52FC8700FD1F92 /* WeekDay.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
 		79860B3D2AF96CE000B95344 = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +133,7 @@
 		79860B482AF96CE000B95344 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				793889CF2B52FBF700FD1F92 /* Entities */,
 				79860B822AF975DD00B95344 /* Helpers */,
 				79860B492AF96CE000B95344 /* AppDelegate.swift */,
 				79860BA62B00BD1700B95344 /* TabBarController.swift */,
@@ -296,10 +319,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				793889D92B52FC8700FD1F92 /* WeekDay.swift in Sources */,
+				793889D72B52FC6200FD1F92 /* TrackerRecord.swift in Sources */,
 				79860B4E2AF96CE000B95344 /* TrackerViewController.swift in Sources */,
+				793889D32B52FC3800FD1F92 /* TrackerType.swift in Sources */,
 				79860BA72B00BD1700B95344 /* TabBarController.swift in Sources */,
+				793889D12B52FC2100FD1F92 /* Tracker.swift in Sources */,
 				79860B982AF975DD00B95344 /* UIColor+Extensions.swift in Sources */,
 				79860B952AF975DD00B95344 /* UIView+Extensions.swift in Sources */,
+				793889D52B52FC4800FD1F92 /* TrackerCategory.swift in Sources */,
 				79860BA92B00BE9200B95344 /* StatisticViewController.swift in Sources */,
 				79860BA22AF97C8600B95344 /* UIImage+Extensions.swift in Sources */,
 				79860B4A2AF96CE000B95344 /* AppDelegate.swift in Sources */,
