@@ -2,10 +2,19 @@ import UIKit
 
 final class TrackerViewController: BaseUIViewController {
     private let contentView: TrackerView
+    private let addTrackerController: AddTrackerController
 
-    init(contentView: TrackerView) {
+    init(
+        contentView: TrackerView,
+        addTrackerController: AddTrackerController
+    ) {
         self.contentView = contentView
+        
+        self.addTrackerController = addTrackerController
+        
         super.init(nibName: nil, bundle: nil)
+        
+        self.contentView.controller = self
     }
     
     required init?(coder: NSCoder) {
@@ -17,8 +26,19 @@ final class TrackerViewController: BaseUIViewController {
     }
 }
 
+extension TrackerViewController: TrackerViewDelegat {
+    func addTrackerClicked() {
+        present(addTrackerController, animated: true)
+    }
+}
+
+protocol TrackerViewDelegat: AnyObject {
+    func addTrackerClicked()
+}
+
 final class TrackerView: UIView {
-    
+    weak var controller: TrackerViewDelegat?
+
     private lazy var plusButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -32,7 +52,7 @@ final class TrackerView: UIView {
             view.widthAnchor.constraint(equalToConstant: 42)
         ])
         
-        view.addTarget(self, action: #selector(filterClicked), for: .touchUpInside)
+        view.addTarget(self, action: #selector(addTrackerClicked), for: .touchUpInside)
         
         return view
     }()
@@ -91,7 +111,7 @@ final class TrackerView: UIView {
             view.widthAnchor.constraint(equalToConstant: 114)
         ])
         
-        view.addTarget(self, action: #selector(filterClicked), for: .touchUpInside)
+//        view.addTarget(self, action: #selector(filterClicked), for: .touchUpInside)
         
         return view
     }()
@@ -125,8 +145,8 @@ final class TrackerView: UIView {
     }
     
     @objc
-    private func filterClicked() {
-        print("dsfdsfdsf")
+    private func addTrackerClicked() {
+        controller?.addTrackerClicked()
     }
 }
 

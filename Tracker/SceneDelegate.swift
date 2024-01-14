@@ -9,12 +9,32 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     override init() {
         super.init()
 
+        container.register(CreateTrackerView.self) { diResolver in
+            CreateTrackerView()
+        }
+        container.register(CreateTrackerController.self) { diResolver in
+            CreateTrackerController(contentView: diResolver.resolve(CreateTrackerView.self)!)
+        }
+
+        container.register(AddTrackerView.self) { diResolver in
+            AddTrackerView()
+        }
+        container.register(AddTrackerController.self) { diResolver in
+            AddTrackerController(
+                contentView: diResolver.resolve(AddTrackerView.self)!,
+                createTrackerController: diResolver.resolve(CreateTrackerController.self)!
+            )
+        }
+
+        
         container.register(TrackerView.self) { diResolver in
             TrackerView()
         }
-
         container.register(TrackerViewController.self) { diResolver in
-            TrackerViewController(contentView: diResolver.resolve(TrackerView.self)!)
+            TrackerViewController(
+                contentView: diResolver.resolve(TrackerView.self)!,
+                addTrackerController: diResolver.resolve(AddTrackerController.self)!
+            )
         }
         
         container.register(StatisticViewController.self) { diResolver in
