@@ -2,14 +2,22 @@ import Foundation
 
 let calendar = Calendar(identifier: .gregorian)
 
-enum WeekDay: UInt8 {
-    case sunday = 1  // "0000001"  первый день недели по мнению swift
-    case monday = 2  // "0000010"
-    case tuesday = 4  // "0000100"
-    case wednesday = 8  // "0001000"
-    case thursday = 16  // "0010000"
-    case friday = 32  // "0100000"
-    case saturday = 64  // "1000000"
+struct WeekDaySet: OptionSet, Codable {
+    let rawValue: Int
+    
+    static let sunday    = WeekDaySet(rawValue: 1 << 0)
+    static let monday  = WeekDaySet(rawValue: 1 << 1)
+    static let tuesday   = WeekDaySet(rawValue: 1 << 2)
+    static let wednesday   = WeekDaySet(rawValue: 1 << 3)
+    static let thursday   = WeekDaySet(rawValue: 1 << 4)
+    static let friday   = WeekDaySet(rawValue: 1 << 5)
+    static let saturday   = WeekDaySet(rawValue: 1 << 6)
+    
+    static func from(date: Date) -> WeekDaySet {
+        let dayNum = calendar.dateComponents([.weekday], from: date).weekday
+        let dayValue = 1 << (dayNum! - 1)  // сдвиг 1 по битовым разрядам. это возведение 2 в степень
+        return WeekDaySet(rawValue: dayValue)
+    }
     
     func asText() -> String {
         switch self {
@@ -27,6 +35,12 @@ enum WeekDay: UInt8 {
             return "Суббота"
         case .sunday:
             return "Воскресенье"
+        default:
+            let week: [WeekDaySet] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+            return week
+                .filter { day in self.contains(day) }
+                .map({ day in day.asText()})
+                .joined(separator: ", ")
         }
     }
     
@@ -46,23 +60,12 @@ enum WeekDay: UInt8 {
             return "Сб"
         case .sunday:
             return "Вс"
-        }
-    }
-    
-    static func from(date: Date) -> WeekDay {
-        let dayNum = Calendar.current.dateComponents([.weekday], from: date).weekday
-        let dayValue = 0x1 << (dayNum! - 1)
-        return WeekDay(rawValue: UInt8(dayValue))!
-    }
-    
-    func inSchedule(_ schedule: UInt8) -> Bool {
-        return self.rawValue & schedule > 0
-    }
-    
-    static func sheduleToWeekDays(_ schedule: UInt8) -> [WeekDay] {
-        let weekDays: [WeekDay] = [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
-        return weekDays.filter { weekDay in
-            weekDay.inSchedule(schedule)
+        default:
+            let week: [WeekDaySet] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+            return week
+                .filter { day in self.contains(day) }
+                .map({ day in day.asShortText()})
+                .joined(separator: ", ")
         }
     }
 }

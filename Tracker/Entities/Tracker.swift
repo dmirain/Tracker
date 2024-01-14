@@ -6,7 +6,7 @@ struct Tracker: Codable {
     let type: TrackerType
     let name: String
     let category: TrackerCategory
-    let schedule: UInt8
+    let schedule: WeekDaySet
     let emoji: String
 //    let color: UIColor
 }
