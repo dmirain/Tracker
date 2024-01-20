@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		790B258A2B5C14DA003BB290 /* PadingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25892B5C14DA003BB290 /* PadingTextField.swift */; };
+		790B258C2B5C17EA003BB290 /* Emojies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B258B2B5C17EA003BB290 /* Emojies.swift */; };
+		790B258E2B5C1992003BB290 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B258D2B5C1992003BB290 /* Colors.swift */; };
+		790B25902B5C261B003BB290 /* ButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B258F2B5C261B003BB290 /* ButtonsCell.swift */; };
+		790B25922B5C264E003BB290 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25912B5C264E003BB290 /* ColorCell.swift */; };
+		790B25942B5C267F003BB290 /* EmojiCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25932B5C267F003BB290 /* EmojiCell.swift */; };
+		790B25972B5C26DC003BB290 /* PropertiesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25962B5C26DC003BB290 /* PropertiesCell.swift */; };
+		790B25992B5C3A79003BB290 /* NameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25982B5C3A79003BB290 /* NameCell.swift */; };
+		790B259B2B5C4DBC003BB290 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B259A2B5C4DBC003BB290 /* SectionHeaderView.swift */; };
 		793889D12B52FC2100FD1F92 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793889D02B52FC2100FD1F92 /* Tracker.swift */; };
 		793889D32B52FC3800FD1F92 /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793889D22B52FC3800FD1F92 /* TrackerType.swift */; };
 		793889D52B52FC4800FD1F92 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793889D42B52FC4800FD1F92 /* TrackerCategory.swift */; };
@@ -57,6 +66,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		790B25892B5C14DA003BB290 /* PadingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PadingTextField.swift; sourceTree = "<group>"; };
+		790B258B2B5C17EA003BB290 /* Emojies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emojies.swift; sourceTree = "<group>"; };
+		790B258D2B5C1992003BB290 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		790B258F2B5C261B003BB290 /* ButtonsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonsCell.swift; sourceTree = "<group>"; };
+		790B25912B5C264E003BB290 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
+		790B25932B5C267F003BB290 /* EmojiCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCell.swift; sourceTree = "<group>"; };
+		790B25962B5C26DC003BB290 /* PropertiesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesCell.swift; sourceTree = "<group>"; };
+		790B25982B5C3A79003BB290 /* NameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NameCell.swift; sourceTree = "<group>"; };
+		790B259A2B5C4DBC003BB290 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		793889D02B52FC2100FD1F92 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		793889D22B52FC3800FD1F92 /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
 		793889D42B52FC4800FD1F92 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
@@ -118,6 +136,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		790B25952B5C2690003BB290 /* CreateTrackerView */ = {
+			isa = PBXGroup;
+			children = (
+				793889F02B5331A400FD1F92 /* CreateTrackerView.swift */,
+				790B25982B5C3A79003BB290 /* NameCell.swift */,
+				790B25962B5C26DC003BB290 /* PropertiesCell.swift */,
+				790B25932B5C267F003BB290 /* EmojiCell.swift */,
+				790B25912B5C264E003BB290 /* ColorCell.swift */,
+				790B258F2B5C261B003BB290 /* ButtonsCell.swift */,
+				790B259A2B5C4DBC003BB290 /* SectionHeaderView.swift */,
+			);
+			path = CreateTrackerView;
+			sourceTree = "<group>";
+		};
 		793889CF2B52FBF700FD1F92 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +158,8 @@
 				793889D42B52FC4800FD1F92 /* TrackerCategory.swift */,
 				793889D62B52FC6200FD1F92 /* TrackerRecord.swift */,
 				793889D82B52FC8700FD1F92 /* WeekDay.swift */,
+				790B258B2B5C17EA003BB290 /* Emojies.swift */,
+				790B258D2B5C1992003BB290 /* Colors.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -165,7 +199,7 @@
 				793889E42B532F2500FD1F92 /* AddTrackerController.swift */,
 				793889EE2B53318C00FD1F92 /* AddTrackerView.swift */,
 				793889E62B532F3B00FD1F92 /* CreateTrackerController.swift */,
-				793889F02B5331A400FD1F92 /* CreateTrackerView.swift */,
+				790B25952B5C2690003BB290 /* CreateTrackerView */,
 				793889E82B532F5300FD1F92 /* CreateCategoryController.swift */,
 				793889F22B5331C400FD1F92 /* CreateCategoryView.swift */,
 			);
@@ -257,6 +291,7 @@
 				79860B862AF975DD00B95344 /* UIColor+Extensions.swift */,
 				79860BA12AF97C8600B95344 /* UIImage+Extensions.swift */,
 				79860B882AF975DD00B95344 /* BaseUIViewController.swift */,
+				790B25892B5C14DA003BB290 /* PadingTextField.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -328,7 +363,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1430;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					79860B452AF96CE000B95344 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -400,11 +435,15 @@
 				793889F32B5331C400FD1F92 /* CreateCategoryView.swift in Sources */,
 				793889D92B52FC8700FD1F92 /* WeekDay.swift in Sources */,
 				793889D72B52FC6200FD1F92 /* TrackerRecord.swift in Sources */,
+				790B258A2B5C14DA003BB290 /* PadingTextField.swift in Sources */,
+				790B258C2B5C17EA003BB290 /* Emojies.swift in Sources */,
 				79860B4E2AF96CE000B95344 /* TrackerViewController.swift in Sources */,
 				793889D32B52FC3800FD1F92 /* TrackerType.swift in Sources */,
 				79860BA72B00BD1700B95344 /* TabBarController.swift in Sources */,
 				793889ED2B53312E00FD1F92 /* SelectScheduleView.swift in Sources */,
 				793889D12B52FC2100FD1F92 /* Tracker.swift in Sources */,
+				790B25992B5C3A79003BB290 /* NameCell.swift in Sources */,
+				790B258E2B5C1992003BB290 /* Colors.swift in Sources */,
 				79860B982AF975DD00B95344 /* UIColor+Extensions.swift in Sources */,
 				79860B952AF975DD00B95344 /* UIView+Extensions.swift in Sources */,
 				793889EB2B53309900FD1F92 /* SelectCategoryView.swift in Sources */,
@@ -413,14 +452,19 @@
 				793889D52B52FC4800FD1F92 /* TrackerCategory.swift in Sources */,
 				793889E12B532EE400FD1F92 /* SelectCategoryController.swift in Sources */,
 				793889E32B532F0300FD1F92 /* SelectScheduleController.swift in Sources */,
+				790B25902B5C261B003BB290 /* ButtonsCell.swift in Sources */,
 				793889F12B5331A400FD1F92 /* CreateTrackerView.swift in Sources */,
+				790B259B2B5C4DBC003BB290 /* SectionHeaderView.swift in Sources */,
+				790B25922B5C264E003BB290 /* ColorCell.swift in Sources */,
 				79860BA92B00BE9200B95344 /* StatisticViewController.swift in Sources */,
 				79860BA22AF97C8600B95344 /* UIImage+Extensions.swift in Sources */,
 				79860B4A2AF96CE000B95344 /* AppDelegate.swift in Sources */,
+				790B25942B5C267F003BB290 /* EmojiCell.swift in Sources */,
 				79860B9A2AF975DD00B95344 /* BaseUIViewController.swift in Sources */,
 				79860B4C2AF96CE000B95344 /* SceneDelegate.swift in Sources */,
 				793889E52B532F2500FD1F92 /* AddTrackerController.swift in Sources */,
 				793889E92B532F5300FD1F92 /* CreateCategoryController.swift in Sources */,
+				790B25972B5C26DC003BB290 /* PropertiesCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -504,6 +548,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -564,6 +609,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

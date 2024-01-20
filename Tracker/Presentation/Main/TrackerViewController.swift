@@ -63,7 +63,7 @@ final class TrackerView: UIView {
         view.preferredDatePickerStyle = .compact
         view.datePickerMode = .date
         view.locale = Locale(identifier: "ru_Ru")
-        view.widthAnchor.constraint(equalToConstant: 93).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 120).isActive = true
         return view
     }()
 
@@ -101,7 +101,7 @@ final class TrackerView: UIView {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("Фильтры", for: .normal)
-        view.setTitleColor(.ypBlackNight, for: .normal)
+        view.setTitleColor(.ypWhiteDay, for: .normal)
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = true
         view.backgroundColor = .ypBlue

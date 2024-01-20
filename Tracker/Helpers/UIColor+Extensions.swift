@@ -15,7 +15,6 @@ extension UIColor {
     static var ypRed = UIColor(red: 0.96, green: 0.42, blue: 0.42, alpha: 1)
     static var ypBlue = UIColor(red: 0.22, green: 0.45, blue: 0.91, alpha: 1)
 
-
     static var ypColorSelection01 = UIColor(red: 0.99, green: 0.3, blue: 0.29, alpha: 1)
     static var ypColorSelection02 = UIColor(red: 1, green: 0.53, blue: 0.12, alpha: 1)
     static var ypColorSelection03 = UIColor(red: 0, green: 0.48, blue: 0.98, alpha: 1)
