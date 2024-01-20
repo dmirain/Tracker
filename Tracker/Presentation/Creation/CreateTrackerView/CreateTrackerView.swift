@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 protocol CreateTrackerViewDelegat: AnyObject {
-//    func createClicked(type: TrackerType)
+    func selectSchedule()
 }
 
 
@@ -219,4 +219,10 @@ extension CreateTrackerView: UICollectionViewDelegateFlowLayout {
 extension CreateTrackerView: UICollectionViewDelegate {
     
     
+}
+
+extension CreateTrackerView {
+    func selectSchedule() {
+        controller?.selectSchedule()
+    }
 }

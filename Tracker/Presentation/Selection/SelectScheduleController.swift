@@ -6,6 +6,8 @@ final class SelectScheduleController: BaseUIViewController {
     init(contentView: SelectScheduleView) {
         self.contentView = contentView
         super.init(nibName: nil, bundle: nil)
+
+        modalPresentationStyle = .popover
     }
     
     required init?(coder: NSCoder) {

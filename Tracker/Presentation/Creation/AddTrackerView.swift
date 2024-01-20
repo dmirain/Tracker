@@ -80,7 +80,7 @@ final class AddTrackerView: UIView {
     
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColor.ypBlackNight
+        backgroundColor = UIColor.ypWhiteDay
         
         addSubview(header)
         addSubview(buttonsStack)

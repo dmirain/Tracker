@@ -2,7 +2,7 @@ import Foundation
 
 let calendar = Calendar(identifier: .gregorian)
 
-struct WeekDaySet: OptionSet, Codable {
+struct WeekDaySet: OptionSet, Codable, Hashable {
     let rawValue: Int
     
     static let sunday    = WeekDaySet(rawValue: 1 << 0)
@@ -17,6 +17,10 @@ struct WeekDaySet: OptionSet, Codable {
         let dayNum = calendar.dateComponents([.weekday], from: date).weekday
         let dayValue = 1 << (dayNum! - 1)  // сдвиг 1 по битовым разрядам. это возведение 2 в степень
         return WeekDaySet(rawValue: dayValue)
+    }
+    
+    static func allDays() -> [WeekDaySet] {
+        [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
     }
     
     func asText() -> String {
@@ -36,8 +40,7 @@ struct WeekDaySet: OptionSet, Codable {
         case .sunday:
             return "Воскресенье"
         default:
-            let week: [WeekDaySet] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
-            return week
+            return WeekDaySet.allDays()
                 .filter { day in self.contains(day) }
                 .map({ day in day.asText()})
                 .joined(separator: ", ")
@@ -61,8 +64,7 @@ struct WeekDaySet: OptionSet, Codable {
         case .sunday:
             return "Вс"
         default:
-            let week: [WeekDaySet] = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
-            return week
+            return WeekDaySet.allDays()
                 .filter { day in self.contains(day) }
                 .map({ day in day.asShortText()})
                 .joined(separator: ", ")

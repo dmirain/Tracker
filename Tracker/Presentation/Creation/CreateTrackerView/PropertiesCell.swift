@@ -118,6 +118,6 @@ final class PropertiesCell: UICollectionViewCell {
     
     @objc
     func scheduleButtonClicked() {
-        print("scheduleButtonClicked")
+        delegate?.selectSchedule()
     }
 }

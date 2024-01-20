@@ -9,11 +9,21 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     override init() {
         super.init()
 
+        container.register(SelectScheduleView.self) { diResolver in
+            SelectScheduleView()
+        }
+        container.register(SelectScheduleController.self) { diResolver in
+            SelectScheduleController(contentView: diResolver.resolve(SelectScheduleView.self)!)
+        }
+                
         container.register(CreateTrackerView.self) { diResolver in
             CreateTrackerView()
         }
         container.register(CreateTrackerController.self) { diResolver in
-            CreateTrackerController(contentView: diResolver.resolve(CreateTrackerView.self)!)
+            CreateTrackerController(
+                contentView: diResolver.resolve(CreateTrackerView.self)!,
+                selectScheduleController: diResolver.resolve(SelectScheduleController.self)!
+            )
         }
 
         container.register(AddTrackerView.self) { diResolver in
