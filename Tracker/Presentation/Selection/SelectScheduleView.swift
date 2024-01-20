@@ -40,12 +40,10 @@ final class SelectScheduleView: UIView {
         view.distribution = .fillEqually
 
         NSLayoutConstraint.activate(
-            views.flatMap { dayRow in
-                [
-                    dayRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                    dayRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                ]
-            }
+            views.flatMap { dayRow in [
+                dayRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                dayRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ]}
         )
 
         return view
@@ -74,9 +72,11 @@ final class SelectScheduleView: UIView {
             let separator = separator()
             view.addSubview(separator)
 
-            constraints.append(separator.topAnchor.constraint(equalTo: view.topAnchor))
-            constraints.append(separator.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16))
-            constraints.append(separator.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16))
+            constraints.append(contentsOf: [
+                separator.topAnchor.constraint(equalTo: view.topAnchor),
+                separator.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                separator.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
+            ])
         }
         
         NSLayoutConstraint.activate(constraints)
@@ -95,8 +95,6 @@ final class SelectScheduleView: UIView {
         let view = WeekDaySwitch(weekDay: weekDay)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.onTintColor = .ypBlue
-        
-        view.addTarget(self, action: #selector(switchDay(_:)), for: .valueChanged)
         
         switches.append(view)
         
@@ -131,11 +129,6 @@ final class SelectScheduleView: UIView {
         
         return view
     }()
-
-    @objc
-    private func switchDay(_ sender: WeekDaySwitch) {
-        print(sender.weekDay.asText(), sender.isOn)
-    }
 
     @objc
     private func acceptClicked() {
