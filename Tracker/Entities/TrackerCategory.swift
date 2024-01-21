@@ -1,3 +1,3 @@
-struct TrackerCategory: Codable {
+struct TrackerCategory: Codable, Hashable {
     let name: String
 }

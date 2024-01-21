@@ -28,6 +28,15 @@ final class TabBarController: UITabBarController {
             selectedImage: nil
         )
         self.statisticViewController.tabBarItem.imageInsets = UIEdgeInsets(top: 28, left: 28, bottom: 28, right: 28)
+        
+        let tabBarAppearance: UITabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithDefaultBackground()
+        tabBarAppearance.backgroundColor = UIColor.ypWhiteDay
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+
+        if #available(iOS 15.0, *) {
+            UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+        }
     }
 
     required init?(coder: NSCoder) {

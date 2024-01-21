@@ -5,6 +5,8 @@ extension UIColor {
     static var ypBlackNight = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
     static var ypWhiteDay = ypBlackNight
     static var ypWhiteNight = ypBlackDay
+    
+    static var ypWhite30 = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3)
 
     static var ypGray = UIColor(red: 0.68, green: 0.69, blue: 0.71, alpha: 1)
     static var ypLightGray = UIColor(red: 0.9, green: 0.91, blue: 0.92, alpha: 1)

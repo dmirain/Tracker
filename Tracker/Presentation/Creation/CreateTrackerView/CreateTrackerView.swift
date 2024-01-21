@@ -27,7 +27,7 @@ final class CreateTrackerView: UIView {
     private lazy var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.allowsMultipleSelection = false
+        view.allowsMultipleSelection = true
         
         view.register(NameCell.self, forCellWithReuseIdentifier: NameCell.reuseIdentifier)
         view.register(PropertiesCell.self, forCellWithReuseIdentifier: PropertiesCell.reuseIdentifier)
@@ -126,7 +126,7 @@ extension CreateTrackerView: UICollectionViewDataSource {
         ) as? EmojiCell
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
-        cell.titleLabel.text = emojies[indexPath.row]
+        cell.setEmoji(emojies[indexPath.row])
         return cell
     }
     func cellForColor(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
@@ -136,7 +136,7 @@ extension CreateTrackerView: UICollectionViewDataSource {
         ) as? ColorCell
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
-        cell.colorLabel.backgroundColor = colors[indexPath.row]
+        cell.setColor(colors[indexPath.row])
         return cell
     }
     func cellForButtons(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
@@ -209,16 +209,37 @@ extension CreateTrackerView: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        if [2, 3].contains(section){
+        if [2, 3].contains(section) {
             return CGSize(width: collectionView.frame.width, height: 70)
         }
         return CGSize()
     }
-}
-
-extension CreateTrackerView: UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 2:
+            let cell = collectionView.cellForItem(at: indexPath) as? EmojiCell
+            cell?.setSelected()
+        case 3:
+            let cell = collectionView.cellForItem(at: indexPath) as? ColorCell
+            cell?.setSelected()
+        default:
+            return
+        }
+    }
     
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 2:
+            let cell = collectionView.cellForItem(at: indexPath) as? EmojiCell
+            cell?.setDeselected()
+        case 3:
+            let cell = collectionView.cellForItem(at: indexPath) as? ColorCell
+            cell?.setDeselected()
+        default:
+            return
+        }
+    }
 }
 
 extension CreateTrackerView {

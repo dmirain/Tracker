@@ -8,4 +8,6 @@ extension UIImage {
     static var logo = UIImage(named: "Logo") ?? UIImage()
     static var statTab = UIImage(named: "StatTab") ?? UIImage()
     static var trackerTab = UIImage(named: "TrackerTab") ?? UIImage()
+    static var toComplite = UIImage(named: "ToComplite") ?? UIImage()
+    static var complited = UIImage(named: "Complited") ?? UIImage()
 }
