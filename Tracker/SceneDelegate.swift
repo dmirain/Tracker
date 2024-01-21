@@ -8,7 +8,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     override init() {
         super.init()
-
+        container.register(TrackerRepository.self) { diResolver in
+            TrackerRepository()
+        }
+        
         container.register(SelectScheduleView.self) { diResolver in
             SelectScheduleView()
         }
@@ -43,7 +46,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         container.register(TrackerViewController.self) { diResolver in
             TrackerViewController(
                 contentView: diResolver.resolve(TrackerView.self)!,
-                addTrackerController: diResolver.resolve(AddTrackerController.self)!
+                addTrackerController: diResolver.resolve(AddTrackerController.self)!,
+                trackerRepository: diResolver.resolve(TrackerRepository.self)!
             )
         }
         
