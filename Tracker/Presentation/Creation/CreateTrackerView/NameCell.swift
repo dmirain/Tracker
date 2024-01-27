@@ -9,9 +9,10 @@ final class NameCell: UICollectionViewCell {
         let view = PaddingTextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.placeholder = "Введите название трекера"
-        view.backgroundColor = .ypBackgroundDay
+        view.backgroundColor = .ypBackground
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
+        view.textColor = .ypBlack
 
         return view
     }()

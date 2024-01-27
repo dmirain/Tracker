@@ -4,7 +4,7 @@ import UIKit
 final class SelectCategoryView: UIView {
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColor.ypBlackNight
+        backgroundColor = UIColor.ypBlack
     }
     
     required init?(coder: NSCoder) {

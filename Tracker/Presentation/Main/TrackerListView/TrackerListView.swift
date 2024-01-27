@@ -1,14 +1,12 @@
 import UIKit
 
-protocol TrackerViewDelegat: AnyObject {
+protocol TrackerListViewDelegat: AnyObject {
     func addTrackerClicked()
+    var trackerListViewModel: TrackerListViewModel { get }
 }
 
-final class TrackerView: UIView {
-    weak var controller: TrackerViewDelegat?
-
-    private var categories = [TrackerCategory]()
-    private var groupedTrackers = [TrackerCategory: [Tracker]]()
+final class TrackerListView: UIView {
+    weak var controller: TrackerListViewDelegat?
     
     private lazy var plusButton: UIButton = {
         let view = UIButton()
@@ -16,7 +14,6 @@ final class TrackerView: UIView {
         view.setImage(.listPlus, for: .normal)
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = true
-        view.backgroundColor = .clear
                 
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 42),
@@ -41,10 +38,11 @@ final class TrackerView: UIView {
     private lazy var navBar: UINavigationBar = {
         let view = UINavigationBar()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.barTintColor = .ypWhiteDay
+        view.barTintColor = .ypWhite
         view.setBackgroundImage(UIImage(), for: .default)
         view.shadowImage = UIImage()
         view.prefersLargeTitles = true
+        view.backgroundColor = .ypWhite
         
         
         let navItem = UINavigationItem()
@@ -56,7 +54,6 @@ final class TrackerView: UIView {
         navItem.searchController?.searchBar.placeholder = "Поиск"
         navItem.searchController?.searchBar.setValue("Отменить", forKey: "cancelButtonText")
 
-        
         view.setItems([navItem], animated: false)
         
         return view
@@ -67,7 +64,7 @@ final class TrackerView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.allowsMultipleSelection = false
         
-        view.register(TrackerCell.self, forCellWithReuseIdentifier: TrackerCell.reuseIdentifier)
+        view.register(TrackerListCell.self, forCellWithReuseIdentifier: TrackerListCell.reuseIdentifier)
         view.register(
             SectionHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -87,7 +84,7 @@ final class TrackerView: UIView {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("Фильтры", for: .normal)
-        view.setTitleColor(.ypWhiteDay, for: .normal)
+        view.setTitleColor(.ypWhite, for: .normal)
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = true
         view.backgroundColor = .ypBlue
@@ -105,7 +102,7 @@ final class TrackerView: UIView {
     init() {
         super.init(frame: .zero)
         
-        backgroundColor = UIColor.ypBlackNight
+        backgroundColor = .ypWhite
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -146,48 +143,38 @@ final class TrackerView: UIView {
         controller?.addTrackerClicked()
     }
     
-    func initData(trackers: [Tracker]) {
-        categories = []
-        groupedTrackers = [:]
-        
-        if trackers.isEmpty {
+    func reload() {
+        if controller?.trackerListViewModel.numberOfCategories ?? 0 == 0 {
             emptyListView.isHidden = false
-            return
+        } else {
+            emptyListView.isHidden = true
+            collectionView.reloadData()
         }
-        
-        categories = Array(Set(trackers.map({ tracker in tracker.category })))
-        for tracker in trackers {
-            if groupedTrackers[tracker.category] != nil {
-                groupedTrackers[tracker.category]?.append(tracker)
-            } else {
-                groupedTrackers[tracker.category] = [tracker]
-            }
-        }
-        
-        collectionView.reloadData()
     }
 }
 
-extension TrackerView: UICollectionViewDataSource {
+extension TrackerListView: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        categories.count
+        controller?.trackerListViewModel.numberOfCategories ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let category = categories[section]
-        return groupedTrackers[category]?.count ?? 0
+        controller?.trackerListViewModel.numberOfTrackersInCategory(byIndex: section) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TrackerCell.reuseIdentifier,
+            withReuseIdentifier: TrackerListCell.reuseIdentifier,
             for: indexPath
-        ) as? TrackerCell
+        ) as? TrackerListCell
+        
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
-        let category = categories[indexPath.section]
-        let tracker = groupedTrackers[category]![indexPath.row]
-        cell.initData(tracker: tracker)
+
+        if let tracker = controller?.trackerListViewModel.tracker(byIndexPath: indexPath) {
+            cell.initData(tracker: tracker)
+        }
+
         return cell
     }
     
@@ -196,7 +183,7 @@ extension TrackerView: UICollectionViewDataSource {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        let sectionTitle = categories[indexPath.section].name
+        let sectionTitle = controller?.trackerListViewModel.categoryName(byIndex: indexPath.section) ?? ""
         
         guard !sectionTitle.isEmpty && kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
@@ -214,7 +201,7 @@ extension TrackerView: UICollectionViewDataSource {
     }
 }
 
-extension TrackerView: UICollectionViewDelegateFlowLayout {
+extension TrackerListView: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _: UICollectionView,
         layout: UICollectionViewLayout,

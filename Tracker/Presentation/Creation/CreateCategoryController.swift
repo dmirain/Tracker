@@ -1,6 +1,7 @@
 import Foundation
+import UIKit
 
-final class CreateCategoryController: BaseUIViewController {
+final class CreateCategoryController: UIViewController {
     private let contentView: CreateCategoryView
 
     init(contentView: CreateCategoryView) {

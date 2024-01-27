@@ -1,8 +1,8 @@
 import UIKit
 
-final class TrackerCell: UICollectionViewCell {
-    static let reuseIdentifier = "TrackerCell"
-    weak var delegate: TrackerView?
+final class TrackerListCell: UICollectionViewCell {
+    static let reuseIdentifier = "TrackerListCell"
+    weak var delegate: TrackerListView?
     
     private lazy var emojiLable: UILabel = {
         let view = UILabel()
@@ -30,7 +30,7 @@ final class TrackerCell: UICollectionViewCell {
         view.numberOfLines = 2
         
         view.text = "Какой-то текст"
-        view.textColor = .ypWhiteDay
+        view.textColor = .ypWhite
         view.font = view.font.withSize(12)
 
         return view
@@ -140,11 +140,11 @@ final class TrackerCell: UICollectionViewCell {
     }
 
     func initData(tracker: Tracker) {
-        emojiLable.text = emojies[tracker.emoji]
+        emojiLable.text = tracker.emoji
         nameLabel.text = tracker.name
         
-        compliteButton.backgroundColor = colors[tracker.color]
-        nameView.backgroundColor = colors[tracker.color]
+        compliteButton.backgroundColor = tracker.color
+        nameView.backgroundColor = tracker.color
     }
     
     @objc

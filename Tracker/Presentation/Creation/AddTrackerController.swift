@@ -1,6 +1,7 @@
 import Foundation
+import UIKit
 
-final class AddTrackerController: BaseUIViewController {
+final class AddTrackerController: UIViewController {
     private let contentView: AddTrackerView
     private let createTrackerController: CreateTrackerController
     

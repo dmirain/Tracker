@@ -1,6 +1,7 @@
 import Foundation
+import UIKit
 
-final class SelectCategoryController: BaseUIViewController {
+final class SelectCategoryController: UIViewController {
     private let contentView: SelectCategoryView
 
     init(contentView: SelectCategoryView) {

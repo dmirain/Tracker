@@ -17,7 +17,7 @@ final class EmptyListView: UIView {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = "Что будем отслеживать?"
-        view.textColor = .ypWhiteNight
+        view.textColor = .ypBlack
         view.font = view.font.withSize(12)
         return view
     }()
@@ -35,7 +35,7 @@ final class EmptyListView: UIView {
     init() {
         super.init(frame: .zero)
 
-        backgroundColor = .ypWhiteDay
+        backgroundColor = .ypWhite
         addSubview(rows)
         NSLayoutConstraint.activate([
             rows.centerXAnchor.constraint(equalTo: self.centerXAnchor),

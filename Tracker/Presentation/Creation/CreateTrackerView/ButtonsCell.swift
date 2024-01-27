@@ -10,7 +10,7 @@ final class ButtonsCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         view.setTitle("Отменить", for: .normal)
         view.setTitleColor(.ypRed, for: .normal)
         view.layer.borderWidth = 1
@@ -32,7 +32,7 @@ final class ButtonsCell: UICollectionViewCell {
         view.layer.masksToBounds = true
         view.backgroundColor = .ypGray
         view.setTitle("Создать", for: .normal)
-        view.setTitleColor(.ypWhiteDay, for: .normal)
+        view.setTitleColor(.ypWhite, for: .normal)
         
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 60)

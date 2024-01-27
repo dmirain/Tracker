@@ -12,7 +12,7 @@ final class CreateTrackerView: UIView {
     private lazy var header: UINavigationBar = {
         let view = UINavigationBar()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.barTintColor = .ypWhiteDay
+        view.barTintColor = .ypWhite
         view.setBackgroundImage(UIImage(), for: .default)
         view.shadowImage = UIImage()
                 
@@ -45,7 +45,7 @@ final class CreateTrackerView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColor.ypWhiteDay
+        backgroundColor = UIColor.ypWhite
 
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -126,7 +126,7 @@ extension CreateTrackerView: UICollectionViewDataSource {
         ) as? EmojiCell
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
-        cell.setEmoji(emojies[indexPath.row])
+        cell.setEmoji(Tracker.emoji(byIndex: indexPath.row))
         return cell
     }
     func cellForColor(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
@@ -136,7 +136,7 @@ extension CreateTrackerView: UICollectionViewDataSource {
         ) as? ColorCell
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
-        cell.setColor(colors[indexPath.row])
+        cell.setColor(Tracker.color(byIndex: indexPath.row))
         return cell
     }
     func cellForButtons(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {

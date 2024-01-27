@@ -1,10 +1,10 @@
 import UIKit
 
-final class StatisticViewController: BaseUIViewController {
+final class StatisticViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         
         let lable = UILabel()
         lable.translatesAutoresizingMaskIntoConstraints = false

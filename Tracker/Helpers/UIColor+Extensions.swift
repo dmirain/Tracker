@@ -1,18 +1,15 @@
 import UIKit
 
 extension UIColor {
-    static var ypBlackDay = UIColor(red: 0.1, green: 0.11, blue: 0.13, alpha: 1)
-    static var ypBlackNight = UIColor(red: 1, green: 1, blue: 1, alpha: 1)
-    static var ypWhiteDay = ypBlackNight
-    static var ypWhiteNight = ypBlackDay
-    
+    static var ypBlack: UIColor { UIColor(named: "ypBlack") ?? UIColor() }
+    static var ypWhite: UIColor { UIColor(named: "ypWhite") ?? UIColor() }
+    static var ypBackground: UIColor { UIColor(named: "ypBackground") ?? UIColor() }
+
     static var ypWhite30 = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3)
 
     static var ypGray = UIColor(red: 0.68, green: 0.69, blue: 0.71, alpha: 1)
     static var ypLightGray = UIColor(red: 0.9, green: 0.91, blue: 0.92, alpha: 1)
 
-    static var ypBackgroundDay = UIColor(red: 0.9, green: 0.91, blue: 0.92, alpha: 0.3)
-    static var ypBackgroundNight = UIColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 0.85)
 
     static var ypRed = UIColor(red: 0.96, green: 0.42, blue: 0.42, alpha: 1)
     static var ypBlue = UIColor(red: 0.22, green: 0.45, blue: 0.91, alpha: 1)

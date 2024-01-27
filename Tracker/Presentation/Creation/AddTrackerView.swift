@@ -11,7 +11,7 @@ final class AddTrackerView: UIView {
     private lazy var header: UINavigationBar = {
         let view = UINavigationBar()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.barTintColor = .ypWhiteDay
+        view.barTintColor = .ypWhite
         view.setBackgroundImage(UIImage(), for: .default)
         view.shadowImage = UIImage()
                 
@@ -28,8 +28,9 @@ final class AddTrackerView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
-        view.backgroundColor = .ypBlackDay
+        view.backgroundColor = .ypBlack
         view.setTitle("Привычка", for: .normal)
+        view.setTitleColor(.ypWhite, for: .normal)
         
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 60),
@@ -45,9 +46,10 @@ final class AddTrackerView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
-        view.backgroundColor = .ypBlackDay
+        view.backgroundColor = .ypBlack
         view.setTitle("Нерегулярные событие", for: .normal)
-        
+        view.setTitleColor(.ypWhite, for: .normal)
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 60)
         ])
@@ -80,7 +82,7 @@ final class AddTrackerView: UIView {
     
     init() {
         super.init(frame: .zero)
-        backgroundColor = UIColor.ypWhiteDay
+        backgroundColor = UIColor.ypWhite
         
         addSubview(header)
         addSubview(buttonsStack)

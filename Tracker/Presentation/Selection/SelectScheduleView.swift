@@ -12,7 +12,7 @@ final class SelectScheduleView: UIView {
     private lazy var header: UINavigationBar = {
         let view = UINavigationBar()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.barTintColor = .ypWhiteDay
+        view.barTintColor = .ypWhite
         view.setBackgroundImage(UIImage(), for: .default)
         view.shadowImage = UIImage()
                 
@@ -31,7 +31,7 @@ final class SelectScheduleView: UIView {
         
         let view = UIStackView(arrangedSubviews: views)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .ypBackgroundDay
+        view.backgroundColor = .ypBackground
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         
@@ -88,6 +88,7 @@ final class SelectScheduleView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.text = weekDay.asText()
         view.font = view.font.withSize(17)
+        view.textColor = .ypBlack
         return view
     }
 
@@ -118,8 +119,9 @@ final class SelectScheduleView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
-        view.backgroundColor = .ypBlackDay
+        view.backgroundColor = .ypBlack
         view.setTitle("Готово", for: .normal)
+        view.setTitleColor(.ypWhite, for: .normal)
         
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 60)
@@ -144,7 +146,7 @@ final class SelectScheduleView: UIView {
 
     init() {
         super.init(frame: .zero)
-        backgroundColor = .ypWhiteDay
+        backgroundColor = .ypWhite
 
         addSubview(header)
         addSubview(daysStack)

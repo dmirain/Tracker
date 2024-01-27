@@ -33,9 +33,9 @@ final class PropertiesCell: UICollectionViewCell {
     private lazy var categoryButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .ypBackgroundDay
+        view.backgroundColor = .ypBackground
         view.setTitle("Категория", for: .normal)
-        view.setTitleColor(.ypBlackDay, for: .normal)
+        view.setTitleColor(.ypBlack, for: .normal)
         view.contentHorizontalAlignment = .left
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         
@@ -57,9 +57,9 @@ final class PropertiesCell: UICollectionViewCell {
     private lazy var scheduleButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .ypBackgroundDay
+        view.backgroundColor = .ypBackground
         view.setTitle("Расписание", for: .normal)
-        view.setTitleColor(.ypBlackDay, for: .normal)
+        view.setTitleColor(.ypBlack, for: .normal)
         view.contentHorizontalAlignment = .left
         view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         

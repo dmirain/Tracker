@@ -1,6 +1,7 @@
 import Foundation
+import UIKit
 
-final class SelectScheduleController: BaseUIViewController {
+final class SelectScheduleController: UIViewController {
     private let contentView: SelectScheduleView
 
     init(contentView: SelectScheduleView) {
