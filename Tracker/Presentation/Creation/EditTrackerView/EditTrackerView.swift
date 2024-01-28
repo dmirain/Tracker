@@ -212,9 +212,7 @@ extension EditTrackerView: UICollectionViewDataSource {
             for: indexPath
         ) as! SectionHeaderView
         
-        if !sectionTitle.isEmpty {
-            view.setTitle(sectionTitle, spacing: 24)
-        }
+        view.setTitle(sectionTitle, spacing: 24)
 
         return view
     }

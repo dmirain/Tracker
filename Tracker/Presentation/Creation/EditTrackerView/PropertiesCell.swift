@@ -61,9 +61,7 @@ final class PropertiesCell: UICollectionViewCell {
     }
 
     func setProperties(category: TrackerCategory?, schedule: WeekDaySet, type: TrackerType) {
-        if let category {
-            categoryButton.setSubTitle(category.name)
-        }
+        categoryButton.setSubTitle(category?.name ?? "")
         
         if type == .habit {
             scheduleButton.setSubTitle(schedule.asShortText())

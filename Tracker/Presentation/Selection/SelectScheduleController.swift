@@ -9,6 +9,8 @@ final class SelectScheduleController: UIViewController {
     private let contentView: SelectScheduleView
     
     weak var delegate: SelectScheduleControllerDelegate?
+    
+    var schedule: WeekDaySet = []
 
     init(contentView: SelectScheduleView) {
         self.contentView = contentView
@@ -28,12 +30,12 @@ final class SelectScheduleController: UIViewController {
     }
     
     func initData(schedule: WeekDaySet) {
-        contentView.initData(schedule: schedule)
+        contentView.initData()
     }
 }
 
 extension SelectScheduleController: SelectScheduleViewDelegat {
-    func set(schedule: WeekDaySet) {
+    func completeSelect() {
         delegate?.set(schedule: schedule, controller: self)
     }
 }
