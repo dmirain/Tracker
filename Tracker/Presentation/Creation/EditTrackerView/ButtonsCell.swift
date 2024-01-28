@@ -69,12 +69,12 @@ final class ButtonsCell: UICollectionViewCell {
     }
     
     @objc
-    func cancelButtonClicked() {
+    private func cancelButtonClicked() {
         delegate?.compleateEdit(action: .cancel)
     }
 
     @objc
-    func createButtonClicked() {
+    private func createButtonClicked() {
         delegate?.compleateEdit(action: .save)
     }
 }

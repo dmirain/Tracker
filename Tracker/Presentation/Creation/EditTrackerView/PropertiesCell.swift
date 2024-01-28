@@ -71,12 +71,12 @@ final class PropertiesCell: UICollectionViewCell {
     }
     
     @objc
-    func categoryButtonClicked() {
+    private func categoryButtonClicked() {
         delegate?.selectCategory()
     }
     
     @objc
-    func scheduleButtonClicked() {
+    private func scheduleButtonClicked() {
         delegate?.selectSchedule()
     }
 }

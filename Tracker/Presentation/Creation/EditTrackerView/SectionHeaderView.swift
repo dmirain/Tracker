@@ -3,7 +3,7 @@ import UIKit
 class SectionHeaderView: UICollectionReusableView {
     static let reuseIdentifier = "SectionHeaderView"
 
-    lazy var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = UIFont.boldSystemFont(ofSize: 19)
@@ -19,6 +19,10 @@ class SectionHeaderView: UICollectionReusableView {
             titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10)
         ])
+    }
+    
+    func setTitle(_ title: String) {
+        titleLabel.text = title
     }
     
     required init?(coder: NSCoder) {

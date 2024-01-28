@@ -5,7 +5,7 @@ final class NameCell: UICollectionViewCell {
     
     weak var delegate: EditTrackerView?
 
-    lazy var nameField: PaddingTextField = {
+    private lazy var nameField: PaddingTextField = {
         let view = PaddingTextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.placeholder = "Введите название трекера"
@@ -41,7 +41,7 @@ final class NameCell: UICollectionViewCell {
     }
     
     @objc
-    func nameChanged() {
+    private func nameChanged() {
         delegate?.controller?.viewModel.name = nameField.text ?? ""
     }
 

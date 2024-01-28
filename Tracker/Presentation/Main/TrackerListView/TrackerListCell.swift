@@ -148,7 +148,7 @@ final class TrackerListCell: UICollectionViewCell {
     }
     
     @objc
-    func compliteButtonClicked() {
+    private func compliteButtonClicked() {
         print("compliteButtonClicked")
     }
 }

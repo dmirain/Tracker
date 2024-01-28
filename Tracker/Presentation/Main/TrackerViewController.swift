@@ -59,12 +59,9 @@ extension TrackerViewController: TrackerListViewDelegat {
 extension TrackerViewController: AddTrackerControllerDelegate {
     func compleateAdd(action: EditAction, controller: UIViewController) {
         switch action {
-        case .save:
-            refreshData()
-        case .cancel:
-            break
+        case .save: refreshData()
+        case .cancel: break
         }
-
         controller.dismiss(animated: true)
     }
 }

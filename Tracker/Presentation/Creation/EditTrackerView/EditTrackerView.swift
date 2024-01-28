@@ -9,6 +9,9 @@ protocol EditTrackerViewDelegat: AnyObject {
     func compleateEdit(action: EditAction)
 }
 
+private enum ViewSections: Int, CaseIterable {
+    case name = 0, properties, emoji, color, buttons
+}
 
 final class EditTrackerView: UIView {
     weak var controller: EditTrackerViewDelegat?
@@ -78,7 +81,7 @@ final class EditTrackerView: UIView {
     }
     
     func refreshProperties() {
-        collectionView.reloadItems(at: [IndexPath(row: 0, section: 1)])
+        collectionView.reloadItems(at: [IndexPath(row: 0, section: ViewSections.properties.rawValue)])
     }
     
     func compleateEdit(action: EditAction) {
@@ -88,36 +91,40 @@ final class EditTrackerView: UIView {
 
 extension EditTrackerView: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        5
+        ViewSections.allCases.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch section {
-        case 0: return 1  // name
-        case 1: return 1  // category + schedule
-        case 2: return 18 // emoji
-        case 3: return 18 // color
-        case 4: return 1  // buttons
-        default: 
-            assertionFailure("Uncnown section")
+        guard let section = ViewSections(rawValue: section) else {
+            assertionFailure("Unknown section \(section)")
             return 0
+        }
+
+        switch section {
+        case .name: return 1
+        case .properties: return 1
+        case .emoji: return 18
+        case .color: return 18
+        case .buttons: return 1
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch indexPath.section {
-        case 0: return cellForName(collectionView, at: indexPath)  // name
-        case 1: return cellForProperties(collectionView, at: indexPath)  // category + schedule
-        case 2: return cellForEmoji(collectionView, at: indexPath) // emoji
-        case 3: return cellForColor(collectionView, at: indexPath) // color
-        case 4: return cellForButtons(collectionView, at: indexPath)  // buttons
-        default: 
-            assertionFailure("Uncnown section")
+        guard let section = ViewSections(rawValue: indexPath.section) else {
+            assertionFailure("Unknown section \(indexPath.section)")
             return UICollectionViewCell()
+        }
+
+        switch section {
+        case .name: return cellForName(collectionView, at: indexPath)
+        case .properties: return cellForProperties(collectionView, at: indexPath)
+        case .emoji: return cellForEmoji(collectionView, at: indexPath)
+        case .color: return cellForColor(collectionView, at: indexPath)
+        case .buttons: return cellForButtons(collectionView, at: indexPath)
         }
     }
     
-    func cellForName(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func cellForName(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: NameCell.reuseIdentifier,
             for: indexPath
@@ -127,7 +134,7 @@ extension EditTrackerView: UICollectionViewDataSource {
         cell.setName(name: controller?.viewModel.name ?? "")
         return cell
     }
-    func cellForProperties(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func cellForProperties(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         guard let controller else { return UICollectionViewCell() }
         
         let cell = collectionView.dequeueReusableCell(
@@ -143,7 +150,7 @@ extension EditTrackerView: UICollectionViewDataSource {
         )
         return cell
     }
-    func cellForEmoji(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func cellForEmoji(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: EmojiCell.reuseIdentifier,
             for: indexPath
@@ -156,7 +163,7 @@ extension EditTrackerView: UICollectionViewDataSource {
         )
         return cell
     }
-    func cellForColor(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func cellForColor(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ColorCell.reuseIdentifier,
             for: indexPath
@@ -169,7 +176,7 @@ extension EditTrackerView: UICollectionViewDataSource {
         )
         return cell
     }
-    func cellForButtons(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+    private func cellForButtons(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ButtonsCell.reuseIdentifier,
             for: indexPath
@@ -184,11 +191,18 @@ extension EditTrackerView: UICollectionViewDataSource {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
+        guard let section = ViewSections(rawValue: indexPath.section) else {
+            assertionFailure("Unknown section \(indexPath.section)")
+            return UICollectionViewCell()
+        }
+
         var sectionTitle: String
-        switch indexPath.section {
-        case 2: sectionTitle = "Emoji"
-        case 3: sectionTitle = "Цвет"
-        default: sectionTitle = ""
+        switch section {
+        case .name: sectionTitle = ""
+        case .properties: sectionTitle = ""
+        case .emoji: sectionTitle = "Emoji"
+        case .color: sectionTitle = "Цвет"
+        case .buttons: sectionTitle = ""
         }
         
         guard !sectionTitle.isEmpty && kind == UICollectionView.elementKindSectionHeader else {
@@ -201,7 +215,7 @@ extension EditTrackerView: UICollectionViewDataSource {
             for: indexPath
         ) as! SectionHeaderView
         
-        view.titleLabel.text = sectionTitle
+        view.setTitle(sectionTitle)
 
         return view
     }
@@ -221,16 +235,17 @@ extension EditTrackerView: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        
-        switch indexPath.section {
-        case 0: return CGSize(width: collectionView.bounds.width, height: 75)  // name
-        case 1: return CGSize(width: collectionView.bounds.width, height: 174)  // category + schedule
-        case 2: return CGSize(width: collectionView.bounds.width / 6, height: 52) // emoji
-        case 3: return CGSize(width: collectionView.bounds.width / 6, height: 52) // color
-        case 4: return CGSize(width: collectionView.bounds.width, height: 100)  // buttons
-        default:
-            assertionFailure("Uncnown section")
+        guard let section = ViewSections(rawValue: indexPath.section) else {
+            assertionFailure("Unknown section \(indexPath.section)")
             return CGSize()
+        }
+        
+        switch section {
+        case .name: return CGSize(width: collectionView.bounds.width, height: 75)
+        case .properties: return CGSize(width: collectionView.bounds.width, height: 174)
+        case .emoji: return CGSize(width: collectionView.bounds.width / 6, height: 52)
+        case .color: return CGSize(width: collectionView.bounds.width / 6, height: 52)
+        case .buttons: return CGSize(width: collectionView.bounds.width, height: 100)
         }
     }
     
@@ -239,26 +254,37 @@ extension EditTrackerView: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        if [2, 3].contains(section) {
-            return CGSize(width: collectionView.frame.width, height: 70)
+        guard let section = ViewSections(rawValue: section) else {
+            assertionFailure("Unknown section \(section)")
+            return CGSize()
         }
-        return CGSize()
+        switch section {
+        case .name: return CGSize()
+        case .properties: return CGSize()
+        case .emoji: return CGSize(width: collectionView.frame.width, height: 70)
+        case .color: return CGSize(width: collectionView.frame.width, height: 70)
+        case .buttons: return CGSize()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let controller else { return }
+        guard let controller, let section = ViewSections(rawValue: indexPath.section) else {
+            assertionFailure("Unknown section \(indexPath.section)")
+            return
+        }
 
-        switch indexPath.section {
-        case 2:
-            let oldIndexPath = IndexPath(row: controller.viewModel.emojiIndex, section: 2)
+        switch section {
+        case .name: return
+        case .properties: return
+        case .emoji:
+            let oldIndexPath = IndexPath(row: controller.viewModel.emojiIndex, section: section.rawValue)
             controller.viewModel.emojiIndex = indexPath.row
             collectionView.reloadItems(at: [indexPath, oldIndexPath])
-        case 3:
-            let oldIndexPath = IndexPath(row: controller.viewModel.colorIndex, section: 3)
+        case .color:
+            let oldIndexPath = IndexPath(row: controller.viewModel.colorIndex, section: section.rawValue)
             controller.viewModel.colorIndex = indexPath.row
             collectionView.reloadItems(at: [indexPath, oldIndexPath])
-        default:
-            return
+        case .buttons: return
         }
     }
 }

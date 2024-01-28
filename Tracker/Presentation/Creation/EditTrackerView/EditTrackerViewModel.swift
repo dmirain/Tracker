@@ -24,7 +24,10 @@ class EditTrackerViewModel {
         self.type = type
         name = ""
         category = nil
-        schedule = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+        switch type {
+        case .event: schedule = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+        case .habit: schedule = []
+        }
         emojiIndex = 0
         colorIndex = 0
     }
