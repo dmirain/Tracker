@@ -49,7 +49,7 @@ final class TrackerListCell: UICollectionViewCell {
     private lazy var compliteButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .ypColorSelection04
+        view.backgroundColor = .ypColorSelection01
 
         if Bool.random() {
             view.setImage(.complited, for: .normal)
@@ -76,7 +76,7 @@ final class TrackerListCell: UICollectionViewCell {
     private lazy var nameView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .ypColorSelection04
+        view.backgroundColor = .ypColorSelection01
 
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true

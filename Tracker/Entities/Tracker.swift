@@ -34,8 +34,8 @@ struct Tracker: Codable {
     let name: String
     let category: TrackerCategory
     let schedule: WeekDaySet
-    private let emojiIndex: Int
-    private let colorIndex: Int
+    let emojiIndex: Int
+    let colorIndex: Int
     
     var emoji: String { Self.emoji(byIndex: emojiIndex) }
     var color: UIColor { Self.color(byIndex: colorIndex) }

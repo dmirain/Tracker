@@ -36,7 +36,7 @@ final class AddTrackerView: UIView {
             view.heightAnchor.constraint(equalToConstant: 60),
         ])
         
-        view.addTarget(self, action: #selector(createEventClicked), for: .touchUpInside)
+        view.addTarget(self, action: #selector(createHabitClicked), for: .touchUpInside)
         
         return view
     }()
@@ -54,7 +54,7 @@ final class AddTrackerView: UIView {
             view.heightAnchor.constraint(equalToConstant: 60)
         ])
         
-        view.addTarget(self, action: #selector(createHabitClicked), for: .touchUpInside)
+        view.addTarget(self, action: #selector(createEventClicked), for: .touchUpInside)
         
         return view
     }()

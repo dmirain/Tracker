@@ -2,7 +2,7 @@ import UIKit
 
 final class EmojiCell: UICollectionViewCell {
     static let reuseIdentifier = "EmojiCell"
-    weak var delegate: CreateTrackerView?
+    weak var delegate: EditTrackerView?
     
     private lazy var titleLabel: UILabel = {
         let view = UILabel()
@@ -47,15 +47,8 @@ final class EmojiCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setEmoji(_ emoji: String) {
+    func setEmoji(_ emoji: String, isSelected: Bool) {
         titleLabel.text = emoji
-    }
-    
-    func setSelected() {
-        container.backgroundColor = .ypLightGray
-    }
-    
-    func setDeselected() {
-        container.backgroundColor = .clear
+        container.backgroundColor = isSelected ? .ypLightGray : .clear
     }
 }

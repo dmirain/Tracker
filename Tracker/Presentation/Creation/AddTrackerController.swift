@@ -3,14 +3,14 @@ import UIKit
 
 final class AddTrackerController: UIViewController {
     private let contentView: AddTrackerView
-    private let createTrackerController: CreateTrackerController
+    private let editTrackerController: EditTrackerController
     
     init(
         contentView: AddTrackerView,
-        createTrackerController: CreateTrackerController
+        editTrackerController: EditTrackerController
     ) {
         self.contentView = contentView
-        self.createTrackerController = createTrackerController
+        self.editTrackerController = editTrackerController
         
         super.init(nibName: nil, bundle: nil)
         
@@ -29,7 +29,7 @@ final class AddTrackerController: UIViewController {
 
 extension AddTrackerController: AddTrackerViewDelegat {
     func createClicked(type: TrackerType) {
-        createTrackerController.trackerType = type
-        present(createTrackerController, animated: true)
+        editTrackerController.initData(editTrackerModel: EditTrackerViewModel(type: type))
+        present(editTrackerController, animated: true)
     }
 }

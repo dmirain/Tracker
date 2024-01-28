@@ -19,13 +19,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             SelectScheduleController(contentView: diResolver.resolve(SelectScheduleView.self)!)
         }
                 
-        container.register(CreateTrackerView.self) { diResolver in
-            CreateTrackerView()
+        container.register(EditTrackerView.self) { diResolver in
+            EditTrackerView()
         }
-        container.register(CreateTrackerController.self) { diResolver in
-            CreateTrackerController(
-                contentView: diResolver.resolve(CreateTrackerView.self)!,
-                selectScheduleController: diResolver.resolve(SelectScheduleController.self)!
+        container.register(EditTrackerController.self) { diResolver in
+            EditTrackerController(
+                contentView: diResolver.resolve(EditTrackerView.self)!,
+                selectScheduleController: diResolver.resolve(SelectScheduleController.self)!,
+                trackerRepository: diResolver.resolve(TrackerRepository.self)!
             )
         }
 
@@ -35,7 +36,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         container.register(AddTrackerController.self) { diResolver in
             AddTrackerController(
                 contentView: diResolver.resolve(AddTrackerView.self)!,
-                createTrackerController: diResolver.resolve(CreateTrackerController.self)!
+                editTrackerController: diResolver.resolve(EditTrackerController.self)!
             )
         }
 

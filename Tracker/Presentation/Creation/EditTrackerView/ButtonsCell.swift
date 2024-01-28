@@ -3,7 +3,7 @@ import UIKit
 final class ButtonsCell: UICollectionViewCell {
     static let reuseIdentifier = "ButtonsCell"
 
-    weak var delegate: CreateTrackerView?
+    weak var delegate: EditTrackerView?
 
     private lazy var cancelButton: UIButton = {
         let view = UIButton()

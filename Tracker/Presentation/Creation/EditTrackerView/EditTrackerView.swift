@@ -1,13 +1,15 @@
 import Foundation
 import UIKit
 
-protocol CreateTrackerViewDelegat: AnyObject {
+protocol EditTrackerViewDelegat: AnyObject {
     func selectSchedule()
+    func selectCategory()
+    var viewModel: EditTrackerViewModel { get }
 }
 
 
-final class CreateTrackerView: UIView {
-    weak var controller: CreateTrackerViewDelegat?
+final class EditTrackerView: UIView {
+    weak var controller: EditTrackerViewDelegat?
 
     private lazy var header: UINavigationBar = {
         let view = UINavigationBar()
@@ -68,9 +70,17 @@ final class CreateTrackerView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func initData() {
+        collectionView.reloadData()
+    }
+    
+    func refreshProperties() {
+        collectionView.reloadItems(at: [IndexPath(row: 0, section: 1)])
+    }
 }
 
-extension CreateTrackerView: UICollectionViewDataSource {
+extension EditTrackerView: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         5
     }
@@ -108,15 +118,23 @@ extension CreateTrackerView: UICollectionViewDataSource {
         ) as? NameCell
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
+        cell.setName(name: controller?.viewModel.name ?? "")
         return cell
     }
     func cellForProperties(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+        guard let controller else { return UICollectionViewCell() }
+        
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: PropertiesCell.reuseIdentifier,
             for: indexPath
         ) as? PropertiesCell
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
+        cell.setProperties(
+            category: controller.viewModel.category,
+            schedule: controller.viewModel.schedule,
+            type: controller.viewModel.type
+        )
         return cell
     }
     func cellForEmoji(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
@@ -126,7 +144,10 @@ extension CreateTrackerView: UICollectionViewDataSource {
         ) as? EmojiCell
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
-        cell.setEmoji(Tracker.emoji(byIndex: indexPath.row))
+        cell.setEmoji(
+            Tracker.emoji(byIndex: indexPath.row),
+            isSelected: controller?.viewModel.emojiIndex == indexPath.row
+        )
         return cell
     }
     func cellForColor(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
@@ -136,7 +157,10 @@ extension CreateTrackerView: UICollectionViewDataSource {
         ) as? ColorCell
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
-        cell.setColor(Tracker.color(byIndex: indexPath.row))
+        cell.setColor(
+            Tracker.color(byIndex: indexPath.row),
+            isSelected: controller?.viewModel.colorIndex == indexPath.row
+        )
         return cell
     }
     func cellForButtons(_ collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
@@ -177,7 +201,7 @@ extension CreateTrackerView: UICollectionViewDataSource {
     }
 }
 
-extension CreateTrackerView: UICollectionViewDelegateFlowLayout {
+extension EditTrackerView: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _: UICollectionView,
         layout: UICollectionViewLayout,
@@ -216,34 +240,29 @@ extension CreateTrackerView: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let controller else { return }
+
         switch indexPath.section {
         case 2:
-            let cell = collectionView.cellForItem(at: indexPath) as? EmojiCell
-            cell?.setSelected()
+            let oldIndexPath = IndexPath(row: controller.viewModel.emojiIndex, section: 2)
+            controller.viewModel.emojiIndex = indexPath.row
+            collectionView.reloadItems(at: [indexPath, oldIndexPath])
         case 3:
-            let cell = collectionView.cellForItem(at: indexPath) as? ColorCell
-            cell?.setSelected()
-        default:
-            return
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        switch indexPath.section {
-        case 2:
-            let cell = collectionView.cellForItem(at: indexPath) as? EmojiCell
-            cell?.setDeselected()
-        case 3:
-            let cell = collectionView.cellForItem(at: indexPath) as? ColorCell
-            cell?.setDeselected()
+            let oldIndexPath = IndexPath(row: controller.viewModel.colorIndex, section: 3)
+            controller.viewModel.colorIndex = indexPath.row
+            collectionView.reloadItems(at: [indexPath, oldIndexPath])
         default:
             return
         }
     }
 }
 
-extension CreateTrackerView {
+extension EditTrackerView {
     func selectSchedule() {
         controller?.selectSchedule()
+    }
+    
+    func selectCategory() {
+        controller?.selectCategory()
     }
 }

@@ -2,11 +2,12 @@ import Foundation
 import UIKit
 
 protocol SelectScheduleViewDelegat: AnyObject {
+    func set(schedule: WeekDaySet)
 }
 
 final class SelectScheduleView: UIView {
     weak var controller: SelectScheduleViewDelegat?
-
+    
     private var switches = [WeekDaySwitch]()
     
     private lazy var header: UINavigationBar = {
@@ -15,7 +16,7 @@ final class SelectScheduleView: UIView {
         view.barTintColor = .ypWhite
         view.setBackgroundImage(UIImage(), for: .default)
         view.shadowImage = UIImage()
-                
+        
         let navItem = UINavigationItem()
         navItem.title = "Расписание"
         
@@ -23,7 +24,7 @@ final class SelectScheduleView: UIView {
         
         return view
     }()
-
+    
     private lazy var daysStack: UIStackView = {
         let views = WeekDaySet.allDays().map { weekDay in
             dayRow(at: weekDay)
@@ -38,23 +39,23 @@ final class SelectScheduleView: UIView {
         view.axis = .vertical
         view.spacing = 0
         view.distribution = .fillEqually
-
+        
         NSLayoutConstraint.activate(
             views.flatMap { dayRow in [
                 dayRow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 dayRow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ]}
         )
-
+        
         return view
     }()
-
+    
     private func dayRow(at weekDay: WeekDaySet) -> UIView {
         let view = UIView()
-
+        
         let rowLable = rowLable(at: weekDay)
         let uiSwitch = uiSwitch(at: weekDay)
-
+        
         view.addSubview(rowLable)
         view.addSubview(uiSwitch)
         
@@ -63,15 +64,15 @@ final class SelectScheduleView: UIView {
             
             rowLable.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             rowLable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-
+            
             uiSwitch.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             uiSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ]
-
+        
         if weekDay != WeekDaySet.monday {
             let separator = separator()
             view.addSubview(separator)
-
+            
             constraints.append(contentsOf: [
                 separator.topAnchor.constraint(equalTo: view.topAnchor),
                 separator.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -91,7 +92,7 @@ final class SelectScheduleView: UIView {
         view.textColor = .ypBlack
         return view
     }
-
+    
     private func uiSwitch(at weekDay: WeekDaySet) -> UISwitch {
         let view = WeekDaySwitch(weekDay: weekDay)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +102,7 @@ final class SelectScheduleView: UIView {
         
         return view
     }
-
+    
     private func separator() -> UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -113,7 +114,7 @@ final class SelectScheduleView: UIView {
         
         return view
     }
-
+    
     private lazy var acceptButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -131,7 +132,7 @@ final class SelectScheduleView: UIView {
         
         return view
     }()
-
+    
     @objc
     private func acceptClicked() {
         let result = switches
@@ -141,17 +142,17 @@ final class SelectScheduleView: UIView {
                 partialResult, weekDay in partialResult = partialResult.union(weekDay)
             }
         
-        print(result.asShortText())
+        controller?.set(schedule: result)
     }
-
+    
     init() {
         super.init(frame: .zero)
         backgroundColor = .ypWhite
-
+        
         addSubview(header)
         addSubview(daysStack)
         addSubview(acceptButton)
-
+        
         NSLayoutConstraint.activate([
             header.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             header.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
@@ -160,24 +161,24 @@ final class SelectScheduleView: UIView {
             daysStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             daysStack.topAnchor.constraint(equalTo: header.bottomAnchor),
             daysStack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
-
+            
             acceptButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             acceptButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             acceptButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
         ])
-
-        let schedule: WeekDaySet = [.monday, .wednesday]
-        
-        switches.forEach { value in
-            if schedule.contains(value.weekDay) {
-                value.setOn(true, animated: false)
-            }
-        }
         
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func initData(schedule: WeekDaySet) {
+        switches.forEach { value in
+            if schedule.contains(value.weekDay) {
+                value.setOn(true, animated: false)
+            }
+        }
     }
 }
 

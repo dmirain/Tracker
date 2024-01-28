@@ -3,7 +3,7 @@ import UIKit
 final class ColorCell: UICollectionViewCell {
     static let reuseIdentifier = "ColorCell"
     
-    weak var delegate: CreateTrackerView?
+    weak var delegate: EditTrackerView?
     
     private lazy var colorLabel: UIView = {
         let view = UIView()
@@ -54,16 +54,8 @@ final class ColorCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setColor(_ color: UIColor) {
+    func setColor(_ color: UIColor, isSelected: Bool) {
         colorLabel.backgroundColor = color
+        container.layer.borderWidth = isSelected ? 3 : 0
     }
-    
-    func setSelected() {
-        container.layer.borderWidth = 3
-    }
-    
-    func setDeselected() {
-        container.layer.borderWidth = 0
-    }
-
 }
