@@ -77,6 +77,7 @@ final class EditTrackerView: UIView {
     }
     
     func initData() {
+        collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
         collectionView.reloadData()
     }
     
@@ -204,18 +205,16 @@ extension EditTrackerView: UICollectionViewDataSource {
         case .color: sectionTitle = "Цвет"
         case .buttons: sectionTitle = ""
         }
-        
-        guard !sectionTitle.isEmpty && kind == UICollectionView.elementKindSectionHeader else {
-            return UICollectionReusableView()
-        }
-        
+
         let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: SectionHeaderView.reuseIdentifier,
             for: indexPath
         ) as! SectionHeaderView
         
-        view.setTitle(sectionTitle)
+        if !sectionTitle.isEmpty {
+            view.setTitle(sectionTitle, spacing: 24)
+        }
 
         return view
     }
@@ -239,13 +238,17 @@ extension EditTrackerView: UICollectionViewDelegateFlowLayout {
             assertionFailure("Unknown section \(indexPath.section)")
             return CGSize()
         }
-        
+
         switch section {
         case .name: return CGSize(width: collectionView.bounds.width, height: 75)
-        case .properties: return CGSize(width: collectionView.bounds.width, height: 174)
+        case .properties:
+            return CGSize(
+                width: collectionView.bounds.width,
+                height: controller?.viewModel.type == .habit ? 150 : 75
+            )
         case .emoji: return CGSize(width: collectionView.bounds.width / 6, height: 52)
         case .color: return CGSize(width: collectionView.bounds.width / 6, height: 52)
-        case .buttons: return CGSize(width: collectionView.bounds.width, height: 100)
+        case .buttons: return CGSize(width: collectionView.bounds.width, height: 60)
         }
     }
     
@@ -259,11 +262,11 @@ extension EditTrackerView: UICollectionViewDelegateFlowLayout {
             return CGSize()
         }
         switch section {
-        case .name: return CGSize()
-        case .properties: return CGSize()
-        case .emoji: return CGSize(width: collectionView.frame.width, height: 70)
-        case .color: return CGSize(width: collectionView.frame.width, height: 70)
-        case .buttons: return CGSize()
+        case .name: return CGSize(width: collectionView.frame.width, height: 24)
+        case .properties: return CGSize(width: collectionView.frame.width, height: 24)
+        case .emoji: return CGSize(width: collectionView.frame.width, height: 74)
+        case .color: return CGSize(width: collectionView.frame.width, height: 82)
+        case .buttons: return CGSize(width: collectionView.frame.width, height: 40)
         }
     }
     
@@ -272,7 +275,6 @@ extension EditTrackerView: UICollectionViewDelegateFlowLayout {
             assertionFailure("Unknown section \(indexPath.section)")
             return
         }
-
         switch section {
         case .name: return
         case .properties: return

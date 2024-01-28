@@ -196,7 +196,7 @@ extension TrackerListView: UICollectionViewDataSource {
             for: indexPath
         ) as! SectionHeaderView
         
-        view.setTitle(sectionTitle)
+        view.setTitle(sectionTitle, spacing: 12)
         return view
     }
 }

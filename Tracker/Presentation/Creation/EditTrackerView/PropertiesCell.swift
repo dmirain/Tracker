@@ -22,6 +22,9 @@ final class PropertiesCell: UICollectionViewCell {
         let view = PropertyButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("Расписание", for: .normal)
+        view.addSeparator()
+        view.isHidden = true
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 75),
         ])
@@ -49,7 +52,7 @@ final class PropertiesCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             buttonsStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             buttonsStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            buttonsStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            buttonsStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
     }
     

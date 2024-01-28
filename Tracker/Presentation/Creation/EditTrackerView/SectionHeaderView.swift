@@ -9,20 +9,20 @@ class SectionHeaderView: UICollectionReusableView {
         view.font = UIFont.boldSystemFont(ofSize: 19)
         return view
     }()
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        addSubview(titleLabel)
-        
-        NSLayoutConstraint.activate([
-            titleLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10)
-        ])
     }
     
-    func setTitle(_ title: String) {
+    func setTitle(_ title: String, spacing: CGFloat) {
+        addSubview(titleLabel)
+
         titleLabel.text = title
+        
+        NSLayoutConstraint.activate([
+            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -spacing),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10)
+        ])
     }
     
     required init?(coder: NSCoder) {

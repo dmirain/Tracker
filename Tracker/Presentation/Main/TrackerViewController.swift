@@ -62,6 +62,6 @@ extension TrackerViewController: AddTrackerControllerDelegate {
         case .save: refreshData()
         case .cancel: break
         }
-        controller.dismiss(animated: true)
+        controller.dismiss(animated: false)
     }
 }
