@@ -34,7 +34,10 @@ final class TrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        refreshData()
+    }
+    
+    func refreshData() {
         let trackers = trackerRepository.filter(byDate: currentDay, byName: searchQ)
         _trackerListViewModel = TrackerListViewModel(trackers: trackers)
         
@@ -48,6 +51,20 @@ extension TrackerViewController: TrackerListViewDelegat {
     }
     
     func addTrackerClicked() {
+        addTrackerController.delegate = self
         present(addTrackerController, animated: true)
+    }
+}
+
+extension TrackerViewController: AddTrackerControllerDelegate {
+    func compleateAdd(action: EditAction, controller: UIViewController) {
+        switch action {
+        case .save:
+            refreshData()
+        case .cancel:
+            break
+        }
+
+        controller.dismiss(animated: true)
     }
 }

@@ -20,7 +20,7 @@ final class ButtonsCell: UICollectionViewCell {
             view.heightAnchor.constraint(equalToConstant: 60),
         ])
         
-//        view.addTarget(self, action: #selector(createEventClicked), for: .touchUpInside)
+        view.addTarget(self, action: #selector(cancelButtonClicked), for: .touchUpInside)
         
         return view
     }()
@@ -38,7 +38,7 @@ final class ButtonsCell: UICollectionViewCell {
             view.heightAnchor.constraint(equalToConstant: 60)
         ])
         
-//        view.addTarget(self, action: #selector(createHabitClicked), for: .touchUpInside)
+        view.addTarget(self, action: #selector(createButtonClicked), for: .touchUpInside)
         
         return view
     }()
@@ -66,5 +66,15 @@ final class ButtonsCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc
+    func cancelButtonClicked() {
+        delegate?.compleateEdit(action: .cancel)
+    }
+
+    @objc
+    func createButtonClicked() {
+        delegate?.compleateEdit(action: .save)
     }
 }

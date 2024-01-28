@@ -1,10 +1,16 @@
 import Foundation
 import UIKit
 
+protocol EditTrackerControllerDelegate: AnyObject {
+    func compleateEdit(action: EditAction, controller: UIViewController)
+}
+
 final class EditTrackerController: UIViewController {
     private let contentView: EditTrackerView
     private let selectScheduleController: SelectScheduleController
     private let trackerRepository: TrackerRepository
+    
+    weak var delegate: EditTrackerControllerDelegate?
     
     private(set) var editTrackerViewModel: EditTrackerViewModel = EditTrackerViewModel(type: .event)
             
@@ -62,9 +68,17 @@ extension EditTrackerController: EditTrackerViewDelegat {
         set(category: category)
     }
     
-    func save() {
-        guard let tracker = editTrackerViewModel.toTracker() else { return }
-        trackerRepository.create(tracker)
+    func compleateEdit(action: EditAction) {
+        switch action {
+        case .save:
+            let tracker = editTrackerViewModel.toTracker()
+            if let tracker {
+                trackerRepository.create(tracker)
+            }
+        case .cancel:
+            break
+        }
+        delegate?.compleateEdit(action: action, controller: self)
     }
 }
 

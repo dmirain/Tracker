@@ -1,7 +1,16 @@
 import Foundation
 
+private var trackers: [Tracker] = [Tracker(
+    id: UUID(),
+    type: .event, 
+    name: "Test", 
+    category: TrackerCategory(name: "Тест"),
+    schedule: .sunday, 
+    emojiIndex: 1,
+    colorIndex: 2)
+]
+
 final class TrackerRepository {
-    private var trackers = [Tracker]()
 
     func create(_ new: Tracker) {
         trackers.append(new)
@@ -22,7 +31,7 @@ final class TrackerRepository {
                 tracker.name.contains(name)
             }
         }
-        
+
         return result
     }
 }

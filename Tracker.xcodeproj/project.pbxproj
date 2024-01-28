@@ -51,6 +51,7 @@
 		79860BA72B00BD1700B95344 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860BA62B00BD1700B95344 /* TabBarController.swift */; };
 		79860BA92B00BE9200B95344 /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860BA82B00BE9200B95344 /* StatisticViewController.swift */; };
 		799D40402B65AC1B005B1478 /* PropertyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D403F2B65AC1B005B1478 /* PropertyButton.swift */; };
+		799D40422B6627CF005B1478 /* EditAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40412B6627CF005B1478 /* EditAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +119,7 @@
 		79860BA62B00BD1700B95344 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		79860BA82B00BE9200B95344 /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		799D403F2B65AC1B005B1478 /* PropertyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyButton.swift; sourceTree = "<group>"; };
+		799D40412B6627CF005B1478 /* EditAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 				793889D42B52FC4800FD1F92 /* TrackerCategory.swift */,
 				793889D62B52FC6200FD1F92 /* TrackerRecord.swift */,
 				793889D82B52FC8700FD1F92 /* WeekDay.swift */,
+				799D40412B6627CF005B1478 /* EditAction.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -503,6 +506,7 @@
 				79860BA92B00BE9200B95344 /* StatisticViewController.swift in Sources */,
 				79860BA22AF97C8600B95344 /* UIImage+Extensions.swift in Sources */,
 				79860B4A2AF96CE000B95344 /* AppDelegate.swift in Sources */,
+				799D40422B6627CF005B1478 /* EditAction.swift in Sources */,
 				790B25942B5C267F003BB290 /* EmojiCell.swift in Sources */,
 				79860B4C2AF96CE000B95344 /* SceneDelegate.swift in Sources */,
 				793889E52B532F2500FD1F92 /* AddTrackerController.swift in Sources */,

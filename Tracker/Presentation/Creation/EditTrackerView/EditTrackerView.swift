@@ -2,9 +2,11 @@ import Foundation
 import UIKit
 
 protocol EditTrackerViewDelegat: AnyObject {
+    var viewModel: EditTrackerViewModel { get }
+
     func selectSchedule()
     func selectCategory()
-    var viewModel: EditTrackerViewModel { get }
+    func compleateEdit(action: EditAction)
 }
 
 
@@ -77,6 +79,10 @@ final class EditTrackerView: UIView {
     
     func refreshProperties() {
         collectionView.reloadItems(at: [IndexPath(row: 0, section: 1)])
+    }
+    
+    func compleateEdit(action: EditAction) {
+        controller?.compleateEdit(action: action)
     }
 }
 

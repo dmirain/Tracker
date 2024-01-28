@@ -63,6 +63,7 @@ final class TrackerListView: UIView {
         let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         view.translatesAutoresizingMaskIntoConstraints = false
         view.allowsMultipleSelection = false
+        view.backgroundColor = .ypWhite
         
         view.register(TrackerListCell.self, forCellWithReuseIdentifier: TrackerListCell.reuseIdentifier)
         view.register(
