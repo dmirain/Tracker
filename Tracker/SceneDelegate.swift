@@ -39,7 +39,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 editTrackerController: diResolver.resolve(EditTrackerController.self)!
             )
         }
-
+        container.register(AddTrackerNavControllet.self) { diResolver in
+            AddTrackerNavControllet(
+                rootViewController: diResolver.resolve(AddTrackerController.self)!
+            )
+        }
         
         container.register(TrackerListView.self) { diResolver in
             TrackerListView()
@@ -47,7 +51,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         container.register(TrackerViewController.self) { diResolver in
             TrackerViewController(
                 contentView: diResolver.resolve(TrackerListView.self)!,
-                addTrackerController: diResolver.resolve(AddTrackerController.self)!,
+                addTrackerNavControllet: diResolver.resolve(AddTrackerNavControllet.self)!,
                 trackerRepository: diResolver.resolve(TrackerRepository.self)!
             )
         }

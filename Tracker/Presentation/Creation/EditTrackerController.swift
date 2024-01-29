@@ -1,17 +1,11 @@
 import Foundation
 import UIKit
 
-protocol EditTrackerControllerDelegate: AnyObject {
-    func compleateEdit(action: EditAction, controller: UIViewController)
-}
-
 final class EditTrackerController: UIViewController {
     private let contentView: EditTrackerView
     private let selectScheduleController: SelectScheduleController
     private let trackerRepository: TrackerRepository
-    
-    weak var delegate: EditTrackerControllerDelegate?
-    
+        
     private(set) var editTrackerViewModel: EditTrackerViewModel = EditTrackerViewModel(type: .event)
             
     init(
@@ -26,9 +20,12 @@ final class EditTrackerController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         
         self.contentView.controller = self
-        self.selectScheduleController.delegate = self
         
-        modalPresentationStyle = .popover
+        switch editTrackerViewModel.type {
+        case .event: navigationItem.title = "Новое нерегулярное событие"
+        case .habit: navigationItem.title = "Новая привычка"
+        }
+        navigationItem.hidesBackButton = true
     }
     
     required init?(coder: NSCoder) {
@@ -60,7 +57,8 @@ extension EditTrackerController: EditTrackerViewDelegat {
     var viewModel: EditTrackerViewModel { editTrackerViewModel }
     
     func selectSchedule() {
-        present(selectScheduleController, animated: true)
+        selectScheduleController.delegate = self
+        navigationController?.pushViewController(selectScheduleController, animated: true)
     }
     
     func selectCategory() {
@@ -78,14 +76,16 @@ extension EditTrackerController: EditTrackerViewDelegat {
         case .cancel:
             break
         }
-        delegate?.compleateEdit(action: action, controller: self)
+        
+        guard let parentController = navigationController as? AddTrackerNavControllet else { return }
+        parentController.compleateEdit(action: action)
     }
 }
 
 extension EditTrackerController: SelectScheduleControllerDelegate {
-    func set(schedule: WeekDaySet, controller: UIViewController) {
+    func set(schedule: WeekDaySet) {
         editTrackerViewModel.schedule = schedule
         contentView.refreshProperties()
-        controller.dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }

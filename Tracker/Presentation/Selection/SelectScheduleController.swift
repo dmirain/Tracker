@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 
 protocol SelectScheduleControllerDelegate: AnyObject {
-    func set(schedule: WeekDaySet, controller: UIViewController)
+    func set(schedule: WeekDaySet)
 }
 
 final class SelectScheduleController: UIViewController {
@@ -18,7 +18,8 @@ final class SelectScheduleController: UIViewController {
 
         self.contentView.controller = self
         
-        modalPresentationStyle = .popover
+        navigationItem.title = "Расписание"
+        navigationItem.hidesBackButton = true
     }
     
     required init?(coder: NSCoder) {
@@ -36,6 +37,6 @@ final class SelectScheduleController: UIViewController {
 
 extension SelectScheduleController: SelectScheduleViewDelegat {
     func completeSelect() {
-        delegate?.set(schedule: schedule, controller: self)
+        delegate?.set(schedule: schedule)
     }
 }

@@ -16,21 +16,6 @@ private enum ViewSections: Int, CaseIterable {
 final class EditTrackerView: UIView {
     weak var controller: EditTrackerViewDelegat?
 
-    private lazy var header: UINavigationBar = {
-        let view = UINavigationBar()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.barTintColor = .ypWhite
-        view.setBackgroundImage(UIImage(), for: .default)
-        view.shadowImage = UIImage()
-                
-        let navItem = UINavigationItem()
-        navItem.title = "Новая привычка"
-        
-        view.setItems([navItem], animated: false)
-        
-        return view
-    }()
-
     private lazy var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -57,16 +42,12 @@ final class EditTrackerView: UIView {
         collectionView.dataSource = self
         collectionView.delegate = self
 
-        addSubview(header)
         addSubview(collectionView)
 
         NSLayoutConstraint.activate([
-            header.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            header.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            header.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            collectionView.topAnchor.constraint(equalTo: header.bottomAnchor),
+            collectionView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             collectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])

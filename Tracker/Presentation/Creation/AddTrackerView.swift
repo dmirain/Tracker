@@ -8,21 +8,6 @@ protocol AddTrackerViewDelegat: AnyObject {
 final class AddTrackerView: UIView {
     weak var controller: AddTrackerViewDelegat?
     
-    private lazy var header: UINavigationBar = {
-        let view = UINavigationBar()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.barTintColor = .ypWhite
-        view.setBackgroundImage(UIImage(), for: .default)
-        view.shadowImage = UIImage()
-                
-        let navItem = UINavigationItem()
-        navItem.title = "Создание трекера"
-        
-        view.setItems([navItem], animated: false)
-        
-        return view
-    }()    
-    
     private lazy var createHabit: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -84,13 +69,9 @@ final class AddTrackerView: UIView {
         super.init(frame: .zero)
         backgroundColor = UIColor.ypWhite
         
-        addSubview(header)
         addSubview(buttonsStack)
         
         NSLayoutConstraint.activate([
-            header.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            header.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            header.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             buttonsStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             buttonsStack.topAnchor.constraint(equalTo: self.bottomAnchor, constant: -417),

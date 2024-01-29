@@ -9,21 +9,6 @@ protocol SelectScheduleViewDelegat: AnyObject {
 final class SelectScheduleView: UIView {
     weak var controller: SelectScheduleViewDelegat?
     
-    private lazy var header: UINavigationBar = {
-        let view = UINavigationBar()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.barTintColor = .ypWhite
-        view.setBackgroundImage(UIImage(), for: .default)
-        view.shadowImage = UIImage()
-        
-        let navItem = UINavigationItem()
-        navItem.title = "Расписание"
-        
-        view.setItems([navItem], animated: false)
-        
-        return view
-    }()
-    
     private lazy var daysTable: UITableView = {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +20,6 @@ final class SelectScheduleView: UIView {
         
         return view
     }()
-    
     
     private lazy var acceptButton: UIButton = {
         let view = UIButton()
@@ -64,17 +48,12 @@ final class SelectScheduleView: UIView {
         super.init(frame: .zero)
         backgroundColor = .ypWhite
         
-        addSubview(header)
         addSubview(daysTable)
         addSubview(acceptButton)
         
         NSLayoutConstraint.activate([
-            header.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            header.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
-            header.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            
             daysTable.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            daysTable.topAnchor.constraint(equalTo: header.bottomAnchor),
+            daysTable.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
             daysTable.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             daysTable.bottomAnchor.constraint(equalTo: acceptButton.topAnchor),
             

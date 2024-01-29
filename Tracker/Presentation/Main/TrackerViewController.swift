@@ -2,7 +2,7 @@ import UIKit
 
 final class TrackerViewController: UIViewController {
     private let contentView: TrackerListView
-    private let addTrackerController: AddTrackerController
+    private let addTrackerNavControllet: AddTrackerNavControllet
     private let trackerRepository: TrackerRepository
         
     private var trackerListViewModel: TrackerListViewModel = TrackerListViewModel(
@@ -13,11 +13,11 @@ final class TrackerViewController: UIViewController {
     
     init(
         contentView: TrackerListView,
-        addTrackerController: AddTrackerController,
+        addTrackerNavControllet: AddTrackerNavControllet,
         trackerRepository: TrackerRepository
     ) {
         self.contentView = contentView
-        self.addTrackerController = addTrackerController
+        self.addTrackerNavControllet = addTrackerNavControllet
         self.trackerRepository = trackerRepository
         
         super.init(nibName: nil, bundle: nil)
@@ -55,8 +55,8 @@ extension TrackerViewController: TrackerListViewDelegat {
     }
     
     func addTrackerClicked() {
-        addTrackerController.delegate = self
-        present(addTrackerController, animated: true)
+        addTrackerNavControllet.parentDelegate = self
+        present(addTrackerNavControllet, animated: true)
     }
     
     func dateSelected(date: Date) {
@@ -65,12 +65,12 @@ extension TrackerViewController: TrackerListViewDelegat {
     }
 }
 
-extension TrackerViewController: AddTrackerControllerDelegate {
-    func compleateAdd(action: EditAction, controller: UIViewController) {
+extension TrackerViewController: AddTrackerNavControlletDelegate {
+    func compleateAdd(action: EditAction) {
         switch action {
         case .save: refreshData()
         case .cancel: break
         }
-        controller.dismiss(animated: false)
+        addTrackerNavControllet.dismiss(animated: true)
     }
 }
