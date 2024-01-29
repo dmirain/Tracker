@@ -5,7 +5,7 @@ private var trackers: [Tracker] = [Tracker(
     type: .event, 
     name: "Test", 
     category: TrackerCategory(name: "Тест"),
-    schedule: .sunday, 
+    schedule: .monday, 
     emojiIndex: 1,
     colorIndex: 2)
 ]

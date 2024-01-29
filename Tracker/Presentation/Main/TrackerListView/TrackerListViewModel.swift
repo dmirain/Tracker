@@ -1,33 +1,28 @@
 import UIKit
 
-struct TrackerListViewModel {
-    var numberOfCategories: Int { categories.count }
+final class TrackerListViewModel {
+    var numberOfCategories: Int { listCategories.count }
     
-    private var categories = [TrackerCategory]()
-    private var groupedTrackers = [TrackerCategory: [Tracker]]()
+    private var listCategories: [CategoryWithTrackers] = []
 
     init(trackers: [Tracker]) {
-        categories = []
-        groupedTrackers = [:]
-        
-        categories = Array(Set(trackers.map({ tracker in tracker.category })))
-        for tracker in trackers {
-            if groupedTrackers[tracker.category] != nil {
-                groupedTrackers[tracker.category]?.append(tracker)
-            } else {
-                groupedTrackers[tracker.category] = [tracker]
+        updateTrackers(trackers: trackers)
+    }
+    
+    func updateTrackers(trackers: [Tracker]) {
+        listCategories = Dictionary(grouping: trackers, by: { $0.category })
+            .map { (key: TrackerCategory, value: [Tracker]) in
+                CategoryWithTrackers(category: key, trackers: value)
             }
-        }
     }
 
     func numberOfTrackersInCategory(byIndex index: Int) -> Int {
-        let category = categories[index]
-        return groupedTrackers[category]?.count ?? 0
+        listCategories[index].trackers.count
     }
-    func categoryName(byIndex index: Int) -> String { categories[index].name }
+    func categoryName(byIndex index: Int) -> String {
+        listCategories[index].category.name
+    }
     func tracker(byIndexPath indexPath: IndexPath) -> Tracker {
-        let category = categories[indexPath.section]
-        let tracker = groupedTrackers[category]![indexPath.row]
-        return tracker
+        listCategories[indexPath.section].trackers[indexPath.row]
     }
 }

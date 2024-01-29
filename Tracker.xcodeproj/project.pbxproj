@@ -52,6 +52,7 @@
 		79860BA92B00BE9200B95344 /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860BA82B00BE9200B95344 /* StatisticViewController.swift */; };
 		799D40402B65AC1B005B1478 /* PropertyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D403F2B65AC1B005B1478 /* PropertyButton.swift */; };
 		799D40422B6627CF005B1478 /* EditAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40412B6627CF005B1478 /* EditAction.swift */; };
+		799D40442B675C2A005B1478 /* CategoryWithTrackers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40432B675C2A005B1478 /* CategoryWithTrackers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -120,6 +121,7 @@
 		79860BA82B00BE9200B95344 /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		799D403F2B65AC1B005B1478 /* PropertyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyButton.swift; sourceTree = "<group>"; };
 		799D40412B6627CF005B1478 /* EditAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAction.swift; sourceTree = "<group>"; };
+		799D40432B675C2A005B1478 /* CategoryWithTrackers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryWithTrackers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +194,7 @@
 				793889D62B52FC6200FD1F92 /* TrackerRecord.swift */,
 				793889D82B52FC8700FD1F92 /* WeekDay.swift */,
 				799D40412B6627CF005B1478 /* EditAction.swift */,
+				799D40432B675C2A005B1478 /* CategoryWithTrackers.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -500,6 +503,7 @@
 				790B25902B5C261B003BB290 /* ButtonsCell.swift in Sources */,
 				793889F12B5331A400FD1F92 /* EditTrackerView.swift in Sources */,
 				790B25A02B5D21A1003BB290 /* TrackerListView.swift in Sources */,
+				799D40442B675C2A005B1478 /* CategoryWithTrackers.swift in Sources */,
 				790B259B2B5C4DBC003BB290 /* SectionHeaderView.swift in Sources */,
 				790B25A92B6549C2003BB290 /* TrackerListViewModel.swift in Sources */,
 				790B25922B5C264E003BB290 /* ColorCell.swift in Sources */,
