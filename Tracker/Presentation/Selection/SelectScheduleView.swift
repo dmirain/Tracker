@@ -165,9 +165,7 @@ final class DaySwitchCell: UITableViewCell {
         separatorView.isHidden = weekDay == WeekDaySet.monday
         rowLable.text = weekDay.asText()
 
-        if schedule.contains(weekDay) {
-            uiSwitch.setOn(true, animated: false)
-        }
+        uiSwitch.setOn(schedule.contains(weekDay), animated: false)
 
         let radius: CGFloat
         let corners: UIRectCorner

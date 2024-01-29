@@ -53,7 +53,7 @@
 		799D40402B65AC1B005B1478 /* PropertyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D403F2B65AC1B005B1478 /* PropertyButton.swift */; };
 		799D40422B6627CF005B1478 /* EditAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40412B6627CF005B1478 /* EditAction.swift */; };
 		799D40442B675C2A005B1478 /* CategoryWithTrackers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40432B675C2A005B1478 /* CategoryWithTrackers.swift */; };
-		799D40462B67907C005B1478 /* AddTrackerNavControllet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40452B67907C005B1478 /* AddTrackerNavControllet.swift */; };
+		799D40462B67907C005B1478 /* AddParentDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40452B67907C005B1478 /* AddParentDelegateProtocol.swift */; };
 		799D404B2B68128E005B1478 /* DateWoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D404A2B68128E005B1478 /* DateWoTime.swift */; };
 /* End PBXBuildFile section */
 
@@ -124,7 +124,7 @@
 		799D403F2B65AC1B005B1478 /* PropertyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyButton.swift; sourceTree = "<group>"; };
 		799D40412B6627CF005B1478 /* EditAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAction.swift; sourceTree = "<group>"; };
 		799D40432B675C2A005B1478 /* CategoryWithTrackers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryWithTrackers.swift; sourceTree = "<group>"; };
-		799D40452B67907C005B1478 /* AddTrackerNavControllet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerNavControllet.swift; sourceTree = "<group>"; };
+		799D40452B67907C005B1478 /* AddParentDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParentDelegateProtocol.swift; sourceTree = "<group>"; };
 		799D404A2B68128E005B1478 /* DateWoTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateWoTime.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -236,7 +236,7 @@
 		793889DD2B532E4000FD1F92 /* Creation */ = {
 			isa = PBXGroup;
 			children = (
-				799D40452B67907C005B1478 /* AddTrackerNavControllet.swift */,
+				799D40452B67907C005B1478 /* AddParentDelegateProtocol.swift */,
 				793889E42B532F2500FD1F92 /* AddTrackerController.swift */,
 				793889EE2B53318C00FD1F92 /* AddTrackerView.swift */,
 				793889E62B532F3B00FD1F92 /* EditTrackerController.swift */,
@@ -513,7 +513,7 @@
 				790B258A2B5C14DA003BB290 /* PadingTextField.swift in Sources */,
 				79860B4E2AF96CE000B95344 /* TrackerViewController.swift in Sources */,
 				793889D32B52FC3800FD1F92 /* TrackerType.swift in Sources */,
-				799D40462B67907C005B1478 /* AddTrackerNavControllet.swift in Sources */,
+				799D40462B67907C005B1478 /* AddParentDelegateProtocol.swift in Sources */,
 				79860BA72B00BD1700B95344 /* TabBarController.swift in Sources */,
 				793889ED2B53312E00FD1F92 /* SelectScheduleView.swift in Sources */,
 				793889D12B52FC2100FD1F92 /* Tracker.swift in Sources */,

@@ -11,9 +11,9 @@ private var completedTrackers: [TrackerRecord] = [
 final class TrackerRecordRepository {
     func toggleComplete(_ tracker: Tracker, on date: DateWoTime) {
         let count = completedTrackers.count
-        completedTrackers = Array(completedTrackers.drop {
-            $0.trackerId == tracker.id && $0.date == date
-        })
+        completedTrackers = completedTrackers.filter {
+            $0.trackerId != tracker.id || $0.date != date
+        }
         if completedTrackers.count == count {
             completedTrackers.append(TrackerRecord(id: UUID(), date: date, trackerId: tracker.id))
         }

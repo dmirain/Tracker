@@ -34,6 +34,7 @@ struct Tracker: Codable, Identifiable, Hashable {
     let name: String
     let category: TrackerCategory
     let schedule: WeekDaySet
+    let eventDate: DateWoTime?
     let emojiIndex: Int
     let colorIndex: Int
 

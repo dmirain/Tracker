@@ -6,6 +6,7 @@ class EditTrackerViewModel {
     var name: String
     var category: TrackerCategory?
     var schedule: WeekDaySet
+    let eventDate: DateWoTime?
     var emojiIndex: Int
     var colorIndex: Int
 
@@ -15,27 +16,29 @@ class EditTrackerViewModel {
         name = tracker.name
         category = tracker.category
         schedule = tracker.schedule
+        eventDate = tracker.eventDate
         emojiIndex = tracker.emojiIndex
         colorIndex = tracker.colorIndex
     }
 
-    init(type: TrackerType) {
+    init(type: TrackerType, selectedDate: DateWoTime) {
         id = UUID()
         self.type = type
         name = ""
         category = nil
+        schedule = []
         switch type {
         case .event:
-            schedule = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+            eventDate = selectedDate
         case .habit:
-            schedule = []
+            eventDate = nil
         }
         emojiIndex = 0
         colorIndex = 0
     }
 
     func toTracker() -> Tracker? {
-        guard let category, !name.isEmpty, !schedule.isEmpty else { return nil }
+        guard let category, !name.isEmpty, !schedule.isEmpty || eventDate != nil else { return nil }
 
         return Tracker(
             id: id,
@@ -43,6 +46,7 @@ class EditTrackerViewModel {
             name: name,
             category: category,
             schedule: schedule,
+            eventDate: eventDate,
             emojiIndex: emojiIndex,
             colorIndex: colorIndex
         )

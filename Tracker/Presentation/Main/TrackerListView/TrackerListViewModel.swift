@@ -18,8 +18,10 @@ final class TrackerListViewModel {
     func updateTrackersData(trackers: [Tracker], completedTrackers: [TrackerRecord]) {
         listCategories = Dictionary(grouping: trackers, by: { $0.category })
             .map { (key: TrackerCategory, value: [Tracker]) in
-                CategoryWithTrackers(category: key, trackers: value)
+                CategoryWithTrackers(category: key, trackers: value.sorted { $0.name > $1.name })
             }
+            .sorted { $0.category.name > $1.category.name }
+
         self.completedTrackers = Dictionary(grouping: completedTrackers, by: { $0.trackerId })
     }
 

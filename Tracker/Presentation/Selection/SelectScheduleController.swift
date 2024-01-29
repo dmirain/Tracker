@@ -31,6 +31,7 @@ final class SelectScheduleController: UIViewController {
     }
 
     func initData(schedule: WeekDaySet) {
+        self.schedule = schedule
         contentView.initData()
     }
 }

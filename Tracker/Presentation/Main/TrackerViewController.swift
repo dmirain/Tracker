@@ -2,7 +2,8 @@ import UIKit
 
 final class TrackerViewController: UIViewController {
     private let contentView: TrackerListView
-    private let addTrackerNavControllet: AddTrackerNavControllet
+    private var addTrackerNavControllet: UINavigationController?
+    private let addTrackerController: AddTrackerController
     private let trackerRepository: TrackerRepository
     private let trackerRecordRepository: TrackerRecordRepository
 
@@ -13,12 +14,12 @@ final class TrackerViewController: UIViewController {
 
     init(
         contentView: TrackerListView,
-        addTrackerNavControllet: AddTrackerNavControllet,
+        addTrackerController: AddTrackerController,
         trackerRepository: TrackerRepository,
         trackerRecordRepository: TrackerRecordRepository
     ) {
         self.contentView = contentView
-        self.addTrackerNavControllet = addTrackerNavControllet
+        self.addTrackerController = addTrackerController
         self.trackerRepository = trackerRepository
         self.trackerRecordRepository = trackerRecordRepository
 
@@ -57,7 +58,11 @@ extension TrackerViewController: TrackerListViewDelegat {
     }
 
     func addTrackerClicked() {
-        addTrackerNavControllet.parentDelegate = self
+        addTrackerController.initData(parentDelegat: self, selectedDate: trackerListViewModel.selectedDate)
+
+        let addTrackerNavControllet = UINavigationController(rootViewController: addTrackerController)
+        self.addTrackerNavControllet = addTrackerNavControllet
+
         present(addTrackerNavControllet, animated: true)
     }
 
@@ -72,7 +77,7 @@ extension TrackerViewController: TrackerListViewDelegat {
     }
 }
 
-extension TrackerViewController: AddTrackerNavControlletDelegate {
+extension TrackerViewController: AddParentDelegateProtocol {
     func compleateAdd(action: EditAction) {
         switch action {
         case .save:
@@ -80,7 +85,6 @@ extension TrackerViewController: AddTrackerNavControlletDelegate {
         case .cancel:
             break
         }
-        addTrackerNavControllet.dismiss(animated: true)
-        addTrackerNavControllet.popToRootViewController(animated: false)
+        addTrackerNavControllet?.dismiss(animated: true)
     }
 }

@@ -6,7 +6,8 @@ final class EditTrackerController: UIViewController {
     private let selectScheduleController: SelectScheduleController
     private let trackerRepository: TrackerRepository
 
-    private(set) var editTrackerViewModel = EditTrackerViewModel(type: .event)
+    private weak var parentDelegate: AddParentDelegateProtocol?
+    private(set) var editTrackerViewModel = EditTrackerViewModel(type: .event, selectedDate: DateWoTime())
 
     init(
         contentView: EditTrackerView,
@@ -38,7 +39,8 @@ final class EditTrackerController: UIViewController {
         self.view = contentView
     }
 
-    func initData(editTrackerModel: EditTrackerViewModel) {
+    func initData(parentDelegat: AddParentDelegateProtocol, editTrackerModel: EditTrackerViewModel) {
+        self.parentDelegate = parentDelegat
         self.editTrackerViewModel = editTrackerModel
         self.contentView.initData()
     }
@@ -51,8 +53,8 @@ final class EditTrackerController: UIViewController {
 
 // TODO: убрать заглушку
 private let categories: [TrackerCategory] = [
-    TrackerCategory(name: "Дом"),
-    TrackerCategory(name: "Работа")
+    TrackerCategory(name: "Home"),
+    TrackerCategory(name: "Work")
 ]
 
 extension EditTrackerController: EditTrackerViewDelegat {
@@ -60,6 +62,7 @@ extension EditTrackerController: EditTrackerViewDelegat {
 
     func selectSchedule() {
         selectScheduleController.delegate = self
+        selectScheduleController.initData(schedule: editTrackerViewModel.schedule)
         navigationController?.pushViewController(selectScheduleController, animated: true)
     }
 
@@ -79,8 +82,7 @@ extension EditTrackerController: EditTrackerViewDelegat {
             break
         }
 
-        guard let parentController = navigationController as? AddTrackerNavControllet else { return }
-        parentController.compleateEdit(action: action)
+        parentDelegate?.compleateAdd(action: action)
     }
 }
 

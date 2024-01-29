@@ -45,9 +45,8 @@ final class EditTrackerView: UIView {
         addSubview(collectionView)
 
         NSLayoutConstraint.activate([
-
             collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            collectionView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 24),
             collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             collectionView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
@@ -268,7 +267,7 @@ extension EditTrackerView: UICollectionViewDelegateFlowLayout {
         }
         switch section {
         case .name:
-            return CGSize(width: collectionView.frame.width, height: 24)
+            return CGSize(width: collectionView.frame.width, height: 0)
         case .properties:
             return CGSize(width: collectionView.frame.width, height: 24)
         case .emoji:
