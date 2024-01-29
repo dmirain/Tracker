@@ -8,18 +8,18 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     override init() {
         super.init()
-        container.register(TrackerRepository.self) { diResolver in
+        container.register(TrackerRepository.self) { _ in
             TrackerRepository()
         }
-        
-        container.register(SelectScheduleView.self) { diResolver in
+
+        container.register(SelectScheduleView.self) { _ in
             SelectScheduleView()
         }
         container.register(SelectScheduleController.self) { diResolver in
             SelectScheduleController(contentView: diResolver.resolve(SelectScheduleView.self)!)
         }
-                
-        container.register(EditTrackerView.self) { diResolver in
+
+        container.register(EditTrackerView.self) { _ in
             EditTrackerView()
         }
         container.register(EditTrackerController.self) { diResolver in
@@ -30,7 +30,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         }
 
-        container.register(AddTrackerView.self) { diResolver in
+        container.register(AddTrackerView.self) { _ in
             AddTrackerView()
         }
         container.register(AddTrackerController.self) { diResolver in
@@ -44,8 +44,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 rootViewController: diResolver.resolve(AddTrackerController.self)!
             )
         }
-        
-        container.register(TrackerListView.self) { diResolver in
+
+        container.register(TrackerListView.self) { _ in
             TrackerListView()
         }
         container.register(TrackerViewController.self) { diResolver in
@@ -55,8 +55,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 trackerRepository: diResolver.resolve(TrackerRepository.self)!
             )
         }
-        
-        container.register(StatisticViewController.self) { diResolver in
+
+        container.register(StatisticViewController.self) { _ in
             StatisticViewController()
         }
 
@@ -67,8 +67,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         }
     }
-    
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+
+    func scene(
+        _ scene: UIScene,
+        willConnectTo session: UISceneSession,
+        options connectionOptions: UIScene.ConnectionOptions
+    ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = container.resolve(TabBarController.self)
@@ -81,4 +85,3 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillEnterForeground(_ scene: UIScene) {}
     func sceneDidEnterBackground(_ scene: UIScene) {}
 }
-

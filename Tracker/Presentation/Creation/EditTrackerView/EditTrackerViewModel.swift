@@ -8,7 +8,7 @@ class EditTrackerViewModel {
     var schedule: WeekDaySet
     var emojiIndex: Int
     var colorIndex: Int
-    
+
     init(tracker: Tracker) {
         id = tracker.id
         type = tracker.type
@@ -25,19 +25,21 @@ class EditTrackerViewModel {
         name = ""
         category = nil
         switch type {
-        case .event: schedule = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
-        case .habit: schedule = []
+        case .event:
+            schedule = [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+        case .habit:
+            schedule = []
         }
         emojiIndex = 0
         colorIndex = 0
     }
-    
+
     func toTracker() -> Tracker? {
         guard let category, !name.isEmpty, !schedule.isEmpty else { return nil }
-        
+
         return Tracker(
             id: id,
-            type: type, 
+            type: type,
             name: name,
             category: category,
             schedule: schedule,

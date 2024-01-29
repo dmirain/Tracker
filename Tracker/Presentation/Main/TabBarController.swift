@@ -21,15 +21,15 @@ final class TabBarController: UITabBarController {
             selectedImage: nil
         )
         self.trackerViewController.tabBarItem.imageInsets = UIEdgeInsets(top: 28, left: 28, bottom: 28, right: 28)
-        
+
         self.statisticViewController.tabBarItem = UITabBarItem(
             title: "Статистика",
             image: UIImage.statTab,
             selectedImage: nil
         )
         self.statisticViewController.tabBarItem.imageInsets = UIEdgeInsets(top: 28, left: 28, bottom: 28, right: 28)
-        
-        let tabBarAppearance: UITabBarAppearance = UITabBarAppearance()
+
+        let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithDefaultBackground()
         tabBarAppearance.backgroundColor = UIColor.ypWhite
         UITabBar.appearance().standardAppearance = tabBarAppearance

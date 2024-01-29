@@ -2,10 +2,10 @@ import UIKit
 
 final class TrackerListViewModel {
     var selectedDate: Date
-    var searchQuery: String? = nil
+    var searchQuery: String?
 
     var numberOfCategories: Int { listCategories.count }
-    
+
     private var listCategories: [CategoryWithTrackers] = []
 
     init(trackers: [Tracker], selectedDate: Date, searchQuery: String?) {
@@ -13,7 +13,7 @@ final class TrackerListViewModel {
         self.searchQuery = searchQuery
         updateTrackers(trackers: trackers)
     }
-    
+
     func updateTrackers(trackers: [Tracker]) {
         listCategories = Dictionary(grouping: trackers, by: { $0.category })
             .map { (key: TrackerCategory, value: [Tracker]) in

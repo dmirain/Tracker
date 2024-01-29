@@ -19,7 +19,7 @@ private let trackerColors: [UIColor] = [
     .ypColorSelection15,
     .ypColorSelection16,
     .ypColorSelection17,
-    .ypColorSelection18,
+    .ypColorSelection18
 ]
 
 private let trackerEmojies = [
@@ -36,10 +36,10 @@ struct Tracker: Codable {
     let schedule: WeekDaySet
     let emojiIndex: Int
     let colorIndex: Int
-    
+
     var emoji: String { Self.emoji(byIndex: emojiIndex) }
     var color: UIColor { Self.color(byIndex: colorIndex) }
-    
+
     static func emoji(byIndex index: Int) -> String { trackerEmojies[index] }
     static func color(byIndex index: Int) -> UIColor { trackerColors[index] }
 }

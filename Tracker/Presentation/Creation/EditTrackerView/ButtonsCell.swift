@@ -17,14 +17,14 @@ final class ButtonsCell: UICollectionViewCell {
         view.layer.borderColor = UIColor.ypRed.cgColor
 
         NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: 60),
+            view.heightAnchor.constraint(equalToConstant: 60)
         ])
-        
+
         view.addTarget(self, action: #selector(cancelButtonClicked), for: .touchUpInside)
-        
+
         return view
     }()
-    
+
     private lazy var createButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -33,16 +33,16 @@ final class ButtonsCell: UICollectionViewCell {
         view.backgroundColor = .ypGray
         view.setTitle("Создать", for: .normal)
         view.setTitleColor(.ypWhite, for: .normal)
-        
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 60)
         ])
-        
+
         view.addTarget(self, action: #selector(createButtonClicked), for: .touchUpInside)
-        
+
         return view
     }()
-    
+
     private lazy var buttonsStack: UIStackView = {
         let view = UIStackView(arrangedSubviews: [cancelButton, createButton])
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -63,11 +63,11 @@ final class ButtonsCell: UICollectionViewCell {
             buttonsStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc
     private func cancelButtonClicked() {
         delegate?.compleateEdit(action: .cancel)

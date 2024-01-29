@@ -8,21 +8,21 @@ protocol TrackerListViewDelegat: AnyObject {
 
 final class TrackerListView: UIView {
     weak var controller: TrackerListViewDelegat?
-    
+
     private lazy var plusButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setImage(.listPlus, for: .normal)
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = true
-                
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 42),
             view.widthAnchor.constraint(equalToConstant: 42)
         ])
-        
+
         view.addTarget(self, action: #selector(addTrackerClicked), for: .touchUpInside)
-        
+
         return view
     }()
 
@@ -33,9 +33,9 @@ final class TrackerListView: UIView {
         view.datePickerMode = .date
         view.locale = Locale(identifier: "ru_Ru")
         view.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        
+
         view.addTarget(self, action: #selector(dateSelected(_:)), for: .valueChanged)
-        
+
         return view
     }()
 
@@ -47,8 +47,7 @@ final class TrackerListView: UIView {
         view.shadowImage = UIImage()
         view.prefersLargeTitles = true
         view.backgroundColor = .ypWhite
-        
-        
+
         let navItem = UINavigationItem()
         navItem.leftBarButtonItem = UIBarButtonItem(customView: plusButton)
         navItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
@@ -59,32 +58,32 @@ final class TrackerListView: UIView {
         navItem.searchController?.searchBar.setValue("Отменить", forKey: "cancelButtonText")
 
         view.setItems([navItem], animated: false)
-        
+
         return view
     }()
-        
+
     private lazy var collectionView: UICollectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         view.translatesAutoresizingMaskIntoConstraints = false
         view.allowsMultipleSelection = false
         view.backgroundColor = .ypWhite
-        
+
         view.register(TrackerListCell.self, forCellWithReuseIdentifier: TrackerListCell.reuseIdentifier)
         view.register(
             SectionHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: SectionHeaderView.reuseIdentifier
         )
-        
+
         return view
     }()
-        
+
     private lazy var emptyListView: UIView = {
         let view = EmptyListView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private lazy var filterButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -93,25 +92,25 @@ final class TrackerListView: UIView {
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = true
         view.backgroundColor = .ypBlue
-                
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 50),
             view.widthAnchor.constraint(equalToConstant: 114)
         ])
-        
+
 //        view.addTarget(self, action: #selector(filterClicked), for: .touchUpInside)
-        
+
         return view
     }()
 
     init() {
         super.init(frame: .zero)
-        
+
         backgroundColor = .ypWhite
 
         collectionView.dataSource = self
         collectionView.delegate = self
-        
+
         addSubview(navBar)
         addSubview(collectionView)
         addSubview(filterButton)
@@ -133,16 +132,16 @@ final class TrackerListView: UIView {
             emptyListView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
 
             filterButton.centerXAnchor.constraint(equalTo: self.safeAreaLayoutGuide.centerXAnchor),
-            filterButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            filterButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -16)
         ])
 
         emptyListView.isHidden = true
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc
     private func addTrackerClicked() {
         controller?.addTrackerClicked()
@@ -171,13 +170,16 @@ extension TrackerListView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         controller?.viewModel.numberOfTrackersInCategory(byIndex: section) ?? 0
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: TrackerListCell.reuseIdentifier,
             for: indexPath
         ) as? TrackerListCell
-        
+
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
 
@@ -187,24 +189,26 @@ extension TrackerListView: UICollectionViewDataSource {
 
         return cell
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
         let sectionTitle = controller?.viewModel.categoryName(byIndex: indexPath.section) ?? ""
-        
+
         guard !sectionTitle.isEmpty && kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()
         }
-        
+
         let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: SectionHeaderView.reuseIdentifier,
             for: indexPath
-        ) as! SectionHeaderView
-        
+        ) as? SectionHeaderView
+
+        guard let view else { return UICollectionReusableView() }
+
         view.setTitle(sectionTitle, spacing: 12)
         return view
     }
@@ -218,21 +222,21 @@ extension TrackerListView: UICollectionViewDelegateFlowLayout {
     ) -> CGFloat {
         8
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: (collectionView.bounds.width - 8) / 2 , height: 140)
+        CGSize(width: (collectionView.bounds.width - 8) / 2, height: 140)
     }
-    
+
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: 42)
+        CGSize(width: collectionView.bounds.width, height: 42)
     }
 
 }

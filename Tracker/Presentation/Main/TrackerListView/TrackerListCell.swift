@@ -3,7 +3,7 @@ import UIKit
 final class TrackerListCell: UICollectionViewCell {
     static let reuseIdentifier = "TrackerListCell"
     weak var delegate: TrackerListView?
-    
+
     private lazy var emojiLable: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -12,15 +12,15 @@ final class TrackerListCell: UICollectionViewCell {
         view.text = "🌺"
         view.textAlignment = .center
         view.font = UIFont.systemFont(ofSize: 12)
-        
+
         view.layer.cornerRadius = 12
         view.layer.masksToBounds = true
-        
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 24),
-            view.widthAnchor.constraint(equalToConstant: 24),
+            view.widthAnchor.constraint(equalToConstant: 24)
         ])
-        
+
         return view
     }()
 
@@ -28,7 +28,7 @@ final class TrackerListCell: UICollectionViewCell {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.numberOfLines = 2
-        
+
         view.text = "Какой-то текст"
         view.textColor = .ypWhite
         view.font = view.font.withSize(12)
@@ -62,14 +62,14 @@ final class TrackerListCell: UICollectionViewCell {
 
         view.layer.cornerRadius = 17
         view.layer.masksToBounds = true
-        
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 34),
             view.widthAnchor.constraint(equalToConstant: 34)
         ])
-        
+
         view.addTarget(self, action: #selector(compliteButtonClicked), for: .touchUpInside)
-        
+
         return view
     }()
 
@@ -80,10 +80,10 @@ final class TrackerListCell: UICollectionViewCell {
 
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
-        
+
         view.addSubview(emojiLable)
         view.addSubview(nameLabel)
-        
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 90),
 
@@ -92,7 +92,7 @@ final class TrackerListCell: UICollectionViewCell {
 
             nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             nameLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -12),
-            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12)
         ])
         return view
     }()
@@ -103,15 +103,15 @@ final class TrackerListCell: UICollectionViewCell {
 
         view.addSubview(periodeLable)
         view.addSubview(compliteButton)
-        
+
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 50),
-        
+
             periodeLable.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             periodeLable.centerYAnchor.constraint(equalTo: view.centerYAnchor),
 
             compliteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-            compliteButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            compliteButton.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
 
         return view
@@ -119,10 +119,10 @@ final class TrackerListCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         contentView.addSubview(nameView)
         contentView.addSubview(stateView)
-        
+
         NSLayoutConstraint.activate([
             nameView.topAnchor.constraint(equalTo: contentView.topAnchor),
             nameView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -131,10 +131,10 @@ final class TrackerListCell: UICollectionViewCell {
             stateView.topAnchor.constraint(equalTo: nameView.bottomAnchor),
             stateView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             stateView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            stateView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            stateView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -142,11 +142,11 @@ final class TrackerListCell: UICollectionViewCell {
     func initData(tracker: Tracker) {
         emojiLable.text = tracker.emoji
         nameLabel.text = tracker.name
-        
+
         compliteButton.backgroundColor = tracker.color
         nameView.backgroundColor = tracker.color
     }
-    
+
     @objc
     private func compliteButtonClicked() {
         print("compliteButtonClicked")

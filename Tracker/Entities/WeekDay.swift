@@ -3,26 +3,26 @@ import Foundation
 let calendar = Calendar(identifier: .gregorian)
 
 struct WeekDaySet: OptionSet, Codable, Hashable {
+    static let sunday    = Self(rawValue: 1 << 0)
+    static let monday = Self(rawValue: 1 << 1)
+    static let tuesday   = Self(rawValue: 1 << 2)
+    static let wednesday = Self(rawValue: 1 << 3)
+    static let thursday   = Self(rawValue: 1 << 4)
+    static let friday = Self(rawValue: 1 << 5)
+    static let saturday   = Self(rawValue: 1 << 6)
+
     let rawValue: Int
-    
-    static let sunday    = WeekDaySet(rawValue: 1 << 0)
-    static let monday  = WeekDaySet(rawValue: 1 << 1)
-    static let tuesday   = WeekDaySet(rawValue: 1 << 2)
-    static let wednesday   = WeekDaySet(rawValue: 1 << 3)
-    static let thursday   = WeekDaySet(rawValue: 1 << 4)
-    static let friday   = WeekDaySet(rawValue: 1 << 5)
-    static let saturday   = WeekDaySet(rawValue: 1 << 6)
-    
-    static func from(date: Date) -> WeekDaySet {
+
+    static func from(date: Date) -> Self {
         let dayNum = calendar.dateComponents([.weekday], from: date).weekday
         let dayValue = 1 << (dayNum! - 1)  // сдвиг 1 по битовым разрядам. это возведение 2 в степень
-        return WeekDaySet(rawValue: dayValue)
+        return Self(rawValue: dayValue)
     }
-    
-    static func allDays() -> [WeekDaySet] {
+
+    static func allDays() -> [Self] {
         [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
     }
-    
+
     func asText() -> String {
         switch self {
         case .monday:
@@ -40,13 +40,13 @@ struct WeekDaySet: OptionSet, Codable, Hashable {
         case .sunday:
             return "Воскресенье"
         default:
-            return WeekDaySet.allDays()
+            return Self.allDays()
                 .filter { day in self.contains(day) }
-                .map({ day in day.asText()})
+                .map({ day in day.asText() })
                 .joined(separator: ", ")
         }
     }
-    
+
     func asShortText() -> String {
         switch self {
         case .monday:
@@ -64,9 +64,9 @@ struct WeekDaySet: OptionSet, Codable, Hashable {
         case .sunday:
             return "Вс"
         default:
-            return WeekDaySet.allDays()
+            return Self.allDays()
                 .filter { day in self.contains(day) }
-                .map({ day in day.asShortText()})
+                .map({ day in day.asShortText() })
                 .joined(separator: ", ")
         }
     }

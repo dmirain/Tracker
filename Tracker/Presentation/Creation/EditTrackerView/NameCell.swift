@@ -2,7 +2,7 @@ import UIKit
 
 final class NameCell: UICollectionViewCell {
     static let reuseIdentifier = "NameCell"
-    
+
     weak var delegate: EditTrackerView?
 
     private lazy var nameField: PaddingTextField = {
@@ -13,12 +13,12 @@ final class NameCell: UICollectionViewCell {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.textColor = .ypBlack
-        
+
         view.addTarget(self, action: #selector(nameChanged), for: .allEditingEvents)
 
         return view
     }()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -31,15 +31,15 @@ final class NameCell: UICollectionViewCell {
             nameField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setName(name: String) {
         nameField.text = name
     }
-    
+
     @objc
     private func nameChanged() {
         delegate?.controller?.viewModel.name = nameField.text ?? ""

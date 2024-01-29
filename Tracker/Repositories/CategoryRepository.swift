@@ -6,8 +6,8 @@ final class CategoryRepository {
     func create(_ new: TrackerCategory) {
         categories.append(new)
     }
-    
+
     func all() -> [TrackerCategory] {
-        return categories
+        categories
     }
 }
