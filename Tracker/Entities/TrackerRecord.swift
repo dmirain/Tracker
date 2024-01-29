@@ -1,7 +1,7 @@
 import Foundation
 
-struct TrackerRecord: Codable {
+struct TrackerRecord: Codable, Identifiable, Hashable {
     let id: UUID
-    let date: Date
-    let tracker: Tracker
+    let date: DateWoTime
+    let trackerId: UUID
 }

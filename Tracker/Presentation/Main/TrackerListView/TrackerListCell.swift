@@ -4,6 +4,8 @@ final class TrackerListCell: UICollectionViewCell {
     static let reuseIdentifier = "TrackerListCell"
     weak var delegate: TrackerListView?
 
+    private var trackerViewModel: TrackerViewModel?
+
     private lazy var emojiLable: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -40,7 +42,7 @@ final class TrackerListCell: UICollectionViewCell {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
 
-        view.text = "5 дней"
+        view.text = ""
         view.font = view.font.withSize(12)
 
         return view
@@ -50,13 +52,6 @@ final class TrackerListCell: UICollectionViewCell {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .ypColorSelection01
-
-        if Bool.random() {
-            view.setImage(.complited, for: .normal)
-            view.layer.opacity = 0.3
-        } else {
-            view.setImage(.toComplite, for: .normal)
-        }
 
         view.imageEdgeInsets = UIEdgeInsets(top: 11, left: 11, bottom: 11, right: 11)
 
@@ -139,16 +134,30 @@ final class TrackerListCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func initData(tracker: Tracker) {
-        emojiLable.text = tracker.emoji
-        nameLabel.text = tracker.name
+    func initData(trackerViewModel: TrackerViewModel) {
+        self.trackerViewModel = trackerViewModel
 
-        compliteButton.backgroundColor = tracker.color
-        nameView.backgroundColor = tracker.color
+        emojiLable.text = trackerViewModel.tracker.emoji
+        nameLabel.text = trackerViewModel.tracker.name
+        periodeLable.text = "\(trackerViewModel.complitionsCount) дней"
+
+        if trackerViewModel.isComplited {
+            compliteButton.setImage(.complited, for: .normal)
+            compliteButton.layer.opacity = 0.3
+        } else {
+            compliteButton.setImage(.toComplite, for: .normal)
+            compliteButton.layer.opacity = 1
+        }
+
+        compliteButton.backgroundColor = trackerViewModel.tracker.color
+        nameView.backgroundColor = trackerViewModel.tracker.color
+
+        compliteButton.isEnabled = DateWoTime() >= trackerViewModel.selectedDate
     }
 
     @objc
     private func compliteButtonClicked() {
-        print("compliteButtonClicked")
+        guard let delegate, let trackerViewModel else { return }
+        delegate.toggleComplete(trackerViewModel.tracker)
     }
 }

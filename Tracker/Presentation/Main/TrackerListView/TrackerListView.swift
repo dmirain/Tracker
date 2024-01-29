@@ -3,7 +3,8 @@ import UIKit
 protocol TrackerListViewDelegat: AnyObject {
     var viewModel: TrackerListViewModel { get }
     func addTrackerClicked()
-    func dateSelected(date: Date)
+    func dateSelected(date: DateWoTime)
+    func toggleComplete(_ tracker: Tracker)
 }
 
 final class TrackerListView: UIView {
@@ -149,7 +150,7 @@ final class TrackerListView: UIView {
 
     @objc
     private func dateSelected(_ sender: UIDatePicker) {
-        controller?.dateSelected(date: sender.date)
+        controller?.dateSelected(date: DateWoTime(sender.date))
     }
 
     func reload() {
@@ -159,6 +160,10 @@ final class TrackerListView: UIView {
             emptyListView.isHidden = true
             collectionView.reloadData()
         }
+    }
+
+    func toggleComplete(_ tracker: Tracker) {
+        controller?.toggleComplete(tracker)
     }
 }
 
@@ -180,12 +185,11 @@ extension TrackerListView: UICollectionViewDataSource {
             for: indexPath
         ) as? TrackerListCell
 
-        guard let cell else { return UICollectionViewCell() }
-        cell.delegate = self
+        guard let cell, let viewModel = controller?.viewModel else { return UICollectionViewCell() }
 
-        if let tracker = controller?.viewModel.tracker(byIndexPath: indexPath) {
-            cell.initData(tracker: tracker)
-        }
+        cell.delegate = self
+        let trackerViewModel = viewModel.tracker(byIndexPath: indexPath)
+        cell.initData(trackerViewModel: trackerViewModel)
 
         return cell
     }

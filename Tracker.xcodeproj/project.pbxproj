@@ -16,7 +16,7 @@
 		790B259B2B5C4DBC003BB290 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B259A2B5C4DBC003BB290 /* SectionHeaderView.swift */; };
 		790B259E2B5D2179003BB290 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B259D2B5D2179003BB290 /* EmptyListView.swift */; };
 		790B25A02B5D21A1003BB290 /* TrackerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B259F2B5D21A1003BB290 /* TrackerListView.swift */; };
-		790B25A32B5D958F003BB290 /* CategoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25A22B5D958F003BB290 /* CategoryRepository.swift */; };
+		790B25A32B5D958F003BB290 /* TrackerRecordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25A22B5D958F003BB290 /* TrackerRecordRepository.swift */; };
 		790B25A52B5D95A3003BB290 /* TrackerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25A42B5D95A3003BB290 /* TrackerRepository.swift */; };
 		790B25A72B5DC2A4003BB290 /* TrackerListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25A62B5DC2A4003BB290 /* TrackerListCell.swift */; };
 		790B25A92B6549C2003BB290 /* TrackerListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790B25A82B6549C2003BB290 /* TrackerListViewModel.swift */; };
@@ -54,6 +54,7 @@
 		799D40422B6627CF005B1478 /* EditAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40412B6627CF005B1478 /* EditAction.swift */; };
 		799D40442B675C2A005B1478 /* CategoryWithTrackers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40432B675C2A005B1478 /* CategoryWithTrackers.swift */; };
 		799D40462B67907C005B1478 /* AddTrackerNavControllet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40452B67907C005B1478 /* AddTrackerNavControllet.swift */; };
+		799D404B2B68128E005B1478 /* DateWoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D404A2B68128E005B1478 /* DateWoTime.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,7 +84,7 @@
 		790B259A2B5C4DBC003BB290 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
 		790B259D2B5D2179003BB290 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 		790B259F2B5D21A1003BB290 /* TrackerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerListView.swift; sourceTree = "<group>"; };
-		790B25A22B5D958F003BB290 /* CategoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRepository.swift; sourceTree = "<group>"; };
+		790B25A22B5D958F003BB290 /* TrackerRecordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecordRepository.swift; sourceTree = "<group>"; };
 		790B25A42B5D95A3003BB290 /* TrackerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRepository.swift; sourceTree = "<group>"; };
 		790B25A62B5DC2A4003BB290 /* TrackerListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerListCell.swift; sourceTree = "<group>"; };
 		790B25A82B6549C2003BB290 /* TrackerListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerListViewModel.swift; sourceTree = "<group>"; };
@@ -124,6 +125,7 @@
 		799D40412B6627CF005B1478 /* EditAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditAction.swift; sourceTree = "<group>"; };
 		799D40432B675C2A005B1478 /* CategoryWithTrackers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryWithTrackers.swift; sourceTree = "<group>"; };
 		799D40452B67907C005B1478 /* AddTrackerNavControllet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerNavControllet.swift; sourceTree = "<group>"; };
+		799D404A2B68128E005B1478 /* DateWoTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateWoTime.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,7 +183,7 @@
 		790B25A12B5D956E003BB290 /* Repositories */ = {
 			isa = PBXGroup;
 			children = (
-				790B25A22B5D958F003BB290 /* CategoryRepository.swift */,
+				790B25A22B5D958F003BB290 /* TrackerRecordRepository.swift */,
 				790B25A42B5D95A3003BB290 /* TrackerRepository.swift */,
 			);
 			path = Repositories;
@@ -331,6 +333,7 @@
 				79860B832AF975DD00B95344 /* UIView+Extensions.swift */,
 				79860B862AF975DD00B95344 /* UIColor+Extensions.swift */,
 				79860BA12AF97C8600B95344 /* UIImage+Extensions.swift */,
+				799D404A2B68128E005B1478 /* DateWoTime.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -528,6 +531,7 @@
 				793889E12B532EE400FD1F92 /* SelectCategoryController.swift in Sources */,
 				793889E32B532F0300FD1F92 /* SelectScheduleController.swift in Sources */,
 				799D40402B65AC1B005B1478 /* PropertyButton.swift in Sources */,
+				799D404B2B68128E005B1478 /* DateWoTime.swift in Sources */,
 				790B25902B5C261B003BB290 /* ButtonsCell.swift in Sources */,
 				793889F12B5331A400FD1F92 /* EditTrackerView.swift in Sources */,
 				790B25A02B5D21A1003BB290 /* TrackerListView.swift in Sources */,
@@ -542,7 +546,7 @@
 				790B25942B5C267F003BB290 /* EmojiCell.swift in Sources */,
 				79860B4C2AF96CE000B95344 /* SceneDelegate.swift in Sources */,
 				793889E52B532F2500FD1F92 /* AddTrackerController.swift in Sources */,
-				790B25A32B5D958F003BB290 /* CategoryRepository.swift in Sources */,
+				790B25A32B5D958F003BB290 /* TrackerRecordRepository.swift in Sources */,
 				793889E92B532F5300FD1F92 /* CreateCategoryController.swift in Sources */,
 				790B25972B5C26DC003BB290 /* PropertiesCell.swift in Sources */,
 			);

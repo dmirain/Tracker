@@ -11,6 +11,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         container.register(TrackerRepository.self) { _ in
             TrackerRepository()
         }
+        container.register(TrackerRecordRepository.self) { _ in
+            TrackerRecordRepository()
+        }
 
         container.register(SelectScheduleView.self) { _ in
             SelectScheduleView()
@@ -52,7 +55,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             TrackerViewController(
                 contentView: diResolver.resolve(TrackerListView.self)!,
                 addTrackerNavControllet: diResolver.resolve(AddTrackerNavControllet.self)!,
-                trackerRepository: diResolver.resolve(TrackerRepository.self)!
+                trackerRepository: diResolver.resolve(TrackerRepository.self)!,
+                trackerRecordRepository: diResolver.resolve(TrackerRecordRepository.self)!
             )
         }
 

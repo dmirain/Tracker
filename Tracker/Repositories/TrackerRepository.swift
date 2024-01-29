@@ -1,6 +1,6 @@
 import Foundation
 
-private var trackers: [Tracker] = [
+var trackersStorage: [Tracker] = [
     Tracker(
         id: UUID(),
         type: .event,
@@ -15,11 +15,11 @@ private var trackers: [Tracker] = [
 final class TrackerRepository {
 
     func create(_ new: Tracker) {
-        trackers.append(new)
+        trackersStorage.append(new)
     }
 
-    func filter(byDate date: Date? = nil, byName name: String? = nil) -> [Tracker] {
-        var result = trackers
+    func filter(byDate date: DateWoTime? = nil, byName name: String? = nil) -> [Tracker] {
+        var result = trackersStorage
 
         if let date {
             let weekDay = WeekDaySet.from(date: date)

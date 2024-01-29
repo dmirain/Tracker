@@ -4,21 +4,23 @@ final class TrackerViewController: UIViewController {
     private let contentView: TrackerListView
     private let addTrackerNavControllet: AddTrackerNavControllet
     private let trackerRepository: TrackerRepository
+    private let trackerRecordRepository: TrackerRecordRepository
 
     private var trackerListViewModel = TrackerListViewModel(
-        trackers: [],
-        selectedDate: Date(),
+        selectedDate: DateWoTime(),
         searchQuery: nil
     )
 
     init(
         contentView: TrackerListView,
         addTrackerNavControllet: AddTrackerNavControllet,
-        trackerRepository: TrackerRepository
+        trackerRepository: TrackerRepository,
+        trackerRecordRepository: TrackerRecordRepository
     ) {
         self.contentView = contentView
         self.addTrackerNavControllet = addTrackerNavControllet
         self.trackerRepository = trackerRepository
+        self.trackerRecordRepository = trackerRecordRepository
 
         super.init(nibName: nil, bundle: nil)
 
@@ -43,8 +45,8 @@ final class TrackerViewController: UIViewController {
             byDate: trackerListViewModel.selectedDate,
             byName: trackerListViewModel.searchQuery
         )
-        trackerListViewModel.updateTrackers(trackers: trackers)
-
+        let completedTrackers = trackerRecordRepository.filter(trackers: trackers)
+        trackerListViewModel.updateTrackersData(trackers: trackers, completedTrackers: completedTrackers)
         contentView.reload()
     }
 }
@@ -59,8 +61,13 @@ extension TrackerViewController: TrackerListViewDelegat {
         present(addTrackerNavControllet, animated: true)
     }
 
-    func dateSelected(date: Date) {
+    func dateSelected(date: DateWoTime) {
         trackerListViewModel.selectedDate = date
+        refreshData()
+    }
+
+    func toggleComplete(_ tracker: Tracker) {
+        trackerRecordRepository.toggleComplete(tracker, on: trackerListViewModel.selectedDate)
         refreshData()
     }
 }

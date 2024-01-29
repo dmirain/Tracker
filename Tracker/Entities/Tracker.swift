@@ -28,7 +28,7 @@ private let trackerEmojies = [
     "🥦", "🏓", "🥇", "🎸", "🏝", "😪"
 ]
 
-struct Tracker: Codable {
+struct Tracker: Codable, Identifiable, Hashable {
     let id: UUID
     let type: TrackerType
     let name: String

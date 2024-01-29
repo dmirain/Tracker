@@ -1,24 +1,26 @@
 import UIKit
 
 final class TrackerListViewModel {
-    var selectedDate: Date
+
+    var selectedDate: DateWoTime
     var searchQuery: String?
 
     var numberOfCategories: Int { listCategories.count }
 
     private var listCategories: [CategoryWithTrackers] = []
+    private var completedTrackers: [UUID: [TrackerRecord]] = [:]
 
-    init(trackers: [Tracker], selectedDate: Date, searchQuery: String?) {
+    init(selectedDate: DateWoTime, searchQuery: String?) {
         self.selectedDate = selectedDate
         self.searchQuery = searchQuery
-        updateTrackers(trackers: trackers)
     }
 
-    func updateTrackers(trackers: [Tracker]) {
+    func updateTrackersData(trackers: [Tracker], completedTrackers: [TrackerRecord]) {
         listCategories = Dictionary(grouping: trackers, by: { $0.category })
             .map { (key: TrackerCategory, value: [Tracker]) in
                 CategoryWithTrackers(category: key, trackers: value)
             }
+        self.completedTrackers = Dictionary(grouping: completedTrackers, by: { $0.trackerId })
     }
 
     func numberOfTrackersInCategory(byIndex index: Int) -> Int {
@@ -27,7 +29,28 @@ final class TrackerListViewModel {
     func categoryName(byIndex index: Int) -> String {
         listCategories[index].category.name
     }
-    func tracker(byIndexPath indexPath: IndexPath) -> Tracker {
-        listCategories[indexPath.section].trackers[indexPath.row]
+    func tracker(byIndexPath indexPath: IndexPath) -> TrackerViewModel {
+        let tracker = listCategories[indexPath.section].trackers[indexPath.row]
+        return TrackerViewModel(
+            tracker: tracker,
+            complitionsCount: complitionsCount(byTracker: tracker),
+            isComplited: isComplited(tracker: tracker, on: selectedDate),
+            selectedDate: selectedDate
+        )
     }
+
+    private func complitionsCount(byTracker tracker: Tracker) -> Int {
+        completedTrackers[tracker.id]?.count ?? 0
+    }
+
+    private func isComplited(tracker: Tracker, on date: DateWoTime) -> Bool {
+        completedTrackers[tracker.id]?.contains(where: { $0.date == date }) ?? false
+    }
+}
+
+struct TrackerViewModel {
+    let tracker: Tracker
+    let complitionsCount: Int
+    let isComplited: Bool
+    let selectedDate: DateWoTime
 }

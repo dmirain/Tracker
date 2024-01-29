@@ -1,6 +1,6 @@
 import Foundation
 
-let calendar = Calendar(identifier: .gregorian)
+private let calendar = Calendar(identifier: .gregorian)
 
 struct WeekDaySet: OptionSet, Codable, Hashable {
     static let sunday    = Self(rawValue: 1 << 0)
@@ -13,8 +13,8 @@ struct WeekDaySet: OptionSet, Codable, Hashable {
 
     let rawValue: Int
 
-    static func from(date: Date) -> Self {
-        let dayNum = calendar.dateComponents([.weekday], from: date).weekday
+    static func from(date: DateWoTime) -> Self {
+        let dayNum = calendar.dateComponents([.weekday], from: date.value).weekday
         let dayValue = 1 << (dayNum! - 1)  // сдвиг 1 по битовым разрядам. это возведение 2 в степень
         return Self(rawValue: dayValue)
     }
