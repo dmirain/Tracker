@@ -81,5 +81,6 @@ extension TrackerViewController: AddTrackerNavControlletDelegate {
             break
         }
         addTrackerNavControllet.dismiss(animated: true)
+        addTrackerNavControllet.popToRootViewController(animated: false)
     }
 }

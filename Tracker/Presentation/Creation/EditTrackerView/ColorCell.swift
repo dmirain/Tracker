@@ -21,7 +21,7 @@ final class ColorCell: UICollectionViewCell {
     private lazy var container: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.cornerRadius = 16
+        view.layer.cornerRadius = 12
         view.layer.masksToBounds = true
         view.backgroundColor = .clear
         view.layer.borderColor = UIColor.ypGray.cgColor
