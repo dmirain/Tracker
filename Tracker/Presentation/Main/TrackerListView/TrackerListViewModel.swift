@@ -1,11 +1,16 @@
 import UIKit
 
 final class TrackerListViewModel {
+    var selectedDate: Date
+    var searchQuery: String? = nil
+
     var numberOfCategories: Int { listCategories.count }
     
     private var listCategories: [CategoryWithTrackers] = []
 
-    init(trackers: [Tracker]) {
+    init(trackers: [Tracker], selectedDate: Date, searchQuery: String?) {
+        self.selectedDate = selectedDate
+        self.searchQuery = searchQuery
         updateTrackers(trackers: trackers)
     }
     

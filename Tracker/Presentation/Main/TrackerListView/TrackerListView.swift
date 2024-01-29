@@ -1,8 +1,9 @@
 import UIKit
 
 protocol TrackerListViewDelegat: AnyObject {
+    var viewModel: TrackerListViewModel { get }
     func addTrackerClicked()
-    var trackerListViewModel: TrackerListViewModel { get }
+    func dateSelected(date: Date)
 }
 
 final class TrackerListView: UIView {
@@ -32,6 +33,9 @@ final class TrackerListView: UIView {
         view.datePickerMode = .date
         view.locale = Locale(identifier: "ru_Ru")
         view.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        
+        view.addTarget(self, action: #selector(dateSelected(_:)), for: .valueChanged)
+        
         return view
     }()
 
@@ -143,9 +147,14 @@ final class TrackerListView: UIView {
     private func addTrackerClicked() {
         controller?.addTrackerClicked()
     }
-    
+
+    @objc
+    private func dateSelected(_ sender: UIDatePicker) {
+        controller?.dateSelected(date: sender.date)
+    }
+
     func reload() {
-        if controller?.trackerListViewModel.numberOfCategories ?? 0 == 0 {
+        if controller?.viewModel.numberOfCategories ?? 0 == 0 {
             emptyListView.isHidden = false
         } else {
             emptyListView.isHidden = true
@@ -156,11 +165,11 @@ final class TrackerListView: UIView {
 
 extension TrackerListView: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        controller?.trackerListViewModel.numberOfCategories ?? 0
+        controller?.viewModel.numberOfCategories ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        controller?.trackerListViewModel.numberOfTrackersInCategory(byIndex: section) ?? 0
+        controller?.viewModel.numberOfTrackersInCategory(byIndex: section) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -172,7 +181,7 @@ extension TrackerListView: UICollectionViewDataSource {
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
 
-        if let tracker = controller?.trackerListViewModel.tracker(byIndexPath: indexPath) {
+        if let tracker = controller?.viewModel.tracker(byIndexPath: indexPath) {
             cell.initData(tracker: tracker)
         }
 
@@ -184,7 +193,7 @@ extension TrackerListView: UICollectionViewDataSource {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        let sectionTitle = controller?.trackerListViewModel.categoryName(byIndex: indexPath.section) ?? ""
+        let sectionTitle = controller?.viewModel.categoryName(byIndex: indexPath.section) ?? ""
         
         guard !sectionTitle.isEmpty && kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()

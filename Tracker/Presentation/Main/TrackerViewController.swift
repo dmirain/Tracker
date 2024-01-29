@@ -4,11 +4,12 @@ final class TrackerViewController: UIViewController {
     private let contentView: TrackerListView
     private let addTrackerController: AddTrackerController
     private let trackerRepository: TrackerRepository
-    
-    private var currentDay: Date? = Date()
-    private var searchQ: String? = nil
-    
-    private var _trackerListViewModel: TrackerListViewModel = TrackerListViewModel(trackers: [])
+        
+    private var trackerListViewModel: TrackerListViewModel = TrackerListViewModel(
+        trackers: [],
+        selectedDate: Date(),
+        searchQuery: nil
+    )
     
     init(
         contentView: TrackerListView,
@@ -38,21 +39,29 @@ final class TrackerViewController: UIViewController {
     }
     
     func refreshData() {
-        let trackers = trackerRepository.filter(byDate: currentDay, byName: searchQ)
-        _trackerListViewModel = TrackerListViewModel(trackers: trackers)
-        
+        let trackers = trackerRepository.filter(
+            byDate: trackerListViewModel.selectedDate,
+            byName: trackerListViewModel.searchQuery
+        )
+        trackerListViewModel.updateTrackers(trackers: trackers)
+                
         contentView.reload()
     }
 }
 
 extension TrackerViewController: TrackerListViewDelegat {
-    var trackerListViewModel: TrackerListViewModel {
-        _trackerListViewModel
+    var viewModel: TrackerListViewModel {
+        trackerListViewModel
     }
     
     func addTrackerClicked() {
         addTrackerController.delegate = self
         present(addTrackerController, animated: true)
+    }
+    
+    func dateSelected(date: Date) {
+        trackerListViewModel.selectedDate = date
+        refreshData()
     }
 }
 
