@@ -6,7 +6,7 @@ final class AddTrackerController: UIViewController {
     private let editTrackerController: EditTrackerController
 
     private var selectedDate = DateWoTime()
-    private weak var parentDelegat: AddParentDelegateProtocol?
+    private weak var parentDelegate: AddParentDelegateProtocol?
 
     init(
         contentView: AddTrackerView,
@@ -30,17 +30,17 @@ final class AddTrackerController: UIViewController {
        self.view = contentView
     }
 
-    func initData(parentDelegat: AddParentDelegateProtocol, selectedDate: DateWoTime) {
-        self.parentDelegat = parentDelegat
+    func initData(parentDelegate: AddParentDelegateProtocol, selectedDate: DateWoTime) {
+        self.parentDelegate = parentDelegate
         self.selectedDate = selectedDate
     }
 }
 
-extension AddTrackerController: AddTrackerViewDelegat {
+extension AddTrackerController: AddTrackerViewDelegate {
     func createClicked(type: TrackerType) {
-        guard let parentDelegat else { return }
+        guard let parentDelegate else { return }
         editTrackerController.initData(
-            parentDelegat: parentDelegat,
+            parentDelegate: parentDelegate,
             editTrackerModel: EditTrackerViewModel(type: type, selectedDate: selectedDate)
         )
         navigationController?.pushViewController(editTrackerController, animated: true)

@@ -1,12 +1,12 @@
 import Foundation
 import UIKit
 
-protocol AddTrackerViewDelegat: AnyObject {
+protocol AddTrackerViewDelegate: AnyObject {
     func createClicked(type: TrackerType)
 }
 
 final class AddTrackerView: UIView {
-    weak var controller: AddTrackerViewDelegat?
+    weak var controller: AddTrackerViewDelegate?
 
     private lazy var createHabit: UIButton = {
         let view = UIButton()

@@ -36,7 +36,7 @@ final class SelectScheduleController: UIViewController {
     }
 }
 
-extension SelectScheduleController: SelectScheduleViewDelegat {
+extension SelectScheduleController: SelectScheduleViewDelegate {
     func completeSelect() {
         delegate?.set(schedule: schedule)
     }

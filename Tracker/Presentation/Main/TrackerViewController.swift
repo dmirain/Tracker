@@ -52,13 +52,13 @@ final class TrackerViewController: UIViewController {
     }
 }
 
-extension TrackerViewController: TrackerListViewDelegat {
+extension TrackerViewController: TrackerListViewDelegate {
     var viewModel: TrackerListViewModel {
         trackerListViewModel
     }
 
     func addTrackerClicked() {
-        addTrackerController.initData(parentDelegat: self, selectedDate: trackerListViewModel.selectedDate)
+        addTrackerController.initData(parentDelegate: self, selectedDate: trackerListViewModel.selectedDate)
 
         let addTrackerNavControllet = UINavigationController(rootViewController: addTrackerController)
         self.addTrackerNavControllet = addTrackerNavControllet

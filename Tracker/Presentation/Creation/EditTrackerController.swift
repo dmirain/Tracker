@@ -39,8 +39,8 @@ final class EditTrackerController: UIViewController {
         self.view = contentView
     }
 
-    func initData(parentDelegat: AddParentDelegateProtocol, editTrackerModel: EditTrackerViewModel) {
-        self.parentDelegate = parentDelegat
+    func initData(parentDelegate: AddParentDelegateProtocol, editTrackerModel: EditTrackerViewModel) {
+        self.parentDelegate = parentDelegate
         self.editTrackerViewModel = editTrackerModel
         self.contentView.initData()
     }

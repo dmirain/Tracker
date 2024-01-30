@@ -10,7 +10,7 @@ protocol EditTrackerViewDelegat: AnyObject {
 }
 
 private enum ViewSections: Int, CaseIterable {
-    case name = 0, properties, emoji, color, buttons
+    case name, properties, emoji, color, buttons
 }
 
 final class EditTrackerView: UIView {

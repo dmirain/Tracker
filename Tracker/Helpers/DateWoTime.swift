@@ -6,14 +6,14 @@ struct DateWoTime: Codable, Equatable, Hashable {
     let value: Date
 
     init() {
-        value = Self.cleareTime(Date())
+        value = Self.clearTime(Date())
     }
 
     init(_ date: Date) {
-        value = Self.cleareTime(date)
+        value = Self.clearTime(date)
     }
 
-    private static func cleareTime(_ date: Date) -> Date {
+    private static func clearTime(_ date: Date) -> Date {
         calendar.timeZone = TimeZone.current
         let dateComponents = calendar.dateComponents([.year, .month, .day], from: date)
         return calendar.date(from: dateComponents) ?? Date()

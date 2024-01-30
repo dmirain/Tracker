@@ -1,13 +1,13 @@
 import Foundation
 import UIKit
 
-protocol SelectScheduleViewDelegat: AnyObject {
+protocol SelectScheduleViewDelegate: AnyObject {
     var schedule: WeekDaySet { get set }
     func completeSelect()
 }
 
 final class SelectScheduleView: UIView {
-    weak var controller: SelectScheduleViewDelegat?
+    weak var controller: SelectScheduleViewDelegate?
 
     private lazy var daysTable: UITableView = {
         let view = UITableView()

@@ -1,6 +1,6 @@
 import UIKit
 
-protocol TrackerListViewDelegat: AnyObject {
+protocol TrackerListViewDelegate: AnyObject {
     var viewModel: TrackerListViewModel { get }
     func addTrackerClicked()
     func dateSelected(date: DateWoTime)
@@ -8,7 +8,7 @@ protocol TrackerListViewDelegat: AnyObject {
 }
 
 final class TrackerListView: UIView {
-    weak var controller: TrackerListViewDelegat?
+    weak var controller: TrackerListViewDelegate?
 
     private lazy var plusButton: UIButton = {
         let view = UIButton()
