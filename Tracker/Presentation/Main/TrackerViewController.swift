@@ -1,9 +1,11 @@
 import UIKit
+import Swinject
 
 final class TrackerViewController: UIViewController {
+    private let diResolver: Resolver
     private let contentView: TrackerListView
+    private var addTrackerController: AddTrackerController?
     private var addTrackerNavControllet: UINavigationController?
-    private let addTrackerController: AddTrackerController
     private let trackerRepository: TrackerRepository
     private let trackerRecordRepository: TrackerRecordRepository
 
@@ -13,13 +15,13 @@ final class TrackerViewController: UIViewController {
     )
 
     init(
+        diResolver: Resolver,
         contentView: TrackerListView,
-        addTrackerController: AddTrackerController,
         trackerRepository: TrackerRepository,
         trackerRecordRepository: TrackerRecordRepository
     ) {
+        self.diResolver = diResolver
         self.contentView = contentView
-        self.addTrackerController = addTrackerController
         self.trackerRepository = trackerRepository
         self.trackerRecordRepository = trackerRecordRepository
 
@@ -58,6 +60,8 @@ extension TrackerViewController: TrackerListViewDelegate {
     }
 
     func addTrackerClicked() {
+        guard let addTrackerController = diResolver.resolve(AddTrackerController.self) else { return }
+        self.addTrackerController = addTrackerController
         addTrackerController.initData(parentDelegate: self, selectedDate: trackerListViewModel.selectedDate)
 
         let addTrackerNavControllet = UINavigationController(rootViewController: addTrackerController)
@@ -86,5 +90,6 @@ extension TrackerViewController: AddParentDelegateProtocol {
             break
         }
         addTrackerNavControllet?.dismiss(animated: true)
+        self.addTrackerController = nil
     }
 }

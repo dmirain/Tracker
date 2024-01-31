@@ -1,21 +1,22 @@
 import Foundation
 import UIKit
+import Swinject
 
 final class EditTrackerController: UIViewController {
+    private let diResolver: Resolver
     private let contentView: EditTrackerView
-    private let selectScheduleController: SelectScheduleController
     private let trackerRepository: TrackerRepository
 
     private weak var parentDelegate: AddParentDelegateProtocol?
     private(set) var editTrackerViewModel = EditTrackerViewModel(type: .event, selectedDate: DateWoTime())
 
     init(
+        diResolver: Resolver,
         contentView: EditTrackerView,
-        selectScheduleController: SelectScheduleController,
         trackerRepository: TrackerRepository
     ) {
+        self.diResolver = diResolver
         self.contentView = contentView
-        self.selectScheduleController = selectScheduleController
         self.trackerRepository = trackerRepository
 
         super.init(nibName: nil, bundle: nil)
@@ -61,6 +62,7 @@ extension EditTrackerController: EditTrackerViewDelegat {
     var viewModel: EditTrackerViewModel { editTrackerViewModel }
 
     func selectSchedule() {
+        guard let selectScheduleController = diResolver.resolve(SelectScheduleController.self) else { return }
         selectScheduleController.delegate = self
         selectScheduleController.initData(schedule: editTrackerViewModel.schedule)
         navigationController?.pushViewController(selectScheduleController, animated: true)
