@@ -68,6 +68,17 @@ final class ButtonsCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setButtonsState(to state: ButtonsState) {
+        switch state {
+        case .save:
+            createButton.isEnabled = true
+            createButton.backgroundColor = .ypBlack
+        case .edit:
+            createButton.isEnabled = false
+            createButton.backgroundColor = .ypGray
+        }
+    }
+
     @objc
     private func cancelButtonClicked() {
         delegate?.compleateEdit(action: .cancel)
@@ -77,4 +88,8 @@ final class ButtonsCell: UICollectionViewCell {
     private func createButtonClicked() {
         delegate?.compleateEdit(action: .save)
     }
+}
+
+enum ButtonsState {
+    case save, edit
 }

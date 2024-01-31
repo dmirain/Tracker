@@ -84,6 +84,10 @@ extension EditTrackerController: EditTrackerViewDelegat {
 
         parentDelegate?.compleateAdd(action: action)
     }
+    func nameChanged(_ name: String) {
+        editTrackerViewModel.name = name
+        contentView.refreshButtons()
+    }
 }
 
 extension EditTrackerController: SelectScheduleControllerDelegate {

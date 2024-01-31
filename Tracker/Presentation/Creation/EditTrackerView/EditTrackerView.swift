@@ -6,6 +6,7 @@ protocol EditTrackerViewDelegat: AnyObject {
 
     func selectSchedule()
     func selectCategory()
+    func nameChanged(_ name: String)
     func compleateEdit(action: EditAction)
 }
 
@@ -63,6 +64,11 @@ final class EditTrackerView: UIView {
 
     func refreshProperties() {
         collectionView.reloadItems(at: [IndexPath(row: 0, section: ViewSections.properties.rawValue)])
+        refreshButtons()
+    }
+
+    func refreshButtons() {
+        collectionView.reloadItems(at: [IndexPath(row: 0, section: ViewSections.buttons.rawValue)])
     }
 
     func compleateEdit(action: EditAction) {
@@ -180,6 +186,15 @@ extension EditTrackerView: UICollectionViewDataSource {
         ) as? ButtonsCell
         guard let cell else { return UICollectionViewCell() }
         cell.delegate = self
+
+        guard let viewModel = controller?.viewModel else { return cell }
+
+        if viewModel.toTracker() == nil {
+            cell.setButtonsState(to: .edit)
+        } else {
+            cell.setButtonsState(to: .save)
+        }
+
         return cell
     }
 
@@ -284,6 +299,7 @@ extension EditTrackerView: UICollectionViewDelegateFlowLayout {
             assertionFailure("Unknown section \(indexPath.section)")
             return
         }
+
         switch section {
         case .name:
             return
@@ -310,5 +326,9 @@ extension EditTrackerView {
 
     func selectCategory() {
         controller?.selectCategory()
+    }
+
+    func nameChanged(_ name: String) {
+        controller?.nameChanged(name)
     }
 }

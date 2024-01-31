@@ -42,7 +42,6 @@ final class NameCell: UICollectionViewCell {
 
     @objc
     private func nameChanged() {
-        delegate?.controller?.viewModel.name = nameField.text ?? ""
+        delegate?.nameChanged(nameField.text ?? "")
     }
-
 }
