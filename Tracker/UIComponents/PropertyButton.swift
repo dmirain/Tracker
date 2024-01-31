@@ -8,7 +8,7 @@ final class PropertyButton: UIButton {
         view.backgroundColor = .ypGray
 
         NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: 0.5)
+            view.heightAnchor.constraint(equalToConstant: 0.3)
         ])
 
         return view

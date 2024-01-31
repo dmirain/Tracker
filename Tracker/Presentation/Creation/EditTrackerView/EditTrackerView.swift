@@ -21,6 +21,7 @@ final class EditTrackerView: UIView {
         let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         view.translatesAutoresizingMaskIntoConstraints = false
         view.allowsMultipleSelection = true
+        view.showsVerticalScrollIndicator = false
 
         view.register(NameCell.self, forCellWithReuseIdentifier: NameCell.reuseIdentifier)
         view.register(PropertiesCell.self, forCellWithReuseIdentifier: PropertiesCell.reuseIdentifier)

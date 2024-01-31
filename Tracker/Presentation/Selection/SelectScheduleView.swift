@@ -13,6 +13,9 @@ final class SelectScheduleView: UIView {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .ypWhite
+        view.separatorStyle = .singleLine
+        view.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        view.tableHeaderView = UIView()
 
         view.register(DaySwitchCell.self, forCellReuseIdentifier: DaySwitchCell.reuseIdentifier)
         view.dataSource = self
@@ -93,6 +96,12 @@ extension SelectScheduleView: UITableViewDataSource {
 
 extension SelectScheduleView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat { 75 }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: tableView.bounds.width)
+        }
+    }
 }
 
 final class DaySwitchCell: UITableViewCell {
@@ -120,25 +129,14 @@ final class DaySwitchCell: UITableViewCell {
         return view
     }()
 
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .ypGray
-
-        NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: 0.5)
-        ])
-        return view
-    }()
-
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+        selectionStyle = .none
         contentView.backgroundColor = .ypBackground
 
         contentView.addSubview(rowLable)
         contentView.addSubview(uiSwitch)
-        contentView.addSubview(separatorView)
 
         NSLayoutConstraint.activate([
             contentView.heightAnchor.constraint(equalToConstant: 75),
@@ -147,11 +145,8 @@ final class DaySwitchCell: UITableViewCell {
             rowLable.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
 
             uiSwitch.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            uiSwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            uiSwitch.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
 
-            separatorView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            separatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            separatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
 
     }
@@ -162,7 +157,6 @@ final class DaySwitchCell: UITableViewCell {
 
     func initData(weekDay: WeekDaySet, schedule: WeekDaySet) {
         self.weekDay = weekDay
-        separatorView.isHidden = weekDay == WeekDaySet.monday
         rowLable.text = weekDay.asText()
 
         uiSwitch.setOn(schedule.contains(weekDay), animated: false)
