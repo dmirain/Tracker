@@ -10,23 +10,6 @@ protocol TrackerListViewDelegate: AnyObject {
 final class TrackerListView: UIView {
     weak var controller: TrackerListViewDelegate?
 
-    private lazy var plusButton: UIButton = {
-        let view = UIButton()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.setImage(.listPlus, for: .normal)
-        view.layer.cornerRadius = 10
-        view.layer.masksToBounds = true
-
-        NSLayoutConstraint.activate([
-            view.heightAnchor.constraint(equalToConstant: 42),
-            view.widthAnchor.constraint(equalToConstant: 42)
-        ])
-
-        view.addTarget(self, action: #selector(addTrackerClicked), for: .touchUpInside)
-
-        return view
-    }()
-
     private lazy var datePicker: UIDatePicker = {
         let view = UIDatePicker()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +33,10 @@ final class TrackerListView: UIView {
         view.backgroundColor = .ypWhite
 
         let navItem = UINavigationItem()
-        navItem.leftBarButtonItem = UIBarButtonItem(customView: plusButton)
+        navItem.leftBarButtonItem = UIBarButtonItem(
+            image: .listPlus, style: .plain, target: self, action: #selector(addTrackerClicked)
+        )
+        navItem.leftBarButtonItem?.tintColor = .ypBlack
         navItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
         navItem.title = "Трекеры"
 
