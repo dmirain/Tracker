@@ -52,7 +52,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         container.register(TrackerViewController.self) { diResolver in
             TrackerViewController(
-                diResolver: diResolver,
+                factory: self,
                 contentView: diResolver.resolve(TrackerListView.self)!,
                 trackerRepository: diResolver.resolve(TrackerRepository.self)!,
                 trackerRecordRepository: diResolver.resolve(TrackerRecordRepository.self)!
@@ -87,4 +87,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillResignActive(_ scene: UIScene) {}
     func sceneWillEnterForeground(_ scene: UIScene) {}
     func sceneDidEnterBackground(_ scene: UIScene) {}
+}
+
+extension SceneDelegate: TrackerViewControllerFactoryDelegate {
+    func getAddController(parentDelegate: AddParentDelegateProtocol, selectedDate: DateWoTime) -> AddTrackerController? {
+        let addTrackerController = container.resolve(AddTrackerController.self)
+        addTrackerController?.initData(parentDelegate: parentDelegate, selectedDate: selectedDate)
+        return addTrackerController
+    }
 }

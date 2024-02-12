@@ -1,10 +1,12 @@
 import UIKit
-import Swinject
+
+protocol TrackerViewControllerFactoryDelegate: AnyObject {
+    func getAddController(parentDelegate: AddParentDelegateProtocol, selectedDate: DateWoTime) -> AddTrackerController?
+}
 
 final class TrackerViewController: UIViewController {
-    private let diResolver: Resolver
+    private let factory: TrackerViewControllerFactoryDelegate
     private let contentView: TrackerListView
-    private var addTrackerController: AddTrackerController?
     private var addTrackerNavControllet: UINavigationController?
     private let trackerRepository: TrackerRepository
     private let trackerRecordRepository: TrackerRecordRepository
@@ -15,12 +17,12 @@ final class TrackerViewController: UIViewController {
     )
 
     init(
-        diResolver: Resolver,
+        factory: TrackerViewControllerFactoryDelegate,
         contentView: TrackerListView,
         trackerRepository: TrackerRepository,
         trackerRecordRepository: TrackerRecordRepository
     ) {
-        self.diResolver = diResolver
+        self.factory = factory
         self.contentView = contentView
         self.trackerRepository = trackerRepository
         self.trackerRecordRepository = trackerRecordRepository
@@ -60,10 +62,9 @@ extension TrackerViewController: TrackerListViewDelegate {
     }
 
     func addTrackerClicked() {
-        guard let addTrackerController = diResolver.resolve(AddTrackerController.self) else { return }
-        self.addTrackerController = addTrackerController
-        addTrackerController.initData(parentDelegate: self, selectedDate: trackerListViewModel.selectedDate)
-
+        let addTrackerController = factory.getAddController(parentDelegate: self, selectedDate: trackerListViewModel.selectedDate)
+        
+        guard let addTrackerController else { return }
         let addTrackerNavControllet = UINavigationController(rootViewController: addTrackerController)
         self.addTrackerNavControllet = addTrackerNavControllet
 
@@ -90,6 +91,6 @@ extension TrackerViewController: AddParentDelegateProtocol {
             break
         }
         addTrackerNavControllet?.dismiss(animated: true)
-        self.addTrackerController = nil
+        addTrackerNavControllet = nil
     }
 }
