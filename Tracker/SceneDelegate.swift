@@ -18,42 +18,41 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         .inObjectScope(.container)
 
-        container.register(SelectScheduleView.self) { _ in
-            SelectScheduleView()
-        }
-        container.register(SelectScheduleController.self) { diResolver in
-            SelectScheduleController(contentView: diResolver.resolve(SelectScheduleView.self)!)
+        container.register(CreateCategoryController.self) { _ in
+            CreateCategoryController(contentView: CreateCategoryView())
         }
 
-        container.register(EditTrackerView.self) { _ in
-            EditTrackerView()
+        container.register(SelectCategoryController.self) { _ in
+            SelectCategoryController(
+                depsFactory: self,
+                contentView: SelectCategoryView()
+            )
         }
+
+        container.register(SelectScheduleController.self) { _ in
+            SelectScheduleController(contentView: SelectScheduleView())
+        }
+
         container.register(EditTrackerController.self) { diResolver in
             EditTrackerController(
-                diResolver: diResolver,
-                contentView: diResolver.resolve(EditTrackerView.self)!,
+                depsFactory: self,
+                contentView: EditTrackerView(),
                 trackerRepository: diResolver.resolve(TrackerRepository.self)!
             )
         }
 
-        container.register(AddTrackerView.self) { _ in
-            AddTrackerView()
-        }
         container.register(AddTrackerController.self) { diResolver in
             AddTrackerController(
-                contentView: diResolver.resolve(AddTrackerView.self)!,
+                contentView: AddTrackerView(),
                 editTrackerController: diResolver.resolve(EditTrackerController.self)!
             )
         }
         .inObjectScope(.transient)
 
-        container.register(TrackerListView.self) { _ in
-            TrackerListView()
-        }
         container.register(TrackerViewController.self) { diResolver in
             TrackerViewController(
-                factory: self,
-                contentView: diResolver.resolve(TrackerListView.self)!,
+                depsFactory: self,
+                contentView: TrackerListView(),
                 trackerRepository: diResolver.resolve(TrackerRepository.self)!,
                 trackerRecordRepository: diResolver.resolve(TrackerRecordRepository.self)!
             )
@@ -89,10 +88,29 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidEnterBackground(_ scene: UIScene) {}
 }
 
-extension SceneDelegate: TrackerViewControllerFactoryDelegate {
-    func getAddController(parentDelegate: AddParentDelegateProtocol, selectedDate: DateWoTime) -> AddTrackerController? {
+extension SceneDelegate: TrackerViewControllerDepsFactory {
+    func getAddController(
+        parentDelegate: AddParentDelegateProtocol,
+        selectedDate: DateWoTime
+    ) -> AddTrackerController? {
         let addTrackerController = container.resolve(AddTrackerController.self)
         addTrackerController?.initData(parentDelegate: parentDelegate, selectedDate: selectedDate)
         return addTrackerController
+    }
+}
+
+extension SceneDelegate: EditTrackerControllerDepsFactory {
+    func getSelectScheduleController() -> SelectScheduleController? {
+        container.resolve(SelectScheduleController.self)
+    }
+
+    func getSelectCategoryController() -> SelectCategoryController? {
+        container.resolve(SelectCategoryController.self)
+    }
+}
+
+extension SceneDelegate: SelectCategoryControllerDepsFactory {
+    func getCreateCategoryController() -> CreateCategoryController? {
+        container.resolve(CreateCategoryController.self)
     }
 }

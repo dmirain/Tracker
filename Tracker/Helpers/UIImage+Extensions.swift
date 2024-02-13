@@ -10,4 +10,5 @@ extension UIImage {
     static var trackerTab = UIImage(named: "TrackerTab") ?? UIImage()
     static var toComplite = UIImage(named: "ToComplite") ?? UIImage()
     static var complited = UIImage(named: "Complited") ?? UIImage()
+    static var selected = UIImage(named: "Selected") ?? UIImage()
 }

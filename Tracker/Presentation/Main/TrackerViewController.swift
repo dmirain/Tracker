@@ -1,11 +1,14 @@
 import UIKit
 
-protocol TrackerViewControllerFactoryDelegate: AnyObject {
-    func getAddController(parentDelegate: AddParentDelegateProtocol, selectedDate: DateWoTime) -> AddTrackerController?
+protocol TrackerViewControllerDepsFactory: AnyObject {
+    func getAddController(
+        parentDelegate: AddParentDelegateProtocol,
+        selectedDate: DateWoTime
+    ) -> AddTrackerController?
 }
 
 final class TrackerViewController: UIViewController {
-    private let factory: TrackerViewControllerFactoryDelegate
+    private let depsFactory: TrackerViewControllerDepsFactory
     private let contentView: TrackerListView
     private var addTrackerNavControllet: UINavigationController?
     private let trackerRepository: TrackerRepository
@@ -17,12 +20,12 @@ final class TrackerViewController: UIViewController {
     )
 
     init(
-        factory: TrackerViewControllerFactoryDelegate,
+        depsFactory: TrackerViewControllerDepsFactory,
         contentView: TrackerListView,
         trackerRepository: TrackerRepository,
         trackerRecordRepository: TrackerRecordRepository
     ) {
-        self.factory = factory
+        self.depsFactory = depsFactory
         self.contentView = contentView
         self.trackerRepository = trackerRepository
         self.trackerRecordRepository = trackerRecordRepository
@@ -62,8 +65,11 @@ extension TrackerViewController: TrackerListViewDelegate {
     }
 
     func addTrackerClicked() {
-        let addTrackerController = factory.getAddController(parentDelegate: self, selectedDate: trackerListViewModel.selectedDate)
-        
+        let addTrackerController = depsFactory.getAddController(
+            parentDelegate: self,
+            selectedDate: trackerListViewModel.selectedDate
+        )
+
         guard let addTrackerController else { return }
         let addTrackerNavControllet = UINavigationController(rootViewController: addTrackerController)
         self.addTrackerNavControllet = addTrackerNavControllet
