@@ -1,45 +1,14 @@
 import Foundation
 import CoreData
 
-protocol DataProviderDelegate: AnyObject {
-    func dataProvider(didUpdate update: DataProviderUpdate)
-}
+protocol TrackerCategoryStore: Store {}
 
-protocol TrackerCategoryDataProvider {
-    var delegate: DataProviderDelegate? { get set }
-
-    func fetchData() throws
-    func numberOfRowsInSection(_ section: Int) -> Int
-    func object(atIndexPath: IndexPath) -> TrackerCategory?
-    func add(_ record: TrackerCategory)
-    func delete(at indexPath: IndexPath)
-    func update(at indexPath: IndexPath)
-}
-
-class DataProviderUpdate {
-    struct Move: Hashable {
-        let oldIndex: Int
-        let newIndex: Int
-    }
-    var insertedIndexes: IndexSet = []
-    var deletedIndexes: IndexSet = []
-    var updatedIndexes: IndexSet = []
-    var movedIndexes: Set<Move> = []
-
-    func clean() {
-        insertedIndexes = []
-        deletedIndexes = []
-        updatedIndexes = []
-        movedIndexes = []
-    }
-}
-
-final class TrackerCategoryDataProviderCD: NSObject, TrackerCategoryDataProvider {
-    weak var delegate: DataProviderDelegate?
+final class TrackerCategoryStoreCD: NSObject, TrackerCategoryStore {
+    weak var delegate: StoreDelegate?
 
     private let cdContext: NSManagedObjectContext
     private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCD>
-    private var update = DataProviderUpdate()
+    private var update = StoreUpdateCollector()
 
     private var categories: [TrackerCategory] {
         guard let objects = self.fetchedResultsController.fetchedObjects else { return [] }
@@ -99,13 +68,15 @@ final class TrackerCategoryDataProviderCD: NSObject, TrackerCategoryDataProvider
     }
 }
 
-extension TrackerCategoryDataProviderCD: NSFetchedResultsControllerDelegate {
+extension TrackerCategoryStoreCD: NSFetchedResultsControllerDelegate {
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         update.clean()
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delegate?.dataProvider(didUpdate: update)
+        guard let delegate else { return }
+        delegate.store(didUpdate: update.toStoreUpdate())
+        update.clean()
     }
 
     func controller(
@@ -115,8 +86,6 @@ extension TrackerCategoryDataProviderCD: NSFetchedResultsControllerDelegate {
         for type: NSFetchedResultsChangeType,
         newIndexPath: IndexPath?
     ) {
-        print("has update")
-
         switch type {
         case .insert:
             guard let indexPath = newIndexPath else { return }
@@ -139,6 +108,7 @@ extension TrackerCategoryDataProviderCD: NSFetchedResultsControllerDelegate {
 fileprivate extension TrackerCategory {
     func toCD(context: NSManagedObjectContext) -> TrackerCategoryCD {
         let cdCategory = TrackerCategoryCD(context: context)
+        cdCategory.id = id
         cdCategory.name = name
         return cdCategory
     }
@@ -146,7 +116,10 @@ fileprivate extension TrackerCategory {
 
 fileprivate extension TrackerCategoryCD {
     func toEntity() -> TrackerCategory? {
-        guard let name else { return nil }
-        return TrackerCategory(name: name)
+        guard let name, let id else { return nil }
+        return TrackerCategory(
+            id: id,
+            name: name
+        )
     }
 }

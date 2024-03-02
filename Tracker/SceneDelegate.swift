@@ -38,8 +38,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         .inObjectScope(.container)
 
-        container.register(TrackerCategoryDataProvider.self) { diResolver in
-            TrackerCategoryDataProviderCD(
+        container.register(TrackerCategoryStore.self) { diResolver in
+            TrackerCategoryStoreCD(
                 cdContext: diResolver.resolve(NSManagedObjectContext.self)!
             )
         }
@@ -51,7 +51,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         container.register(SelectCategoryController.self) { diResolver in
             SelectCategoryController(
                 depsFactory: self,
-                dataProvider: diResolver.resolve(TrackerCategoryDataProvider.self)!,
+                store: diResolver.resolve(TrackerCategoryStore.self)!,
                 contentView: SelectCategoryView()
             )
         }

@@ -39,6 +39,9 @@ class CreateCategoryViewModel {
     var name: String = ""
 
     func toCategory() -> TrackerCategory {
-        TrackerCategory(name: name)
+        TrackerCategory(
+            id: UUID(),
+            name: name
+        )
     }
 }

@@ -11,7 +11,7 @@ protocol SelectCategoryControllerDelegate: AnyObject {
 
 final class SelectCategoryController: UIViewController {
     private let depsFactory: SelectCategoryControllerDepsFactory
-    private var dataProvider: TrackerCategoryDataProvider
+    private var store: TrackerCategoryStore
     private let contentView: SelectCategoryView
 
     weak var delegate: SelectCategoryControllerDelegate?
@@ -20,15 +20,15 @@ final class SelectCategoryController: UIViewController {
 
     init(
         depsFactory: SelectCategoryControllerDepsFactory,
-        dataProvider: TrackerCategoryDataProvider,
+        store: TrackerCategoryStore,
         contentView: SelectCategoryView
     ) {
         self.depsFactory = depsFactory
-        self.dataProvider = dataProvider
+        self.store = store
         self.contentView = contentView
         super.init(nibName: nil, bundle: nil)
 
-        self.dataProvider.delegate = self
+        self.store.delegate = self
         self.contentView.controller = self
 
         navigationItem.title = "Категория"
@@ -47,7 +47,7 @@ final class SelectCategoryController: UIViewController {
         self.currentCategory = category
 
         do {
-            try dataProvider.fetchData()
+            try store.fetchData()
         } catch {
             assertionFailure(error.localizedDescription)
         }
@@ -56,21 +56,21 @@ final class SelectCategoryController: UIViewController {
     }
 }
 
-extension SelectCategoryController: DataProviderDelegate {
-    func dataProvider(didUpdate update: DataProviderUpdate) {
+extension SelectCategoryController: StoreDelegate {
+    func store(didUpdate update: StoreUpdate) {
         contentView.update(update)
     }
 }
 
 extension SelectCategoryController: SelectCategoryViewDelegate {
     func numberOfRowsInSection(_ section: Int) -> Int {
-        dataProvider.numberOfRowsInSection(section)
+        store.numberOfRowsInSection(section)
     }
     func category(byIndexPath indexPath: IndexPath) -> TrackerCategory? {
-        dataProvider.object(atIndexPath: indexPath)
+        store.object(atIndexPath: indexPath)
     }
     func completeSelect(withIndexPath indexPath: IndexPath) {
-        guard let category = dataProvider.object(atIndexPath: indexPath) else { return }
+        guard let category = store.object(atIndexPath: indexPath) else { return }
         delegate?.set(category: category)
     }
 
@@ -84,7 +84,7 @@ extension SelectCategoryController: SelectCategoryViewDelegate {
 
 extension SelectCategoryController: CreateCategoryControllerDelegate {
     func compliteCreate(category: TrackerCategory) {
-        dataProvider.add(category)
+        store.add(category)
         navigationController?.popViewController(animated: true)
     }
 }

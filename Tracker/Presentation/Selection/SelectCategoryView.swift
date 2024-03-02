@@ -87,7 +87,7 @@ final class SelectCategoryView: UIView {
         setEmptyListState()
     }
 
-    func update(_ update: DataProviderUpdate) {
+    func update(_ update: StoreUpdate) {
         categoriesTable.performBatchUpdates {
             let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
             let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: 0) }
