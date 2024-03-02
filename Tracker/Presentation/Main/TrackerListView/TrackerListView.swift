@@ -66,7 +66,7 @@ final class TrackerListView: UIView {
     }()
 
     private lazy var emptyListView: UIView = {
-        let view = EmptyListView()
+        let view = EmptyListView(text: "Что будем отслеживать?")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

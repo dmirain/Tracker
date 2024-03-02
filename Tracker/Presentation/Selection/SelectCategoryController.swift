@@ -11,20 +11,24 @@ protocol SelectCategoryControllerDelegate: AnyObject {
 
 final class SelectCategoryController: UIViewController {
     private let depsFactory: SelectCategoryControllerDepsFactory
+    private var dataProvider: TrackerCategoryDataProvider
     private let contentView: SelectCategoryView
 
     weak var delegate: SelectCategoryControllerDelegate?
 
-    var category: TrackerCategory?
+    var currentCategory: TrackerCategory?
 
     init(
         depsFactory: SelectCategoryControllerDepsFactory,
+        dataProvider: TrackerCategoryDataProvider,
         contentView: SelectCategoryView
     ) {
         self.depsFactory = depsFactory
+        self.dataProvider = dataProvider
         self.contentView = contentView
         super.init(nibName: nil, bundle: nil)
 
+        self.dataProvider.delegate = self
         self.contentView.controller = self
 
         navigationItem.title = "Категория"
@@ -40,30 +44,47 @@ final class SelectCategoryController: UIViewController {
     }
 
     func initData(category: TrackerCategory?) {
-        self.category = category
+        self.currentCategory = category
+
+        do {
+            try dataProvider.fetchData()
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
+
         contentView.initData()
     }
 }
 
-extension SelectCategoryController: SelectCategoryViewDelegate {
-    func numberOfRows() -> Int {
-        categories.count
-    }
-
-    func category(byIndex index: Int) -> TrackerCategory {
-        categories[index]
-    }
-
-    func createClicked() {}
-
-    func completeSelect(withIndex index: Int) {
-        let category = categories[index]
-        delegate?.set(category: category)
+extension SelectCategoryController: DataProviderDelegate {
+    func dataProvider(didUpdate update: DataProviderUpdate) {
+        contentView.update(update)
     }
 }
 
-// TODO: убрать заглушку
-private let categories: [TrackerCategory] = [
-    TrackerCategory(name: "Home"),
-    TrackerCategory(name: "Work")
-]
+extension SelectCategoryController: SelectCategoryViewDelegate {
+    func numberOfRowsInSection(_ section: Int) -> Int {
+        dataProvider.numberOfRowsInSection(section)
+    }
+    func category(byIndexPath indexPath: IndexPath) -> TrackerCategory? {
+        dataProvider.object(atIndexPath: indexPath)
+    }
+    func completeSelect(withIndexPath indexPath: IndexPath) {
+        guard let category = dataProvider.object(atIndexPath: indexPath) else { return }
+        delegate?.set(category: category)
+    }
+
+    func createClicked() {
+        let createCategoryController = depsFactory.getCreateCategoryController()
+        guard let createCategoryController else { return }
+        createCategoryController.delegate = self
+        navigationController?.pushViewController(createCategoryController, animated: true)
+    }
+}
+
+extension SelectCategoryController: CreateCategoryControllerDelegate {
+    func compliteCreate(category: TrackerCategory) {
+        dataProvider.add(category)
+        navigationController?.popViewController(animated: true)
+    }
+}

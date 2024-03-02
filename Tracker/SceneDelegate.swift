@@ -1,5 +1,6 @@
 import UIKit
 import Swinject
+import CoreData
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -8,6 +9,25 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     override init() {
         super.init()
+
+        container.register(Settings.self) { _ in
+            SettingsProd()
+        }
+        .inObjectScope(.container)
+
+        container.register(NSManagedObjectContext.self) { diResolver in
+            let settings = diResolver.resolve(Settings.self)!
+
+            let container = NSPersistentContainer(name: settings.storeName)
+            container.loadPersistentStores(completionHandler: { _, error in
+                if let error = error as NSError? {
+                    fatalError("Unresolved error \(error), \(error.userInfo)")
+                }
+            })
+            return container.viewContext
+        }
+        .inObjectScope(.container)
+
         container.register(TrackerRepository.self) { _ in
             TrackerRepository()
         }
@@ -18,13 +38,20 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         .inObjectScope(.container)
 
+        container.register(TrackerCategoryDataProvider.self) { diResolver in
+            TrackerCategoryDataProviderCD(
+                cdContext: diResolver.resolve(NSManagedObjectContext.self)!
+            )
+        }
+
         container.register(CreateCategoryController.self) { _ in
             CreateCategoryController(contentView: CreateCategoryView())
         }
 
-        container.register(SelectCategoryController.self) { _ in
+        container.register(SelectCategoryController.self) { diResolver in
             SelectCategoryController(
                 depsFactory: self,
+                dataProvider: diResolver.resolve(TrackerCategoryDataProvider.self)!,
                 contentView: SelectCategoryView()
             )
         }

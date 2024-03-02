@@ -2,12 +2,12 @@ import Foundation
 import UIKit
 
 protocol SelectCategoryViewDelegate: AnyObject {
-    var category: TrackerCategory? { get set }
+    var currentCategory: TrackerCategory? { get set }
 
-    func numberOfRows() -> Int
-    func category(byIndex: Int) -> TrackerCategory
+    func numberOfRowsInSection(_ section: Int) -> Int
+    func category(byIndexPath: IndexPath) -> TrackerCategory?
 
-    func completeSelect(withIndex: Int)
+    func completeSelect(withIndexPath: IndexPath)
     func createClicked()
 }
 
@@ -47,12 +47,19 @@ final class SelectCategoryView: UIView {
         return view
     }()
 
+    private lazy var emptyListView: UIView = {
+        let view = EmptyListView(text: "Привычки и события можно\nобъединить по смыслу")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     init() {
         super.init(frame: .zero)
         backgroundColor = .ypWhite
 
         addSubview(categoriesTable)
         addSubview(createButton)
+        addSubview(emptyListView)
 
         NSLayoutConstraint.activate([
             categoriesTable.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
@@ -60,11 +67,15 @@ final class SelectCategoryView: UIView {
             categoriesTable.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
             categoriesTable.bottomAnchor.constraint(equalTo: createButton.topAnchor),
 
+            emptyListView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            emptyListView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor),
+            emptyListView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20),
+            emptyListView.bottomAnchor.constraint(equalTo: createButton.topAnchor),
+
             createButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
             createButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             createButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20)
         ])
-
     }
 
     required init?(coder: NSCoder) {
@@ -73,17 +84,44 @@ final class SelectCategoryView: UIView {
 
     func initData() {
         categoriesTable.reloadData()
+        setEmptyListState()
+    }
+
+    func update(_ update: DataProviderUpdate) {
+        categoriesTable.performBatchUpdates {
+            let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
+            let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: 0) }
+            let updatedIndexPaths = update.updatedIndexes.map { IndexPath(item: $0, section: 0) }
+            categoriesTable.insertRows(at: insertedIndexPaths, with: .automatic)
+            categoriesTable.deleteRows(at: deletedIndexPaths, with: .automatic)
+            categoriesTable.reloadRows(at: updatedIndexPaths, with: .automatic)
+            for move in update.movedIndexes {
+                categoriesTable.moveRow(
+                    at: IndexPath(item: move.oldIndex, section: 0),
+                    to: IndexPath(item: move.newIndex, section: 0)
+                )
+            }
+        }
+        setEmptyListState()
     }
 
     @objc
     private func createClicked() {
         controller?.createClicked()
     }
+
+    private func setEmptyListState() {
+        if controller?.numberOfRowsInSection(0) == 0 {
+            emptyListView.isHidden = false
+        } else {
+            emptyListView.isHidden = true
+        }
+    }
 }
 
 extension SelectCategoryView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        controller?.numberOfRows() ?? 0
+        controller?.numberOfRowsInSection(section) ?? 0
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -91,26 +129,23 @@ extension SelectCategoryView: UITableViewDataSource {
             withIdentifier: CategoryCell.reuseIdentifier,
             for: indexPath
         ) as? CategoryCell
-        guard let cell, let controller else { return UITableViewCell() }
+        guard
+            let cell,
+            let controller,
+            let category = controller.category(byIndexPath: indexPath)
+        else { return UITableViewCell() }
 
-        let category = controller.category(byIndex: indexPath.row)
-
-        var rowPosition: RowPosition
-        if indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 {
-            rowPosition = .last
-        } else if indexPath.row == 0 {
-            rowPosition = .first
-        } else {
-            rowPosition = .other
-        }
-
+        let rowPosition = RowPosition(
+            isFirst: indexPath.row == 0,
+            isLast: indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
+        )
         cell.delegate = self
-        cell.initData(category: category, isSelected: controller.category == category, rowPosition: rowPosition)
+        cell.initData(category: category, isSelected: controller.currentCategory == category, rowPosition: rowPosition)
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        controller?.completeSelect(withIndex: indexPath.row)
+        controller?.completeSelect(withIndexPath: indexPath)
     }
 }
 
@@ -184,23 +219,25 @@ final class CategoryCell: UITableViewCell {
         rowLable.text = category.name
         selectedImage.isHidden = !isSelected
 
-        let radius: CGFloat
-        let corners: UIRectCorner
-        switch rowPosition {
-        case .first:
-            radius = 16
-            corners = [.topLeft, .topRight]
-        case .last:
-            radius = 16
-            corners = [.bottomLeft, .bottomRight]
-        case .other:
-            radius = 0
-            corners = []
-        }
-        roundCorners(corners: corners, radius: radius)
+        let radius: CGFloat = rowPosition.isFirst || rowPosition.isLast ? 16 : 0
+        roundCorners(corners: rowPosition.toCorners(), radius: radius)
     }
 }
 
-enum RowPosition {
-    case first, last, other
+struct RowPosition {
+    let isFirst: Bool
+    let isLast: Bool
+
+    func toCorners() -> UIRectCorner {
+        switch (isFirst, isLast) {
+        case (true, true):
+            return [.topLeft, .topRight, .bottomLeft, .bottomRight]
+        case (true, false):
+            return [.topLeft, .topRight]
+        case (false, true):
+            return [.bottomLeft, .bottomRight]
+        default:
+            return []
+        }
+    }
 }
