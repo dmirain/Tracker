@@ -60,11 +60,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             SelectScheduleController(contentView: SelectScheduleView())
         }
 
-        container.register(EditTrackerController.self) { diResolver in
+        container.register(EditTrackerController.self) { _ in
             EditTrackerController(
                 depsFactory: self,
-                contentView: EditTrackerView(),
-                trackerRepository: diResolver.resolve(TrackerRepository.self)!
+                contentView: EditTrackerView()
             )
         }
 

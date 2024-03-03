@@ -9,19 +9,16 @@ protocol EditTrackerControllerDepsFactory {
 final class EditTrackerController: UIViewController {
     private let depsFactory: EditTrackerControllerDepsFactory
     private let contentView: EditTrackerView
-    private let trackerRepository: TrackerRepository
 
     private weak var parentDelegate: AddParentDelegateProtocol?
     private(set) var editTrackerViewModel = EditTrackerViewModel(type: .event, selectedDate: DateWoTime())
 
     init(
         depsFactory: EditTrackerControllerDepsFactory,
-        contentView: EditTrackerView,
-        trackerRepository: TrackerRepository
+        contentView: EditTrackerView
     ) {
         self.depsFactory = depsFactory
         self.contentView = contentView
-        self.trackerRepository = trackerRepository
 
         super.init(nibName: nil, bundle: nil)
 
@@ -74,14 +71,10 @@ extension EditTrackerController: EditTrackerViewDelegat {
         switch action {
         case .save:
             let tracker = editTrackerViewModel.toTracker()
-            if let tracker {
-                trackerRepository.create(tracker)
-            }
+            parentDelegate?.compleateAdd(action: action, newTracker: tracker)
         case .cancel:
-            break
+            parentDelegate?.compleateAdd(action: action, newTracker: nil)
         }
-
-        parentDelegate?.compleateAdd(action: action)
     }
     func nameChanged(_ name: String) {
         editTrackerViewModel.name = name

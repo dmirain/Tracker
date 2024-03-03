@@ -89,10 +89,13 @@ extension TrackerViewController: TrackerListViewDelegate {
 }
 
 extension TrackerViewController: AddParentDelegateProtocol {
-    func compleateAdd(action: EditAction) {
+    func compleateAdd(action: EditAction, newTracker: Tracker?) {
         switch action {
         case .save:
-            refreshData()
+            if let newTracker {
+                trackerRepository.create(newTracker)
+                refreshData()
+            }
         case .cancel:
             break
         }

@@ -49,9 +49,6 @@ final class TrackerRepository {
     }
 }
 
-
-
-import Foundation
 import CoreData
 
 protocol TrackerStore {
@@ -76,9 +73,9 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \TrackerCD.name, ascending: true)
         ]
-        
+
         fetchRequest.predicate = predicate(with: filter)
-        
+
         let controller = NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: cdContext,
@@ -87,11 +84,11 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         )
         try super.fetchData(controller: controller)
     }
-        
+
     private func predicate(with filter: FilterParams) -> NSPredicate? {
         var predicateFormats: [String] = []
         var predicareArgs: [Any] = []
-        
+
         if let date = filter.date {
             let weekDay = WeekDaySet.from(date: date)
             predicateFormats.append("((%K & %i) != 0 OR %K == %@)")
@@ -111,7 +108,7 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         }
 
         if predicateFormats.isEmpty { return nil }
-        
+
         return NSPredicate(format: predicateFormats.joined(separator: " AND "), argumentArray: predicareArgs)
     }
 }
@@ -133,7 +130,7 @@ extension Tracker: CDStorableObject {
 
 extension TrackerCD: CDObject {
     func toEntity() -> Tracker? {
-        guard 
+        guard
             let id,
             let name,
             let type,
@@ -141,10 +138,10 @@ extension TrackerCD: CDObject {
             let category,
             let category = category.toEntity()
         else { return nil }
-        
+
         let schedule = WeekDaySet(rawValue: Int(schedule))
         let eventDate = eventDate == nil ? nil : DateWoTime(eventDate!)
-        
+
         return Tracker(
             id: id,
             type: type,
