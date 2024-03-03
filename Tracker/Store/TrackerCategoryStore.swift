@@ -13,7 +13,7 @@ protocol TrackerCategoryStore {
 }
 
 final class TrackerCategoryStoreCD: BaseCDStore<TrackerCategoryCD>, TrackerCategoryStore {
-    override func initController() -> NSFetchedResultsController<TrackerCategoryCD> {
+    func fetchData() throws {
         let fetchRequest = TrackerCategoryCD.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \TrackerCategoryCD.name, ascending: true)
@@ -24,7 +24,7 @@ final class TrackerCategoryStoreCD: BaseCDStore<TrackerCategoryCD>, TrackerCateg
             sectionNameKeyPath: nil,
             cacheName: nil
         )
-        return controller
+        try super.fetchData(controller: controller)
     }
 }
 

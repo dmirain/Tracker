@@ -75,16 +75,11 @@ class BaseCDStore<StoredObject: CDObject>: NSObject, NSFetchedResultsControllerD
         super.init()
     }
 
-    func fetchData() throws {
-        let controller = initController()
+    func fetchData(controller: NSFetchedResultsController<StoredObject>) throws {
         controller.delegate = self
         try controller.performFetch()
 
         self.fetchedResultsController = controller
-    }
-
-    func initController() -> NSFetchedResultsController<StoredObject> {
-        preconditionFailure("This method must be overridden")
     }
 
     func numberOfRowsInSection(_ section: Int) -> Int {
