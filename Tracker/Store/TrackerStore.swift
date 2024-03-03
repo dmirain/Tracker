@@ -1,61 +1,15 @@
 import Foundation
-
-var trackersStorage: [Tracker] = [
-    Tracker(
-        id: UUID(),
-        type: .habit,
-        name: "Test habit",
-        category: TrackerCategory(id: UUID(), name: "Home"),
-        schedule: .monday,
-        eventDate: nil,
-        emojiIndex: 1,
-        colorIndex: 2
-    ),
-    Tracker(
-        id: UUID(),
-        type: .event,
-        name: "Test event",
-        category: TrackerCategory(id: UUID(), name: "Work"),
-        schedule: [],
-        eventDate: DateWoTime(),
-        emojiIndex: 4,
-        colorIndex: 7
-    )
-]
-
-final class TrackerRepository {
-
-    func create(_ new: Tracker) {
-        trackersStorage.append(new)
-    }
-
-    func filter(byDate date: DateWoTime? = nil, byName name: String? = nil) -> [Tracker] {
-        var result = trackersStorage
-
-        if let date {
-            let weekDay = WeekDaySet.from(date: date)
-            result = result.filter { tracker in
-                tracker.schedule.contains(weekDay) || tracker.eventDate == date
-            }
-        }
-
-        if let name {
-            result = result.filter { tracker in
-                tracker.name.contains(name)
-            }
-        }
-
-        return result
-    }
-}
-
 import CoreData
 
 protocol TrackerStore {
     var delegate: StoreDelegate? { get set }
+    var numberOfSections: Int { get }
+
+    func toggleComplete(at indexPath: IndexPath, on selectedDate: DateWoTime)
 
     func fetchData(with filter: FilterParams) throws
     func numberOfRowsInSection(_ section: Int) -> Int
+    func sectionName(_ section: Int) -> String
     func object(atIndexPath: IndexPath) -> Tracker?
     func add(_ record: Tracker)
     func delete(at indexPath: IndexPath)
@@ -63,14 +17,36 @@ protocol TrackerStore {
 }
 
 struct FilterParams {
-    let date: DateWoTime? = nil
-    let name: String? = nil
+    let date: DateWoTime?
+    let name: String?
 }
 
 final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
+    func toggleComplete(at indexPath: IndexPath, on selectedDate: DateWoTime) {
+        guard let trackerCD = cdObject(atIndexPath: indexPath) else { return }
+
+        let recordCD = trackerCD.records?.first(where: {
+            guard let record = $0 as? TrackerRecordCD, let recordDate = record.date else { return false }
+            return DateWoTime(recordDate) == selectedDate
+        }) as? TrackerRecordCD
+
+        if let recordCD {
+            trackerCD.removeFromRecords(recordCD)
+            cdContext.delete(recordCD)
+        } else {
+            var newRecord = TrackerRecordCD(context: cdContext)
+            newRecord.id = UUID()
+            newRecord.date = selectedDate.value
+            trackerCD.addToRecords(newRecord)
+        }
+
+        save()
+    }
+
     func fetchData(with filter: FilterParams) throws {
         let fetchRequest = TrackerCD.fetchRequest()
         fetchRequest.sortDescriptors = [
+            NSSortDescriptor(keyPath: \TrackerCD.category?.name, ascending: true),
             NSSortDescriptor(keyPath: \TrackerCD.name, ascending: true)
         ]
 
@@ -79,7 +55,7 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         let controller = NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: cdContext,
-            sectionNameKeyPath: nil,
+            sectionNameKeyPath: "category.name",
             cacheName: nil
         )
         try super.fetchData(controller: controller)
@@ -91,25 +67,26 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
 
         if let date = filter.date {
             let weekDay = WeekDaySet.from(date: date)
-            predicateFormats.append("((%K & %i) != 0 OR %K == %@)")
+            predicateFormats.append("((%K & %ld) != 0 OR %K == %@)")
             predicareArgs.append(contentsOf: [
-                \TrackerCD.schedule,
+                #keyPath(TrackerCD.schedule),
                 weekDay.rawValue,
-                \TrackerCD.eventDate,
-                date
+                #keyPath(TrackerCD.eventDate),
+                date.value
             ])
         }
         if let name = filter.name {
             predicateFormats.append("%K CONTAINS[n] %@")
             predicareArgs.append(contentsOf: [
-                \TrackerCD.name,
+                #keyPath(TrackerCD.name),
                 name
             ])
         }
 
         if predicateFormats.isEmpty { return nil }
 
-        return NSPredicate(format: predicateFormats.joined(separator: " AND "), argumentArray: predicareArgs)
+        let format = predicateFormats.joined(separator: " AND ")
+        return NSPredicate(format: format, argumentArray: predicareArgs)
     }
 }
 
@@ -119,12 +96,21 @@ extension Tracker: CDStorableObject {
         cdObj.id = id
         cdObj.name = name
         cdObj.type = type.rawValue
-        cdObj.category = category.toCD(context: context)
+        cdObj.category = findCategory(context: context)
         cdObj.schedule = Int32(schedule.rawValue)
         cdObj.eventDate = eventDate?.value
         cdObj.emojiIndex = Int32(emojiIndex)
         cdObj.colorIndex = Int32(colorIndex)
         return cdObj
+    }
+
+    private func findCategory(context: NSManagedObjectContext) -> TrackerCategoryCD {
+        let request = TrackerCategoryCD.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", argumentArray: [category.id])
+        guard let result = (try? context.fetch(request))?.first else {
+            return category.toCD(context: context)
+        }
+        return result
     }
 }
 
@@ -150,7 +136,32 @@ extension TrackerCD: CDObject {
             schedule: schedule,
             eventDate: eventDate,
             emojiIndex: Int(emojiIndex),
-            colorIndex: Int(colorIndex)
+            colorIndex: Int(colorIndex),
+            records: self.records?
+                .map {
+                    guard let record = $0 as? TrackerRecordCD else { return nil }
+                    return record.toEntity()
+                }
+                .compactMap { $0 } ?? []
+        )
+    }
+}
+
+extension TrackerRecord: CDStorableObject {
+    func toCD(context: NSManagedObjectContext) -> TrackerRecordCD {
+        let cdObj = TrackerRecordCD(context: context)
+        cdObj.id = id
+        cdObj.date = date.value
+        return cdObj
+    }
+}
+
+extension TrackerRecordCD: CDObject {
+    func toEntity() -> TrackerRecord? {
+        guard let id, let date else { return nil }
+        return TrackerRecord(
+            id: id,
+            date: DateWoTime(date)
         )
     }
 }

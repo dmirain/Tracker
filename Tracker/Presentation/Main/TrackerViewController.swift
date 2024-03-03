@@ -11,27 +11,22 @@ final class TrackerViewController: UIViewController {
     private let depsFactory: TrackerViewControllerDepsFactory
     private let contentView: TrackerListView
     private var addTrackerNavControllet: UINavigationController?
-    private let trackerRepository: TrackerRepository
-    private let trackerRecordRepository: TrackerRecordRepository
+    private var trackerStore: TrackerStore
 
-    private var trackerListViewModel = TrackerListViewModel(
-        selectedDate: DateWoTime(),
-        searchQuery: nil
-    )
+    private var selectedDate = DateWoTime()
 
     init(
         depsFactory: TrackerViewControllerDepsFactory,
         contentView: TrackerListView,
-        trackerRepository: TrackerRepository,
-        trackerRecordRepository: TrackerRecordRepository
+        trackerStore: TrackerStore
     ) {
         self.depsFactory = depsFactory
         self.contentView = contentView
-        self.trackerRepository = trackerRepository
-        self.trackerRecordRepository = trackerRecordRepository
+        self.trackerStore = trackerStore
 
         super.init(nibName: nil, bundle: nil)
 
+        self.trackerStore.delegate = self
         self.contentView.controller = self
     }
 
@@ -49,25 +44,43 @@ final class TrackerViewController: UIViewController {
     }
 
     func refreshData() {
-        let trackers = trackerRepository.filter(
-            byDate: trackerListViewModel.selectedDate,
-            byName: trackerListViewModel.searchQuery
-        )
-        let completedTrackers = trackerRecordRepository.filter(trackers: trackers)
-        trackerListViewModel.updateTrackersData(trackers: trackers, completedTrackers: completedTrackers)
-        contentView.reload()
+        do {
+            try trackerStore.fetchData(with: FilterParams(date: selectedDate, name: nil))
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
+        contentView.reloadData()
     }
 }
 
 extension TrackerViewController: TrackerListViewDelegate {
-    var viewModel: TrackerListViewModel {
-        trackerListViewModel
+    func numberOfSections() -> Int {
+        trackerStore.numberOfSections
+    }
+
+    func numberOfRowsInSection(_ section: Int) -> Int {
+        trackerStore.numberOfRowsInSection(section)
+    }
+
+    func tracker(byIndexPath: IndexPath) -> TrackerViewModel? {
+        guard let tracker = trackerStore.object(atIndexPath: byIndexPath) else { return nil }
+
+        return TrackerViewModel(
+            tracker: tracker,
+            complitionsCount: tracker.records.count,
+            isComplited: tracker.records.contains { $0.date == selectedDate },
+            selectedDate: selectedDate
+        )
+    }
+
+    func sectionTitle(_ section: Int) -> String {
+        trackerStore.sectionName(section)
     }
 
     func addTrackerClicked() {
         let addTrackerController = depsFactory.getAddController(
             parentDelegate: self,
-            selectedDate: trackerListViewModel.selectedDate
+            selectedDate: selectedDate
         )
 
         guard let addTrackerController else { return }
@@ -78,13 +91,12 @@ extension TrackerViewController: TrackerListViewDelegate {
     }
 
     func dateSelected(date: DateWoTime) {
-        trackerListViewModel.selectedDate = date
+        selectedDate = date
         refreshData()
     }
 
-    func toggleComplete(_ tracker: Tracker) {
-        trackerRecordRepository.toggleComplete(tracker, on: trackerListViewModel.selectedDate)
-        refreshData()
+    func toggleComplete(at indexPath: IndexPath) {
+        trackerStore.toggleComplete(at: indexPath, on: selectedDate)
     }
 }
 
@@ -93,13 +105,18 @@ extension TrackerViewController: AddParentDelegateProtocol {
         switch action {
         case .save:
             if let newTracker {
-                trackerRepository.create(newTracker)
-                refreshData()
+                trackerStore.add(newTracker)
             }
         case .cancel:
             break
         }
         addTrackerNavControllet?.dismiss(animated: true)
         addTrackerNavControllet = nil
+    }
+}
+
+extension TrackerViewController: StoreDelegate {
+    func store(didUpdate update: StoreUpdate) {
+        contentView.update(update)
     }
 }

@@ -89,16 +89,13 @@ final class SelectCategoryView: UIView {
 
     func update(_ update: StoreUpdate) {
         categoriesTable.performBatchUpdates {
-            let insertedIndexPaths = update.insertedIndexes.map { IndexPath(item: $0, section: 0) }
-            let deletedIndexPaths = update.deletedIndexes.map { IndexPath(item: $0, section: 0) }
-            let updatedIndexPaths = update.updatedIndexes.map { IndexPath(item: $0, section: 0) }
-            categoriesTable.insertRows(at: insertedIndexPaths, with: .automatic)
-            categoriesTable.deleteRows(at: deletedIndexPaths, with: .automatic)
-            categoriesTable.reloadRows(at: updatedIndexPaths, with: .automatic)
-            for move in update.movedIndexes {
+            categoriesTable.insertRows(at: Array(update.insertedItems), with: .automatic)
+            categoriesTable.deleteRows(at: Array(update.deletedItems), with: .automatic)
+            categoriesTable.reloadRows(at: Array(update.updatedItems), with: .automatic)
+            for move in update.movedItems {
                 categoriesTable.moveRow(
-                    at: IndexPath(item: move.oldIndex, section: 0),
-                    to: IndexPath(item: move.newIndex, section: 0)
+                    at: move.oldIndex,
+                    to: move.newIndex
                 )
             }
         }

@@ -28,13 +28,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         .inObjectScope(.container)
 
-        container.register(TrackerRepository.self) { _ in
-            TrackerRepository()
-        }
-        .inObjectScope(.container)
-
-        container.register(TrackerRecordRepository.self) { _ in
-            TrackerRecordRepository()
+        container.register(TrackerStore.self) { diResolver in
+            TrackerStoreCD(
+                cdContext: diResolver.resolve(NSManagedObjectContext.self)!
+            )
         }
         .inObjectScope(.container)
 
@@ -79,8 +76,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             TrackerViewController(
                 depsFactory: self,
                 contentView: TrackerListView(),
-                trackerRepository: diResolver.resolve(TrackerRepository.self)!,
-                trackerRecordRepository: diResolver.resolve(TrackerRecordRepository.self)!
+                trackerStore: diResolver.resolve(TrackerStore.self)!
             )
         }
 

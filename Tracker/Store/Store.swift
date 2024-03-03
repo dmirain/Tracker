@@ -5,48 +5,6 @@ protocol StoreDelegate: AnyObject {
     func store(didUpdate update: StoreUpdate)
 }
 
-struct Move: Hashable {
-    let oldIndex: Int
-    let newIndex: Int
-}
-
-protocol StoreUpdateProtocol {
-    var insertedIndexes: IndexSet { get }
-    var deletedIndexes: IndexSet { get }
-    var updatedIndexes: IndexSet { get }
-    var movedIndexes: Set<Move> { get }
-}
-
-class StoreUpdateCollector: StoreUpdateProtocol {
-    var insertedIndexes: IndexSet = []
-    var deletedIndexes: IndexSet = []
-    var updatedIndexes: IndexSet = []
-    var movedIndexes: Set<Move> = []
-
-    func clean() {
-        insertedIndexes = []
-        deletedIndexes = []
-        updatedIndexes = []
-        movedIndexes = []
-    }
-
-    func toStoreUpdate() -> StoreUpdate {
-        StoreUpdate(
-            insertedIndexes: insertedIndexes,
-            deletedIndexes: deletedIndexes,
-            updatedIndexes: updatedIndexes,
-            movedIndexes: movedIndexes
-        )
-    }
-}
-
-struct StoreUpdate: StoreUpdateProtocol {
-    let insertedIndexes: IndexSet
-    let deletedIndexes: IndexSet
-    let updatedIndexes: IndexSet
-    let movedIndexes: Set<Move>
-}
-
 protocol CDObject: NSManagedObject {
     associatedtype StorableObject: CDStorableObject
     func toEntity() -> StorableObject?
@@ -64,14 +22,12 @@ class BaseCDStore<StoredObject: CDObject>: NSObject, NSFetchedResultsControllerD
     private var fetchedResultsController: NSFetchedResultsController<StoredObject>?
     private var update = StoreUpdateCollector()
 
-    private var objects: [StoredObject.StorableObject] {
-        guard let ctl = fetchedResultsController, let objects = ctl.fetchedObjects else { return [] }
-        return objects.map { $0.toEntity() }.compactMap { $0 }
+    var numberOfSections: Int {
+        fetchedResultsController?.sections?.count ?? 0
     }
 
     init(cdContext: NSManagedObjectContext) {
         self.cdContext = cdContext
-
         super.init()
     }
 
@@ -83,11 +39,19 @@ class BaseCDStore<StoredObject: CDObject>: NSObject, NSFetchedResultsControllerD
     }
 
     func numberOfRowsInSection(_ section: Int) -> Int {
-        objects.count
+        fetchedResultsController?.sections?[section].numberOfObjects ?? 0
+    }
+
+    func sectionName(_ section: Int) -> String {
+        fetchedResultsController?.sections?[section].name ?? ""
     }
 
     func object(atIndexPath: IndexPath) -> StoredObject.StorableObject? {
-        objects[atIndexPath.row]
+        cdObject(atIndexPath: atIndexPath)?.toEntity()
+    }
+
+    func cdObject(atIndexPath: IndexPath) -> StoredObject? {
+        fetchedResultsController?.object(at: atIndexPath)
     }
 
     func add(_ record: StoredObject.StorableObject) {
@@ -102,7 +66,7 @@ class BaseCDStore<StoredObject: CDObject>: NSObject, NSFetchedResultsControllerD
     }
     func update(at indexPath: IndexPath) {}
 
-    private func save() {
+    func save() {
         if cdContext.hasChanges {
             do {
                 try cdContext.save()
@@ -132,16 +96,36 @@ class BaseCDStore<StoredObject: CDObject>: NSObject, NSFetchedResultsControllerD
         switch type {
         case .insert:
             guard let indexPath = newIndexPath else { return }
-            update.insertedIndexes.insert(indexPath.item)
+            update.insertedItems.insert(indexPath)
         case .delete:
             guard let indexPath else { return }
-            update.deletedIndexes.insert(indexPath.item)
+            update.deletedItems.insert(indexPath)
         case .update:
             guard let indexPath else { return }
-            update.updatedIndexes.insert(indexPath.item)
+            update.updatedItems.insert(indexPath)
         case .move:
             guard let oldIndexPath = indexPath, let newIndexPath else { return }
-            update.movedIndexes.insert(.init(oldIndex: oldIndexPath.item, newIndex: newIndexPath.item))
+            update.movedItems.insert(.init(oldIndex: oldIndexPath, newIndex: newIndexPath))
+        @unknown default:
+            return
+        }
+    }
+
+    func controller(
+        _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+        didChange sectionInfo: NSFetchedResultsSectionInfo,
+        atSectionIndex sectionIndex: Int,
+        for type: NSFetchedResultsChangeType
+    ) {
+        switch type {
+        case .insert:
+            update.insertedSections.insert(sectionIndex)
+        case .delete:
+            update.deletedSections.insert(sectionIndex)
+        case .update:
+            update.updatedSections.insert(sectionIndex)
+        case .move:
+            return
         @unknown default:
             return
         }

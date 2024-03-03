@@ -157,7 +157,7 @@ final class TrackerListCell: UICollectionViewCell {
 
     @objc
     private func compliteButtonClicked() {
-        guard let delegate, let trackerViewModel else { return }
-        delegate.toggleComplete(trackerViewModel.tracker)
+        guard let delegate else { return }
+        delegate.toggleComplete(self)
     }
 }

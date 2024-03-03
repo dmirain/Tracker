@@ -48,7 +48,8 @@ class EditTrackerViewModel {
             schedule: schedule,
             eventDate: eventDate,
             emojiIndex: emojiIndex,
-            colorIndex: colorIndex
+            colorIndex: colorIndex,
+            records: []
         )
     }
 }
