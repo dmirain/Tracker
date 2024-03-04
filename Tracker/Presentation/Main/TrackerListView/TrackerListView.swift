@@ -153,6 +153,7 @@ final class TrackerListView: UIView {
 
     func reloadData() {
         collectionView.reloadData()
+        setEmptyListState()
     }
 
     func setEmptyListState() {
