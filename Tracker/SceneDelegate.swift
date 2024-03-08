@@ -1,5 +1,6 @@
 import UIKit
 import Swinject
+import CoreData
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
@@ -8,50 +9,74 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     override init() {
         super.init()
-        container.register(TrackerRepository.self) { _ in
-            TrackerRepository()
-        }
-        container.register(TrackerRecordRepository.self) { _ in
-            TrackerRecordRepository()
-        }
 
-        container.register(SelectScheduleView.self) { _ in
-            SelectScheduleView()
+        container.register(Settings.self) { _ in
+            SettingsProd()
         }
-        container.register(SelectScheduleController.self) { diResolver in
-            SelectScheduleController(contentView: diResolver.resolve(SelectScheduleView.self)!)
-        }
+        .inObjectScope(.container)
 
-        container.register(EditTrackerView.self) { _ in
-            EditTrackerView()
+        container.register(NSManagedObjectContext.self) { diResolver in
+            let settings = diResolver.resolve(Settings.self)!
+
+            let container = NSPersistentContainer(name: settings.storeName)
+            container.loadPersistentStores(completionHandler: { _, error in
+                if let error = error as NSError? {
+                    fatalError("Unresolved error \(error), \(error.userInfo)")
+                }
+            })
+            return container.viewContext
         }
-        container.register(EditTrackerController.self) { diResolver in
-            EditTrackerController(
-                contentView: diResolver.resolve(EditTrackerView.self)!,
-                selectScheduleController: diResolver.resolve(SelectScheduleController.self)!,
-                trackerRepository: diResolver.resolve(TrackerRepository.self)!
+        .inObjectScope(.container)
+
+        container.register(TrackerStore.self) { diResolver in
+            TrackerStoreCD(
+                cdContext: diResolver.resolve(NSManagedObjectContext.self)!
+            )
+        }
+        .inObjectScope(.container)
+
+        container.register(TrackerCategoryStore.self) { diResolver in
+            TrackerCategoryStoreCD(
+                cdContext: diResolver.resolve(NSManagedObjectContext.self)!
             )
         }
 
-        container.register(AddTrackerView.self) { _ in
-            AddTrackerView()
+        container.register(CreateCategoryController.self) { _ in
+            CreateCategoryController(contentView: CreateCategoryView())
         }
+
+        container.register(SelectCategoryController.self) { diResolver in
+            SelectCategoryController(
+                depsFactory: self,
+                store: diResolver.resolve(TrackerCategoryStore.self)!,
+                contentView: SelectCategoryView()
+            )
+        }
+
+        container.register(SelectScheduleController.self) { _ in
+            SelectScheduleController(contentView: SelectScheduleView())
+        }
+
+        container.register(EditTrackerController.self) { _ in
+            EditTrackerController(
+                depsFactory: self,
+                contentView: EditTrackerView()
+            )
+        }
+
         container.register(AddTrackerController.self) { diResolver in
             AddTrackerController(
-                contentView: diResolver.resolve(AddTrackerView.self)!,
+                contentView: AddTrackerView(),
                 editTrackerController: diResolver.resolve(EditTrackerController.self)!
             )
         }
+        .inObjectScope(.transient)
 
-        container.register(TrackerListView.self) { _ in
-            TrackerListView()
-        }
         container.register(TrackerViewController.self) { diResolver in
             TrackerViewController(
-                contentView: diResolver.resolve(TrackerListView.self)!,
-                addTrackerController: diResolver.resolve(AddTrackerController.self)!,
-                trackerRepository: diResolver.resolve(TrackerRepository.self)!,
-                trackerRecordRepository: diResolver.resolve(TrackerRecordRepository.self)!
+                depsFactory: self,
+                contentView: TrackerListView(),
+                trackerStore: diResolver.resolve(TrackerStore.self)!
             )
         }
 
@@ -83,4 +108,31 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillResignActive(_ scene: UIScene) {}
     func sceneWillEnterForeground(_ scene: UIScene) {}
     func sceneDidEnterBackground(_ scene: UIScene) {}
+}
+
+extension SceneDelegate: TrackerViewControllerDepsFactory {
+    func getAddController(
+        parentDelegate: AddParentDelegateProtocol,
+        selectedDate: DateWoTime
+    ) -> AddTrackerController? {
+        let addTrackerController = container.resolve(AddTrackerController.self)
+        addTrackerController?.initData(parentDelegate: parentDelegate, selectedDate: selectedDate)
+        return addTrackerController
+    }
+}
+
+extension SceneDelegate: EditTrackerControllerDepsFactory {
+    func getSelectScheduleController() -> SelectScheduleController? {
+        container.resolve(SelectScheduleController.self)
+    }
+
+    func getSelectCategoryController() -> SelectCategoryController? {
+        container.resolve(SelectCategoryController.self)
+    }
+}
+
+extension SceneDelegate: SelectCategoryControllerDepsFactory {
+    func getCreateCategoryController() -> CreateCategoryController? {
+        container.resolve(CreateCategoryController.self)
+    }
 }

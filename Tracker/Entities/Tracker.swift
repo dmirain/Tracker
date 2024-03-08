@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 private let trackerColors: [UIColor] = [
@@ -37,6 +36,7 @@ struct Tracker: Codable, Identifiable, Hashable {
     let eventDate: DateWoTime?
     let emojiIndex: Int
     let colorIndex: Int
+    let records: [TrackerRecord]
 
     var emoji: String { Self.emoji(byIndex: emojiIndex) }
     var color: UIColor { Self.color(byIndex: colorIndex) }

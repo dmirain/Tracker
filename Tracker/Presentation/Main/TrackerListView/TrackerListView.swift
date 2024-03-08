@@ -1,10 +1,14 @@
 import UIKit
 
 protocol TrackerListViewDelegate: AnyObject {
-    var viewModel: TrackerListViewModel { get }
     func addTrackerClicked()
     func dateSelected(date: DateWoTime)
-    func toggleComplete(_ tracker: Tracker)
+    func toggleComplete(at indexPath: IndexPath)
+
+    func numberOfSections() -> Int
+    func numberOfRowsInSection(_ section: Int) -> Int
+    func tracker(byIndexPath: IndexPath) -> TrackerViewModel?
+    func sectionTitle(_ section: Int) -> String
 }
 
 final class TrackerListView: UIView {
@@ -66,7 +70,7 @@ final class TrackerListView: UIView {
     }()
 
     private lazy var emptyListView: UIView = {
-        let view = EmptyListView()
+        let view = EmptyListView(text: "Что будем отслеживать?")
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -129,6 +133,42 @@ final class TrackerListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func update(_ update: StoreUpdate) {
+        collectionView.performBatchUpdates {
+            collectionView.insertSections(update.insertedSections)
+            collectionView.deleteSections(update.deletedSections)
+
+            collectionView.insertItems(at: Array(update.insertedItems))
+            collectionView.deleteItems(at: Array(update.deletedItems))
+            collectionView.reloadItems(at: Array(update.updatedItems))
+            for move in update.movedItems {
+                collectionView.moveItem(
+                    at: move.oldIndex,
+                    to: move.newIndex
+                )
+            }
+        }
+        setEmptyListState()
+    }
+
+    func reloadData() {
+        collectionView.reloadData()
+        setEmptyListState()
+    }
+
+    func setEmptyListState() {
+        if controller?.numberOfSections() ?? 0 == 0 {
+            emptyListView.isHidden = false
+        } else {
+            emptyListView.isHidden = true
+        }
+    }
+
+    func toggleComplete(_ cell: UICollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        controller?.toggleComplete(at: indexPath)
+    }
+
     @objc
     private func addTrackerClicked() {
         controller?.addTrackerClicked()
@@ -138,28 +178,15 @@ final class TrackerListView: UIView {
     private func dateSelected(_ sender: UIDatePicker) {
         controller?.dateSelected(date: DateWoTime(sender.date))
     }
-
-    func reload() {
-        if controller?.viewModel.numberOfCategories ?? 0 == 0 {
-            emptyListView.isHidden = false
-        } else {
-            emptyListView.isHidden = true
-            collectionView.reloadData()
-        }
-    }
-
-    func toggleComplete(_ tracker: Tracker) {
-        controller?.toggleComplete(tracker)
-    }
 }
 
 extension TrackerListView: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        controller?.viewModel.numberOfCategories ?? 0
+        controller?.numberOfSections() ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        controller?.viewModel.numberOfTrackersInCategory(byIndex: section) ?? 0
+        controller?.numberOfRowsInSection(section) ?? 0
     }
 
     func collectionView(
@@ -171,10 +198,13 @@ extension TrackerListView: UICollectionViewDataSource {
             for: indexPath
         ) as? TrackerListCell
 
-        guard let cell, let viewModel = controller?.viewModel else { return UICollectionViewCell() }
+        guard
+            let cell,
+            let controller,
+            let trackerViewModel = controller.tracker(byIndexPath: indexPath)
+        else { return UICollectionViewCell() }
 
         cell.delegate = self
-        let trackerViewModel = viewModel.tracker(byIndexPath: indexPath)
         cell.initData(trackerViewModel: trackerViewModel)
 
         return cell
@@ -185,7 +215,7 @@ extension TrackerListView: UICollectionViewDataSource {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        let sectionTitle = controller?.viewModel.categoryName(byIndex: indexPath.section) ?? ""
+        let sectionTitle = controller?.sectionTitle(indexPath.section) ?? ""
 
         guard !sectionTitle.isEmpty && kind == UICollectionView.elementKindSectionHeader else {
             return UICollectionReusableView()

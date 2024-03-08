@@ -1,4 +1,3 @@
-import Foundation
 import UIKit
 
 protocol SelectScheduleViewDelegate: AnyObject {
@@ -105,7 +104,7 @@ extension SelectScheduleView: UITableViewDelegate {
 }
 
 final class DaySwitchCell: UITableViewCell {
-    static let reuseIdentifier = "NameCell"
+    static let reuseIdentifier = "DaySwitchCell"
 
     weak var delegate: SelectScheduleView?
 

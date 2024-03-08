@@ -1,6 +1,7 @@
 import UIKit
 
 final class EmptyListView: UIView {
+    private let text: String
 
     private lazy var image: UIImageView = {
         let view = UIImageView()
@@ -16,7 +17,9 @@ final class EmptyListView: UIView {
     private lazy var lable: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = "Что будем отслеживать?"
+        view.numberOfLines = 2
+        view.textAlignment = .center
+        view.text = text
         view.textColor = .ypBlack
         view.font = view.font.withSize(12)
         return view
@@ -32,7 +35,9 @@ final class EmptyListView: UIView {
         return view
     }()
 
-    init() {
+    init(text: String) {
+        self.text = text
+
         super.init(frame: .zero)
 
         backgroundColor = .ypWhite

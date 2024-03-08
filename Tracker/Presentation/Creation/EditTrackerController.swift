@@ -1,22 +1,23 @@
-import Foundation
 import UIKit
 
+protocol EditTrackerControllerDepsFactory {
+    func getSelectScheduleController() -> SelectScheduleController?
+    func getSelectCategoryController() -> SelectCategoryController?
+}
+
 final class EditTrackerController: UIViewController {
+    private let depsFactory: EditTrackerControllerDepsFactory
     private let contentView: EditTrackerView
-    private let selectScheduleController: SelectScheduleController
-    private let trackerRepository: TrackerRepository
 
     private weak var parentDelegate: AddParentDelegateProtocol?
     private(set) var editTrackerViewModel = EditTrackerViewModel(type: .event, selectedDate: DateWoTime())
 
     init(
-        contentView: EditTrackerView,
-        selectScheduleController: SelectScheduleController,
-        trackerRepository: TrackerRepository
+        depsFactory: EditTrackerControllerDepsFactory,
+        contentView: EditTrackerView
     ) {
+        self.depsFactory = depsFactory
         self.contentView = contentView
-        self.selectScheduleController = selectScheduleController
-        self.trackerRepository = trackerRepository
 
         super.init(nibName: nil, bundle: nil)
 
@@ -44,45 +45,35 @@ final class EditTrackerController: UIViewController {
         self.editTrackerViewModel = editTrackerModel
         self.contentView.initData()
     }
-
-    func set(category: TrackerCategory) {
-        editTrackerViewModel.category = category
-        contentView.refreshProperties()
-    }
 }
-
-// TODO: убрать заглушку
-private let categories: [TrackerCategory] = [
-    TrackerCategory(name: "Home"),
-    TrackerCategory(name: "Work")
-]
 
 extension EditTrackerController: EditTrackerViewDelegat {
     var viewModel: EditTrackerViewModel { editTrackerViewModel }
 
     func selectSchedule() {
+        let selectScheduleController = depsFactory.getSelectScheduleController()
+        guard let selectScheduleController else { return }
         selectScheduleController.delegate = self
         selectScheduleController.initData(schedule: editTrackerViewModel.schedule)
         navigationController?.pushViewController(selectScheduleController, animated: true)
     }
 
     func selectCategory() {
-        let category = categories.randomElement()!
-        set(category: category)
+        let selectCategoryController = depsFactory.getSelectCategoryController()
+        guard let selectCategoryController else { return }
+        selectCategoryController.delegate = self
+        selectCategoryController.initData(category: editTrackerViewModel.category)
+        navigationController?.pushViewController(selectCategoryController, animated: true)
     }
 
     func compleateEdit(action: EditAction) {
         switch action {
         case .save:
             let tracker = editTrackerViewModel.toTracker()
-            if let tracker {
-                trackerRepository.create(tracker)
-            }
+            parentDelegate?.compleateAdd(action: action, newTracker: tracker)
         case .cancel:
-            break
+            parentDelegate?.compleateAdd(action: action, newTracker: nil)
         }
-
-        parentDelegate?.compleateAdd(action: action)
     }
     func nameChanged(_ name: String) {
         editTrackerViewModel.name = name
@@ -93,6 +84,14 @@ extension EditTrackerController: EditTrackerViewDelegat {
 extension EditTrackerController: SelectScheduleControllerDelegate {
     func set(schedule: WeekDaySet) {
         editTrackerViewModel.schedule = schedule
+        contentView.refreshProperties()
+        navigationController?.popViewController(animated: true)
+    }
+}
+
+extension EditTrackerController: SelectCategoryControllerDelegate {
+    func set(category: TrackerCategory) {
+        editTrackerViewModel.category = category
         contentView.refreshProperties()
         navigationController?.popViewController(animated: true)
     }
