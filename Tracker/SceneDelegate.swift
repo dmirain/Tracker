@@ -105,8 +105,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = container.resolve(TabBarController.self)
-        window?.makeKeyAndVisible()
+
+        if let controller = OnboardingManager(storage: OnboardingStorageImpl()).forShow() {
+            controller.flowDelegate = self
+            window?.rootViewController = controller
+            window?.makeKeyAndVisible()
+        } else {
+            showMainController()
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}
@@ -114,6 +120,17 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillResignActive(_ scene: UIScene) {}
     func sceneWillEnterForeground(_ scene: UIScene) {}
     func sceneDidEnterBackground(_ scene: UIScene) {}
+
+    private func showMainController() {
+        window?.rootViewController = container.resolve(TabBarController.self)
+        window?.makeKeyAndVisible()
+    }
+}
+
+extension SceneDelegate: OnboardingControllerDelegate {
+    func close() {
+        showMainController()
+    }
 }
 
 extension SceneDelegate: TrackerViewControllerDepsFactory {
