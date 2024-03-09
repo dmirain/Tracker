@@ -10,24 +10,21 @@ protocol SelectCategoryControllerDelegate: AnyObject {
 
 final class SelectCategoryController: UIViewController {
     private let depsFactory: SelectCategoryControllerDepsFactory
-    private var store: TrackerCategoryStore
+    private var viewModel: SelectCategoryViewModel
     private let contentView: SelectCategoryView
 
     weak var delegate: SelectCategoryControllerDelegate?
 
-    var currentCategory: TrackerCategory?
-
     init(
         depsFactory: SelectCategoryControllerDepsFactory,
-        store: TrackerCategoryStore,
+        viewModel: SelectCategoryViewModel,
         contentView: SelectCategoryView
     ) {
         self.depsFactory = depsFactory
-        self.store = store
+        self.viewModel = viewModel
         self.contentView = contentView
         super.init(nibName: nil, bundle: nil)
 
-        self.store.delegate = self
         self.contentView.controller = self
 
         navigationItem.title = "Категория"
@@ -43,34 +40,23 @@ final class SelectCategoryController: UIViewController {
     }
 
     func initData(category: TrackerCategory?) {
-        self.currentCategory = category
-
-        do {
-            try store.fetchData()
-        } catch {
-            assertionFailure(error.localizedDescription)
+        viewModel.categoriesBinding = { [weak self] _ in
+            self?.contentView.reloadData()
         }
-
-        contentView.initData()
-    }
-}
-
-extension SelectCategoryController: StoreDelegate {
-    func store(didUpdate update: StoreUpdate) {
-        contentView.update(update)
+        viewModel.initData(category: category)
     }
 }
 
 extension SelectCategoryController: SelectCategoryViewDelegate {
     func numberOfRowsInSection(_ section: Int) -> Int {
-        store.numberOfRowsInSection(section)
+        viewModel.categories.count
     }
-    func category(byIndexPath indexPath: IndexPath) -> TrackerCategory? {
-        store.object(atIndexPath: indexPath)
+    func rowViewModel(byIndexPath indexPath: IndexPath) -> SelectCategoryRowViewModel? {
+        viewModel.categories[indexPath.row]
     }
     func completeSelect(withIndexPath indexPath: IndexPath) {
-        guard let category = store.object(atIndexPath: indexPath) else { return }
-        delegate?.set(category: category)
+        guard let rowViewModel = rowViewModel(byIndexPath: indexPath) else { return }
+        delegate?.set(category: rowViewModel.category)
     }
 
     func createClicked() {
@@ -83,7 +69,7 @@ extension SelectCategoryController: SelectCategoryViewDelegate {
 
 extension SelectCategoryController: CreateCategoryControllerDelegate {
     func compliteCreate(category: TrackerCategory) {
-        store.add(category)
+        viewModel.add(category)
         navigationController?.popViewController(animated: true)
     }
 }

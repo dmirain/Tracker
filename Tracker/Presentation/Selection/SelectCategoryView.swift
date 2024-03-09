@@ -1,10 +1,8 @@
 import UIKit
 
 protocol SelectCategoryViewDelegate: AnyObject {
-    var currentCategory: TrackerCategory? { get set }
-
     func numberOfRowsInSection(_ section: Int) -> Int
-    func category(byIndexPath: IndexPath) -> TrackerCategory?
+    func rowViewModel(byIndexPath: IndexPath) -> SelectCategoryRowViewModel?
 
     func completeSelect(withIndexPath: IndexPath)
     func createClicked()
@@ -81,23 +79,8 @@ final class SelectCategoryView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func initData() {
+    func reloadData() {
         categoriesTable.reloadData()
-        setEmptyListState()
-    }
-
-    func update(_ update: StoreUpdate) {
-        categoriesTable.performBatchUpdates {
-            categoriesTable.insertRows(at: Array(update.insertedItems), with: .automatic)
-            categoriesTable.deleteRows(at: Array(update.deletedItems), with: .automatic)
-            categoriesTable.reloadRows(at: Array(update.updatedItems), with: .automatic)
-            for move in update.movedItems {
-                categoriesTable.moveRow(
-                    at: move.oldIndex,
-                    to: move.newIndex
-                )
-            }
-        }
         setEmptyListState()
     }
 
@@ -128,7 +111,7 @@ extension SelectCategoryView: UITableViewDataSource {
         guard
             let cell,
             let controller,
-            let category = controller.category(byIndexPath: indexPath)
+            let rowViewModel = controller.rowViewModel(byIndexPath: indexPath)
         else { return UITableViewCell() }
 
         let rowPosition = RowPosition(
@@ -136,7 +119,7 @@ extension SelectCategoryView: UITableViewDataSource {
             isLast: indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1
         )
         cell.delegate = self
-        cell.initData(category: category, isSelected: controller.currentCategory == category, rowPosition: rowPosition)
+        cell.initData(rowViewModel: rowViewModel, rowPosition: rowPosition)
         return cell
     }
 
@@ -159,8 +142,6 @@ final class CategoryCell: UITableViewCell {
     static let reuseIdentifier = "CategoryCell"
 
     weak var delegate: SelectCategoryView?
-
-    private var category: TrackerCategory?
 
     private lazy var rowLable: UILabel = {
         let view = UILabel()
@@ -209,11 +190,9 @@ final class CategoryCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func initData(category: TrackerCategory, isSelected: Bool, rowPosition: RowPosition) {
-        self.category = category
-
-        rowLable.text = category.name
-        selectedImage.isHidden = !isSelected
+    func initData(rowViewModel: SelectCategoryRowViewModel, rowPosition: RowPosition) {
+        rowLable.text = rowViewModel.category.name
+        selectedImage.isHidden = !rowViewModel.isSelected
 
         let radius: CGFloat = rowPosition.isFirst || rowPosition.isLast ? 16 : 0
         roundCorners(corners: rowPosition.toCorners(), radius: radius)

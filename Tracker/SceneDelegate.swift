@@ -45,10 +45,16 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             CreateCategoryController(contentView: CreateCategoryView())
         }
 
+        container.register(SelectCategoryViewModel.self) { diResolver in
+            SelectCategoryViewModelImpl(
+                store: diResolver.resolve(TrackerCategoryStore.self)!
+            )
+        }
+
         container.register(SelectCategoryController.self) { diResolver in
             SelectCategoryController(
                 depsFactory: self,
-                store: diResolver.resolve(TrackerCategoryStore.self)!,
+                viewModel: diResolver.resolve(SelectCategoryViewModel.self)!,
                 contentView: SelectCategoryView()
             )
         }
