@@ -45,10 +45,16 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             CreateCategoryController(contentView: CreateCategoryView())
         }
 
+        container.register(SelectCategoryViewModel.self) { diResolver in
+            SelectCategoryViewModelImpl(
+                store: diResolver.resolve(TrackerCategoryStore.self)!
+            )
+        }
+
         container.register(SelectCategoryController.self) { diResolver in
             SelectCategoryController(
                 depsFactory: self,
-                store: diResolver.resolve(TrackerCategoryStore.self)!,
+                viewModel: diResolver.resolve(SelectCategoryViewModel.self)!,
                 contentView: SelectCategoryView()
             )
         }
@@ -99,8 +105,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = container.resolve(TabBarController.self)
-        window?.makeKeyAndVisible()
+
+        if let controller = OnboardingManager(storage: OnboardingStorageImpl()).forShow() {
+            controller.flowDelegate = self
+            window?.rootViewController = controller
+            window?.makeKeyAndVisible()
+        } else {
+            showMainController()
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {}
@@ -108,6 +120,17 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneWillResignActive(_ scene: UIScene) {}
     func sceneWillEnterForeground(_ scene: UIScene) {}
     func sceneDidEnterBackground(_ scene: UIScene) {}
+
+    private func showMainController() {
+        window?.rootViewController = container.resolve(TabBarController.self)
+        window?.makeKeyAndVisible()
+    }
+}
+
+extension SceneDelegate: OnboardingControllerDelegate {
+    func close() {
+        showMainController()
+    }
 }
 
 extension SceneDelegate: TrackerViewControllerDepsFactory {

@@ -61,6 +61,7 @@ final class SelectScheduleView: UIView {
 
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -150,6 +151,7 @@ final class DaySwitchCell: UITableViewCell {
 
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

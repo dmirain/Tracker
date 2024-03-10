@@ -11,4 +11,6 @@ extension UIImage {
     static var toComplite = UIImage(named: "ToComplite") ?? UIImage()
     static var complited = UIImage(named: "Complited") ?? UIImage()
     static var selected = UIImage(named: "Selected") ?? UIImage()
+    static var obImageFirst = UIImage(named: "OBImageFirst") ?? UIImage()
+    static var obImageSecond = UIImage(named: "OBImageSecond") ?? UIImage()
 }

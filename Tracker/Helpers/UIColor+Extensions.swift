@@ -5,6 +5,10 @@ extension UIColor {
     static var ypWhite: UIColor { UIColor(named: "ypWhite") ?? UIColor() }
     static var ypBackground: UIColor { UIColor(named: "ypBackground") ?? UIColor() }
 
+    static var ypAlwaysBlack: UIColor { UIColor(named: "ypAlwaysBlack") ?? UIColor() }
+    static var ypAlwaysWhite: UIColor { UIColor(named: "ypAlwaysWhite") ?? UIColor() }
+    static var ypAlwaysGray: UIColor { UIColor(named: "ypAlwaysGray") ?? UIColor() }
+
     static var ypWhite30 = UIColor(red: 1, green: 1, blue: 1, alpha: 0.3)
 
     static var ypGray = UIColor(red: 0.68, green: 0.69, blue: 0.71, alpha: 1)
