@@ -75,6 +75,7 @@ final class SelectCategoryView: UIView {
         ])
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -186,6 +187,7 @@ final class CategoryCell: UITableViewCell {
         ])
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
