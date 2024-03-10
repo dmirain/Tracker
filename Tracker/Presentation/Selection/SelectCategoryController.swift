@@ -56,6 +56,7 @@ extension SelectCategoryController: SelectCategoryViewDelegate {
     }
     func completeSelect(withIndexPath indexPath: IndexPath) {
         guard let rowViewModel = rowViewModel(byIndexPath: indexPath) else { return }
+        viewModel.selectedCategory = rowViewModel.category
         delegate?.set(category: rowViewModel.category)
     }
 
