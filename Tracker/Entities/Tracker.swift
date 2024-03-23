@@ -36,6 +36,7 @@ struct Tracker: Codable, Identifiable, Hashable {
     let eventDate: DateWoTime?
     let emojiIndex: Int
     let colorIndex: Int
+    let isPinned: Bool
     let records: [TrackerRecord]
 
     var emoji: String { Self.emoji(byIndex: emojiIndex) }

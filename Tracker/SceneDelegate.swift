@@ -78,8 +78,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         .inObjectScope(.transient)
 
-        container.register(TrackerViewController.self) { diResolver in
-            TrackerViewController(
+        container.register(TrackerListViewController.self) { diResolver in
+            TrackerListViewController(
                 depsFactory: self,
                 contentView: TrackerListView(),
                 trackerStore: diResolver.resolve(TrackerStore.self)!
@@ -92,7 +92,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         container.register(TabBarController.self) { diResolver in
             TabBarController(
-                trackerViewController: diResolver.resolve(TrackerViewController.self)!,
+                trackerViewController: diResolver.resolve(TrackerListViewController.self)!,
                 statisticViewController: diResolver.resolve(StatisticViewController.self)!
             )
         }

@@ -3,6 +3,7 @@ import UIKit
 protocol TrackerListViewDelegate: AnyObject {
     func addTrackerClicked()
     func editTrackerClicked(at indexPath: IndexPath)
+    func togglePin(at indexPath: IndexPath)
     func deleteTracker(at indexPath: IndexPath)
     func dateSelected(date: DateWoTime)
     func toggleComplete(at indexPath: IndexPath)
@@ -272,15 +273,23 @@ extension TrackerListView: UICollectionViewDelegate {
         indexPaths: [IndexPath],
         point: CGPoint
     ) -> UIContextMenuConfiguration? {
-        guard let indexPath = indexPaths.first else { return nil }
+        guard
+            let indexPath = indexPaths.first,
+            let trackerViewModel = controller?.tracker(byIndexPath: indexPath)
+        else { return nil }
+
+        let pinAction = trackerViewModel.tracker.isPinned ? "Открепить" : "Закрепить"
 
         return UIContextMenuConfiguration(
             actionProvider: { _ in
                 UIMenu(children: [
+                    UIAction(title: pinAction) { [weak self] _ in
+                        self?.controller?.togglePin(at: indexPath)
+                    },
                     UIAction(title: "Редактировать") { [weak self] _ in
                         self?.controller?.editTrackerClicked(at: indexPath)
                     },
-                    UIAction(title: "Удалить") { [weak self] _ in
+                    UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
                         self?.controller?.deleteTracker(at: indexPath)
                     }
                 ])

@@ -1,11 +1,11 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-    private let trackerViewController: TrackerViewController
+    private let trackerViewController: TrackerListViewController
     private let statisticViewController: StatisticViewController
 
     init(
-        trackerViewController: TrackerViewController,
+        trackerViewController: TrackerListViewController,
         statisticViewController: StatisticViewController
     ) {
         self.trackerViewController = trackerViewController

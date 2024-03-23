@@ -6,10 +6,12 @@
         <relationship name="trackers" toMany="YES" deletionRule="Cascade" destinationEntity="TrackerCD" inverseName="category" inverseEntity="TrackerCD"/>
     </entity>
     <entity name="TrackerCD" representedClassName="TrackerCD" syncable="YES" codeGenerationType="class">
+        <attribute name="categoryName" optional="YES" attributeType="String"/>
         <attribute name="colorIndex" attributeType="Integer 32" minValueString="0" maxValueString="17" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="emojiIndex" attributeType="Integer 32" minValueString="0" maxValueString="17" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="eventDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isPinned" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="name" attributeType="String" maxValueString="32" defaultValueString=""/>
         <attribute name="schedule" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" attributeType="String" defaultValueString="Событие"/>

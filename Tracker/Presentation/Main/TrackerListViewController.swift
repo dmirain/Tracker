@@ -11,7 +11,7 @@ protocol TrackerViewControllerDepsFactory: AnyObject {
         editTrackerModel: EditTrackerViewModel
     ) -> EditTrackerController?}
 
-final class TrackerViewController: UIViewController {
+final class TrackerListViewController: UIViewController {
     private let depsFactory: TrackerViewControllerDepsFactory
     private let contentView: TrackerListView
     private var addTrackerNavControllet: UINavigationController?
@@ -58,7 +58,7 @@ final class TrackerViewController: UIViewController {
     }
 }
 
-extension TrackerViewController: TrackerListViewDelegate {
+extension TrackerListViewController: TrackerListViewDelegate {
     func numberOfSections() -> Int {
         trackerStore.numberOfSections
     }
@@ -79,7 +79,8 @@ extension TrackerViewController: TrackerListViewDelegate {
     }
 
     func sectionTitle(_ section: Int) -> String {
-        trackerStore.sectionName(section)
+        let name = trackerStore.sectionName(section)
+        return name == Constants.pinSlug ? "Закреплённые" : name
     }
 
     func addTrackerClicked() {
@@ -122,9 +123,17 @@ extension TrackerViewController: TrackerListViewDelegate {
     func toggleComplete(at indexPath: IndexPath) {
         trackerStore.toggleComplete(at: indexPath, on: selectedDate)
     }
+
+    func togglePin(at indexPath: IndexPath) {
+        guard let trackerViewModel = tracker(byIndexPath: indexPath) else { return }
+        let model = EditTrackerViewModel(tracker: trackerViewModel.tracker)
+        model.isPinned.toggle()
+        guard let tracker = model.toTracker() else { return }
+        trackerStore.update(record: tracker)
+    }
 }
 
-extension TrackerViewController: AddParentDelegateProtocol {
+extension TrackerListViewController: AddParentDelegateProtocol {
     func compleateEdit(action: EditAction) {
         switch action {
         case .create(let tracker):
@@ -139,7 +148,7 @@ extension TrackerViewController: AddParentDelegateProtocol {
     }
 }
 
-extension TrackerViewController: StoreDelegate {
+extension TrackerListViewController: StoreDelegate {
     func store(didUpdate update: StoreUpdate) {
         contentView.update(update)
     }

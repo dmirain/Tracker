@@ -46,7 +46,7 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
     func fetchData(with filter: FilterParams) throws {
         let fetchRequest = TrackerCD.fetchRequest()
         fetchRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \TrackerCD.category?.name, ascending: true),
+            NSSortDescriptor(keyPath: \TrackerCD.categoryName, ascending: true),
             NSSortDescriptor(keyPath: \TrackerCD.name, ascending: true)
         ]
 
@@ -55,7 +55,7 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         let controller = NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: cdContext,
-            sectionNameKeyPath: "category.name",
+            sectionNameKeyPath: "categoryName",
             cacheName: nil
         )
         try super.fetchData(controller: controller)
@@ -101,6 +101,8 @@ extension Tracker: CDStorableObject {
         cdObj.eventDate = eventDate?.value
         cdObj.emojiIndex = Int32(emojiIndex)
         cdObj.colorIndex = Int32(colorIndex)
+        cdObj.isPinned = isPinned
+        cdObj.categoryName = isPinned ? Constants.pinSlug : category.name
         return cdObj
     }
 
@@ -114,6 +116,8 @@ extension TrackerCD: CDObject {
         self.schedule = Int32(tracker.schedule.rawValue)
         self.emojiIndex = Int32(tracker.emojiIndex)
         self.colorIndex = Int32(tracker.colorIndex)
+        self.isPinned = tracker.isPinned
+        self.categoryName = tracker.isPinned ? Constants.pinSlug : tracker.category.name
     }
 
     func toEntity() -> Tracker? {
@@ -138,6 +142,7 @@ extension TrackerCD: CDObject {
             eventDate: eventDate,
             emojiIndex: Int(emojiIndex),
             colorIndex: Int(colorIndex),
+            isPinned: self.isPinned,
             records: self.records?
                 .map {
                     guard let record = $0 as? TrackerRecordCD else { return nil }
@@ -158,7 +163,7 @@ extension TrackerRecord: CDStorableObject {
 }
 
 extension TrackerRecordCD: CDObject {
-    func update(by: TrackerRecord) { }
+    func update(by record: TrackerRecord) { }
 
     func toEntity() -> TrackerRecord? {
         guard let id, let date else { return nil }

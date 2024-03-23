@@ -10,6 +10,7 @@ class EditTrackerViewModel {
     let eventDate: DateWoTime?
     var emojiIndex: Int
     var colorIndex: Int
+    var isPinned: Bool
 
     init(tracker: Tracker) {
         isNew = false
@@ -21,6 +22,7 @@ class EditTrackerViewModel {
         eventDate = tracker.eventDate
         emojiIndex = tracker.emojiIndex
         colorIndex = tracker.colorIndex
+        isPinned = tracker.isPinned
     }
 
     init(type: TrackerType, selectedDate: DateWoTime) {
@@ -38,6 +40,7 @@ class EditTrackerViewModel {
         }
         emojiIndex = 0
         colorIndex = 0
+        isPinned = false
     }
 
     func toTracker() -> Tracker? {
@@ -52,6 +55,7 @@ class EditTrackerViewModel {
             eventDate: eventDate,
             emojiIndex: emojiIndex,
             colorIndex: colorIndex,
+            isPinned: isPinned,
             records: []
         )
     }
