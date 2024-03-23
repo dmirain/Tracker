@@ -1,6 +1,7 @@
 import UIKit
 
 class EditTrackerViewModel {
+    let isNew: Bool
     let id: UUID
     let type: TrackerType
     var name: String
@@ -11,6 +12,7 @@ class EditTrackerViewModel {
     var colorIndex: Int
 
     init(tracker: Tracker) {
+        isNew = false
         id = tracker.id
         type = tracker.type
         name = tracker.name
@@ -22,6 +24,7 @@ class EditTrackerViewModel {
     }
 
     init(type: TrackerType, selectedDate: DateWoTime) {
+        isNew = true
         id = UUID()
         self.type = type
         name = ""

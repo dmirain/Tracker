@@ -2,6 +2,8 @@ import UIKit
 
 protocol TrackerListViewDelegate: AnyObject {
     func addTrackerClicked()
+    func editTrackerClicked(at indexPath: IndexPath)
+    func deleteTracker(at indexPath: IndexPath)
     func dateSelected(date: DateWoTime)
     func toggleComplete(at indexPath: IndexPath)
 
@@ -260,4 +262,29 @@ extension TrackerListView: UICollectionViewDelegateFlowLayout {
         CGSize(width: collectionView.bounds.width, height: 42)
     }
 
+}
+
+extension TrackerListView: UICollectionViewDelegate {
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        contextMenuConfigurationForItemsAt
+        indexPaths: [IndexPath],
+        point: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let indexPath = indexPaths.first else { return nil }
+
+        return UIContextMenuConfiguration(
+            actionProvider: { _ in
+                UIMenu(children: [
+                    UIAction(title: "Редактировать") { [weak self] _ in
+                        self?.controller?.editTrackerClicked(at: indexPath)
+                    },
+                    UIAction(title: "Удалить") { [weak self] _ in
+                        self?.controller?.deleteTracker(at: indexPath)
+                    }
+                ])
+            }
+        )
+    }
 }

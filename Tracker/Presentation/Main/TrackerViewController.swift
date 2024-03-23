@@ -5,7 +5,11 @@ protocol TrackerViewControllerDepsFactory: AnyObject {
         parentDelegate: AddParentDelegateProtocol,
         selectedDate: DateWoTime
     ) -> AddTrackerController?
-}
+
+    func editTrackerController(
+        parentDelegate: AddParentDelegateProtocol,
+        editTrackerModel: EditTrackerViewModel
+    ) -> EditTrackerController?}
 
 final class TrackerViewController: UIViewController {
     private let depsFactory: TrackerViewControllerDepsFactory
@@ -91,6 +95,25 @@ extension TrackerViewController: TrackerListViewDelegate {
         present(addTrackerNavControllet, animated: true)
     }
 
+    func editTrackerClicked(at indexPath: IndexPath) {
+        guard let tracker = trackerStore.object(atIndexPath: indexPath) else { return }
+
+        let editTrackerController = depsFactory.editTrackerController(
+            parentDelegate: self,
+            editTrackerModel: EditTrackerViewModel(tracker: tracker)
+        )
+
+        guard let editTrackerController else { return }
+        let addTrackerNavControllet = UINavigationController(rootViewController: editTrackerController)
+        self.addTrackerNavControllet = addTrackerNavControllet
+
+        present(addTrackerNavControllet, animated: true)
+    }
+
+    func deleteTracker(at indexPath: IndexPath) {
+        trackerStore.delete(at: indexPath)
+    }
+
     func dateSelected(date: DateWoTime) {
         selectedDate = date
         refreshData()
@@ -102,12 +125,12 @@ extension TrackerViewController: TrackerListViewDelegate {
 }
 
 extension TrackerViewController: AddParentDelegateProtocol {
-    func compleateAdd(action: EditAction, newTracker: Tracker?) {
+    func compleateEdit(action: EditAction) {
         switch action {
-        case .save:
-            if let newTracker {
-                trackerStore.add(newTracker)
-            }
+        case .create(let tracker):
+            trackerStore.add(tracker)
+        case .update(let tracker):
+            trackerStore.update(record: tracker)
         case .cancel:
             break
         }

@@ -13,7 +13,7 @@ protocol TrackerStore {
     func object(atIndexPath: IndexPath) -> Tracker?
     func add(_ record: Tracker)
     func delete(at indexPath: IndexPath)
-    func update(at indexPath: IndexPath)
+    func update(record: Tracker)
 }
 
 struct FilterParams {
@@ -34,7 +34,7 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
             trackerCD.removeFromRecords(recordCD)
             cdContext.delete(recordCD)
         } else {
-            var newRecord = TrackerRecordCD(context: cdContext)
+            let newRecord = TrackerRecordCD(context: cdContext)
             newRecord.id = UUID()
             newRecord.date = selectedDate.value
             trackerCD.addToRecords(newRecord)
@@ -96,7 +96,7 @@ extension Tracker: CDStorableObject {
         cdObj.id = id
         cdObj.name = name
         cdObj.type = type.rawValue
-        cdObj.category = findCategory(context: context)
+        cdObj.category = findCategory(by: category, context: context)
         cdObj.schedule = Int32(schedule.rawValue)
         cdObj.eventDate = eventDate?.value
         cdObj.emojiIndex = Int32(emojiIndex)
@@ -104,17 +104,18 @@ extension Tracker: CDStorableObject {
         return cdObj
     }
 
-    private func findCategory(context: NSManagedObjectContext) -> TrackerCategoryCD {
-        let request = TrackerCategoryCD.fetchRequest()
-        request.predicate = NSPredicate(format: "id == %@", argumentArray: [category.id])
-        guard let result = (try? context.fetch(request))?.first else {
-            return category.toCD(context: context)
-        }
-        return result
-    }
 }
 
 extension TrackerCD: CDObject {
+    func update(by tracker: Tracker) {
+        guard let managedObjectContext else { return }
+        self.name = tracker.name
+        self.category = findCategory(by: tracker.category, context: managedObjectContext)
+        self.schedule = Int32(tracker.schedule.rawValue)
+        self.emojiIndex = Int32(tracker.emojiIndex)
+        self.colorIndex = Int32(tracker.colorIndex)
+    }
+
     func toEntity() -> Tracker? {
         guard
             let id,
@@ -157,6 +158,8 @@ extension TrackerRecord: CDStorableObject {
 }
 
 extension TrackerRecordCD: CDObject {
+    func update(by: TrackerRecord) { }
+
     func toEntity() -> TrackerRecord? {
         guard let id, let date else { return nil }
         return TrackerRecord(
@@ -164,4 +167,13 @@ extension TrackerRecordCD: CDObject {
             date: DateWoTime(date)
         )
     }
+}
+
+private func findCategory(by category: TrackerCategory, context: NSManagedObjectContext) -> TrackerCategoryCD {
+    let request = TrackerCategoryCD.fetchRequest()
+    request.predicate = NSPredicate(format: "id == %@", argumentArray: [category.id])
+    guard let result = (try? context.fetch(request))?.first else {
+        return category.toCD(context: context)
+    }
+    return result
 }

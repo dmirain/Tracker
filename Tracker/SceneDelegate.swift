@@ -134,6 +134,15 @@ extension SceneDelegate: OnboardingControllerDelegate {
 }
 
 extension SceneDelegate: TrackerViewControllerDepsFactory {
+    func editTrackerController(
+        parentDelegate: AddParentDelegateProtocol,
+        editTrackerModel: EditTrackerViewModel
+    ) -> EditTrackerController? {
+        let editTrackerController = container.resolve(EditTrackerController.self)
+        editTrackerController?.initData(parentDelegate: parentDelegate, editTrackerModel: editTrackerModel)
+        return editTrackerController
+    }
+
     func getAddController(
         parentDelegate: AddParentDelegateProtocol,
         selectedDate: DateWoTime

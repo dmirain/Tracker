@@ -67,15 +67,16 @@ extension EditTrackerController: EditTrackerViewDelegat {
         navigationController?.pushViewController(selectCategoryController, animated: true)
     }
 
-    func compleateEdit(action: EditAction) {
-        switch action {
-        case .save:
-            let tracker = editTrackerViewModel.toTracker()
-            parentDelegate?.compleateAdd(action: action, newTracker: tracker)
-        case .cancel:
-            parentDelegate?.compleateAdd(action: action, newTracker: nil)
-        }
+    func compleateEdit() {
+        guard let tracker = editTrackerViewModel.toTracker() else { return }
+        let action: EditAction = editTrackerViewModel.isNew ? .create(tracker: tracker) : .update(tracker: tracker)
+        parentDelegate?.compleateEdit(action: action)
     }
+
+    func cancelEdit() {
+        parentDelegate?.compleateEdit(action: .cancel)
+    }
+
     func nameChanged(_ name: String) {
         editTrackerViewModel.name = name
         contentView.refreshButtons()

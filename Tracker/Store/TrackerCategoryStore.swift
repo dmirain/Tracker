@@ -9,7 +9,7 @@ protocol TrackerCategoryStore {
     func object(atIndexPath: IndexPath) -> TrackerCategory?
     func add(_ record: TrackerCategory)
     func delete(at indexPath: IndexPath)
-    func update(at indexPath: IndexPath)
+    func update(record: TrackerCategory)
 }
 
 final class TrackerCategoryStoreCD: BaseCDStore<TrackerCategoryCD>, TrackerCategoryStore {
@@ -38,6 +38,10 @@ extension TrackerCategory: CDStorableObject {
 }
 
 extension TrackerCategoryCD: CDObject {
+    func update(by category: TrackerCategory) {
+        self.name = category.name
+    }
+
     func toEntity() -> TrackerCategory? {
         guard let name, let id else { return nil }
         return TrackerCategory(
