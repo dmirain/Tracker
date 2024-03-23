@@ -44,6 +44,8 @@
 		793E20E62BAF3D8D0020271D /* SelectFilterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793E20E52BAF3D8D0020271D /* SelectFilterController.swift */; };
 		793E20E82BAF3D900020271D /* SelectFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793E20E72BAF3D900020271D /* SelectFilterView.swift */; };
 		793E20EA2BAF49760020271D /* TrackerFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793E20E92BAF49760020271D /* TrackerFilter.swift */; };
+		793E20ED2BAF771B0020271D /* InlineSnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 793E20EC2BAF771B0020271D /* InlineSnapshotTesting */; };
+		793E20EF2BAF771B0020271D /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 793E20EE2BAF771B0020271D /* SnapshotTesting */; };
 		795912772B6E738B0080548A /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795912762B6E738B0080548A /* Settings.swift */; };
 		7959127B2B7CA4380080548A /* TrackerCategoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7959127A2B7CA4380080548A /* TrackerCategoryStore.swift */; };
 		797D535A2B9CB3C3001B36C7 /* OnboardingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 797D53592B9CB3C3001B36C7 /* OnboardingManager.swift */; };
@@ -54,7 +56,7 @@
 		79860B4E2AF96CE000B95344 /* TrackerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B4D2AF96CE000B95344 /* TrackerListViewController.swift */; };
 		79860B532AF96CE200B95344 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 79860B522AF96CE200B95344 /* Assets.xcassets */; };
 		79860B562AF96CE200B95344 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79860B542AF96CE200B95344 /* LaunchScreen.storyboard */; };
-		79860B612AF96CE200B95344 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B602AF96CE200B95344 /* TrackerTests.swift */; };
+		79860B612AF96CE200B95344 /* ScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B602AF96CE200B95344 /* ScreenTests.swift */; };
 		79860B6B2AF96CE200B95344 /* TrackerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B6A2AF96CE200B95344 /* TrackerUITests.swift */; };
 		79860B6D2AF96CE200B95344 /* TrackerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B6C2AF96CE200B95344 /* TrackerUITestsLaunchTests.swift */; };
 		79860B952AF975DD00B95344 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79860B832AF975DD00B95344 /* UIView+Extensions.swift */; };
@@ -141,7 +143,7 @@
 		79860B552AF96CE200B95344 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		79860B572AF96CE200B95344 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		79860B5C2AF96CE200B95344 /* TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		79860B602AF96CE200B95344 /* TrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerTests.swift; sourceTree = "<group>"; };
+		79860B602AF96CE200B95344 /* ScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenTests.swift; sourceTree = "<group>"; };
 		79860B662AF96CE200B95344 /* TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		79860B6A2AF96CE200B95344 /* TrackerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITests.swift; sourceTree = "<group>"; };
 		79860B6C2AF96CE200B95344 /* TrackerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -173,6 +175,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				793E20ED2BAF771B0020271D /* InlineSnapshotTesting in Frameworks */,
+				793E20EF2BAF771B0020271D /* SnapshotTesting in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,7 +352,7 @@
 		79860B5F2AF96CE200B95344 /* TrackerTests */ = {
 			isa = PBXGroup;
 			children = (
-				79860B602AF96CE200B95344 /* TrackerTests.swift */,
+				79860B602AF96CE200B95344 /* ScreenTests.swift */,
 			);
 			path = TrackerTests;
 			sourceTree = "<group>";
@@ -433,6 +437,10 @@
 				79860B5E2AF96CE200B95344 /* PBXTargetDependency */,
 			);
 			name = TrackerTests;
+			packageProductDependencies = (
+				793E20EC2BAF771B0020271D /* InlineSnapshotTesting */,
+				793E20EE2BAF771B0020271D /* SnapshotTesting */,
+			);
 			productName = TrackerTests;
 			productReference = 79860B5C2AF96CE200B95344 /* TrackerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -489,6 +497,7 @@
 			mainGroup = 79860B3D2AF96CE000B95344;
 			packageReferences = (
 				79860BA32B00BCA600B95344 /* XCRemoteSwiftPackageReference "Swinject" */,
+				793E20EB2BAF771B0020271D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
 			);
 			productRefGroup = 79860B472AF96CE000B95344 /* Products */;
 			projectDirPath = "";
@@ -620,7 +629,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79860B612AF96CE200B95344 /* TrackerTests.swift in Sources */,
+				79860B612AF96CE200B95344 /* ScreenTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -950,6 +959,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		793E20EB2BAF771B0020271D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.15.4;
+			};
+		};
 		79860BA32B00BCA600B95344 /* XCRemoteSwiftPackageReference "Swinject" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Swinject/Swinject.git";
@@ -961,6 +978,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		793E20EC2BAF771B0020271D /* InlineSnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 793E20EB2BAF771B0020271D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = InlineSnapshotTesting;
+		};
+		793E20EE2BAF771B0020271D /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 793E20EB2BAF771B0020271D /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
 		79860BA42B00BCA600B95344 /* Swinject */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 79860BA32B00BCA600B95344 /* XCRemoteSwiftPackageReference "Swinject" */;
