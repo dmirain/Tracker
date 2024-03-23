@@ -17,7 +17,8 @@ protocol TrackerStore {
 }
 
 struct FilterParams {
-    let date: DateWoTime?
+    let date: DateWoTime
+    let filter: TrackerFilter
     let name: String?
 }
 
@@ -61,20 +62,19 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         try super.fetchData(controller: controller)
     }
 
-    private func predicate(with filter: FilterParams) -> NSPredicate? {
+    private func predicate(with filter: FilterParams) -> NSPredicate {
         var predicateFormats: [String] = []
         var predicareArgs: [Any] = []
 
-        if let date = filter.date {
-            let weekDay = WeekDaySet.from(date: date)
-            predicateFormats.append("((%K & %ld) != 0 OR %K == %@)")
-            predicareArgs.append(contentsOf: [
-                #keyPath(TrackerCD.schedule),
-                weekDay.rawValue,
-                #keyPath(TrackerCD.eventDate),
-                date.value
-            ])
-        }
+        let weekDay = WeekDaySet.from(date: filter.date)
+        predicateFormats.append("((%K & %ld) != 0 OR %K == %@)")
+        predicareArgs.append(contentsOf: [
+            #keyPath(TrackerCD.schedule),
+            weekDay.rawValue,
+            #keyPath(TrackerCD.eventDate),
+            filter.date.value
+        ])
+
         if let name = filter.name {
             predicateFormats.append("%K CONTAINS[n] %@")
             predicareArgs.append(contentsOf: [
@@ -83,11 +83,36 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
             ])
         }
 
-        if predicateFormats.isEmpty { return nil }
+        switch filter.filter {
+        case .all:
+            break
+        case .today:
+            break
+        case .completed:
+            predicateFormats.append("id IN %@")
+            predicareArgs.append(contentsOf: [
+                fetchRecords(on: filter.date).compactMap { $0.tracker?.id }
+            ])
+        case .notCompleted:
+            predicateFormats.append("NOT id IN %@")
+            predicareArgs.append(contentsOf: [
+                fetchRecords(on: filter.date).compactMap { $0.tracker?.id }
+            ])
+        }
 
         let format = predicateFormats.joined(separator: " AND ")
         return NSPredicate(format: format, argumentArray: predicareArgs)
     }
+
+    private func fetchRecords(on date: DateWoTime) -> [TrackerRecordCD] {
+        let request = TrackerRecordCD.fetchRequest()
+        request.predicate = NSPredicate(
+            format: "%K == %@",
+            argumentArray: [#keyPath(TrackerRecordCD.date), date.value]
+        )
+        return (try? cdContext.fetch(request)) ?? []
+    }
+
 }
 
 extension Tracker: CDStorableObject {

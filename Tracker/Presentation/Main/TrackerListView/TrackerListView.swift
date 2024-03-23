@@ -1,6 +1,9 @@
 import UIKit
 
 protocol TrackerListViewDelegate: AnyObject {
+    var selectedDate: DateWoTime { get }
+    var selectedFilter: TrackerFilter { get }
+
     func addTrackerClicked()
     func editTrackerClicked(at indexPath: IndexPath)
     func togglePin(at indexPath: IndexPath)
@@ -61,6 +64,7 @@ final class TrackerListView: UIView {
         let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         view.translatesAutoresizingMaskIntoConstraints = false
         view.allowsMultipleSelection = false
+        view.alwaysBounceVertical = true
         view.backgroundColor = .ypWhite
 
         view.register(TrackerListCell.self, forCellWithReuseIdentifier: TrackerListCell.reuseIdentifier)
@@ -157,7 +161,10 @@ final class TrackerListView: UIView {
     }
 
     func reloadData() {
+        guard let controller else { return }
         collectionView.reloadData()
+        datePicker.date = controller.selectedDate.value
+        filterButton.setTitleColor(controller.selectedFilter.isRed ? .ypRed : .ypWhite, for: .normal)
         setEmptyListState()
     }
 

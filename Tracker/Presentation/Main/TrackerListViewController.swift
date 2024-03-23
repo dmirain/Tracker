@@ -23,8 +23,8 @@ final class TrackerListViewController: UIViewController {
     private var openedView: UIViewController?
     private var trackerStore: TrackerStore
 
-    private var selectedDate = DateWoTime()
-    private var selectedFilter = TrackerFilter.all
+    var selectedDate = DateWoTime()
+    var selectedFilter = TrackerFilter.all
 
     init(
         depsFactory: TrackerViewControllerDepsFactory,
@@ -57,7 +57,9 @@ final class TrackerListViewController: UIViewController {
 
     func refreshData() {
         do {
-            try trackerStore.fetchData(with: FilterParams(date: selectedDate, name: nil))
+            try trackerStore.fetchData(
+                with: FilterParams(date: selectedDate, filter: selectedFilter, name: nil)
+            )
         } catch {
             assertionFailure(error.localizedDescription)
         }
@@ -178,6 +180,14 @@ extension TrackerListViewController: StoreDelegate {
 extension TrackerListViewController: SelectFilterControllerDelegate {
     func set(filter: TrackerFilter) {
         selectedFilter = filter
+
+        if case filter = .today {
+            selectedFilter = .all
+            selectedDate = DateWoTime()
+        }
+
+        refreshData()
+
         openedView?.dismiss(animated: true)
         openedView = nil
     }
