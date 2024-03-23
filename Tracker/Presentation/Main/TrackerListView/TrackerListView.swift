@@ -6,6 +6,7 @@ protocol TrackerListViewDelegate: AnyObject {
     func togglePin(at indexPath: IndexPath)
     func deleteTracker(at indexPath: IndexPath)
     func dateSelected(date: DateWoTime)
+    func filterClicked()
     func toggleComplete(at indexPath: IndexPath)
 
     func numberOfSections() -> Int
@@ -92,7 +93,7 @@ final class TrackerListView: UIView {
             view.widthAnchor.constraint(equalToConstant: 114)
         ])
 
-//        view.addTarget(self, action: #selector(filterClicked), for: .touchUpInside)
+        view.addTarget(self, action: #selector(filterClicked), for: .touchUpInside)
 
         return view
     }()
@@ -181,6 +182,11 @@ final class TrackerListView: UIView {
     @objc
     private func dateSelected(_ sender: UIDatePicker) {
         controller?.dateSelected(date: DateWoTime(sender.date))
+    }
+
+    @objc
+    private func filterClicked() {
+        controller?.filterClicked()
     }
 }
 

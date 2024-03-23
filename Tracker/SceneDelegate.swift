@@ -45,6 +45,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             CreateCategoryController(contentView: CreateCategoryView())
         }
 
+        container.register(SelectFilterController.self) { _ in
+            SelectFilterController(
+                contentView: SelectFilterView()
+            )
+        }
+
         container.register(SelectCategoryViewModel.self) { diResolver in
             SelectCategoryViewModelImpl(
                 store: diResolver.resolve(TrackerCategoryStore.self)!
@@ -150,6 +156,13 @@ extension SceneDelegate: TrackerViewControllerDepsFactory {
         let addTrackerController = container.resolve(AddTrackerController.self)
         addTrackerController?.initData(parentDelegate: parentDelegate, selectedDate: selectedDate)
         return addTrackerController
+    }
+
+    func selectFilterController(delegate: SelectFilterControllerDelegate, currentFilter: TrackerFilter) -> SelectFilterController? {
+        let selectFilterController = container.resolve(SelectFilterController.self)
+        selectFilterController?.initData(currentFilter: currentFilter)
+        selectFilterController?.delegate = delegate
+        return selectFilterController
     }
 }
 

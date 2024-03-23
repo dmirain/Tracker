@@ -9,15 +9,22 @@ protocol TrackerViewControllerDepsFactory: AnyObject {
     func editTrackerController(
         parentDelegate: AddParentDelegateProtocol,
         editTrackerModel: EditTrackerViewModel
-    ) -> EditTrackerController?}
+    ) -> EditTrackerController?
+
+    func selectFilterController(
+        delegate: SelectFilterControllerDelegate,
+        currentFilter: TrackerFilter
+    ) -> SelectFilterController?
+}
 
 final class TrackerListViewController: UIViewController {
     private let depsFactory: TrackerViewControllerDepsFactory
     private let contentView: TrackerListView
-    private var addTrackerNavControllet: UINavigationController?
+    private var openedView: UIViewController?
     private var trackerStore: TrackerStore
 
     private var selectedDate = DateWoTime()
+    private var selectedFilter = TrackerFilter.all
 
     init(
         depsFactory: TrackerViewControllerDepsFactory,
@@ -91,7 +98,7 @@ extension TrackerListViewController: TrackerListViewDelegate {
 
         guard let addTrackerController else { return }
         let addTrackerNavControllet = UINavigationController(rootViewController: addTrackerController)
-        self.addTrackerNavControllet = addTrackerNavControllet
+        self.openedView = addTrackerNavControllet
 
         present(addTrackerNavControllet, animated: true)
     }
@@ -106,9 +113,23 @@ extension TrackerListViewController: TrackerListViewDelegate {
 
         guard let editTrackerController else { return }
         let addTrackerNavControllet = UINavigationController(rootViewController: editTrackerController)
-        self.addTrackerNavControllet = addTrackerNavControllet
+        self.openedView = addTrackerNavControllet
 
         present(addTrackerNavControllet, animated: true)
+    }
+
+    func filterClicked() {
+        let selectFilterController = depsFactory.selectFilterController(
+            delegate: self,
+            currentFilter: selectedFilter
+        )
+
+        guard let selectFilterController else { return }
+
+        let controller = UINavigationController(rootViewController: selectFilterController)
+        self.openedView = controller
+
+        present(controller, animated: true)
     }
 
     func deleteTracker(at indexPath: IndexPath) {
@@ -143,13 +164,21 @@ extension TrackerListViewController: AddParentDelegateProtocol {
         case .cancel:
             break
         }
-        addTrackerNavControllet?.dismiss(animated: true)
-        addTrackerNavControllet = nil
+        openedView?.dismiss(animated: true)
+        openedView = nil
     }
 }
 
 extension TrackerListViewController: StoreDelegate {
     func store(didUpdate update: StoreUpdate) {
         contentView.update(update)
+    }
+}
+
+extension TrackerListViewController: SelectFilterControllerDelegate {
+    func set(filter: TrackerFilter) {
+        selectedFilter = filter
+        openedView?.dismiss(animated: true)
+        openedView = nil
     }
 }
