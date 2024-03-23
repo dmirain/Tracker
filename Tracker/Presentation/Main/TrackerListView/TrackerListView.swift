@@ -87,7 +87,7 @@ final class TrackerListView: UIView {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.setTitle("Фильтры", for: .normal)
-        view.setTitleColor(.ypWhite, for: .normal)
+        view.setTitleColor(.ypAlwaysWhite, for: .normal)
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = true
         view.backgroundColor = .ypBlue
@@ -164,7 +164,7 @@ final class TrackerListView: UIView {
         guard let controller else { return }
         collectionView.reloadData()
         datePicker.date = controller.selectedDate.value
-        filterButton.setTitleColor(controller.selectedFilter.isRed ? .ypRed : .ypWhite, for: .normal)
+        filterButton.setTitleColor(controller.selectedFilter.isRed ? .ypRed : .ypAlwaysWhite, for: .normal)
         setEmptyListState()
     }
 
