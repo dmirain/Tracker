@@ -2,6 +2,7 @@ import UIKit
 
 extension UIImage {
     static var emptyList = UIImage(named: "EmptyList") ?? UIImage()
+    static var emptyStat = UIImage(named: "EmptyStat") ?? UIImage()
     static var itemPlus = UIImage(named: "ItemPlus") ?? UIImage()
     static var listPlus = UIImage(named: "ListPlus") ?? UIImage()
     static var rightArrow = UIImage(named: "RightArrow") ?? UIImage()

@@ -1,23 +1,36 @@
 import UIKit
 
 final class StatisticViewController: UIViewController {
+    private let contentView: StatisticView
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .ypWhite
-
-        let lable = UILabel()
-        lable.translatesAutoresizingMaskIntoConstraints = false
-        lable.text = "Тут скоро будет статистика"
-        lable.font = UIFont.boldSystemFont(ofSize: 19)
-        lable.textAlignment = .center
-
-        view.addSubview(lable)
-
-        NSLayoutConstraint.activate([
-            lable.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            lable.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor)
-        ])
-
+    init(contentView: StatisticView) {
+        self.contentView = contentView
+        super.init(nibName: nil, bundle: nil)
     }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func loadView() {
+       self.view = contentView
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        contentView.initData(StatisticData(
+            bestPeriod: Int.random(in: 0...10),
+            bestDaysCount: Int.random(in: 0...10),
+            completed: Int.random(in: 0...10),
+            averageValue: Int.random(in: 0...10)
+        ))
+    }
+}
+
+struct StatisticData {
+    let bestPeriod: Int
+    let bestDaysCount: Int
+    let completed: Int
+    let averageValue: Int
 }

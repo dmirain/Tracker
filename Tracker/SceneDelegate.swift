@@ -99,7 +99,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         container.register(StatisticViewController.self) { _ in
-            StatisticViewController()
+            StatisticViewController(
+                contentView: StatisticView()
+            )
         }
 
         container.register(TabBarController.self) { diResolver in

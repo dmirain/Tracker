@@ -45,7 +45,7 @@ final class SelectCategoryView: UIView {
     }()
 
     private lazy var emptyListView: UIView = {
-        let view = EmptyListView(text: "Привычки и события можно\nобъединить по смыслу")
+        let view = EmptyListView(text: "Привычки и события можно\nобъединить по смыслу", image: .emptyList)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
