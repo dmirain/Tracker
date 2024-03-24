@@ -140,7 +140,7 @@ final class TrackerListCell: UICollectionViewCell {
 
         emojiLable.text = trackerViewModel.tracker.emoji
         nameLabel.text = trackerViewModel.tracker.name
-        periodeLable.text = "\(trackerViewModel.complitionsCount) дней"
+        periodeLable.text = String.localizedStringWithFormat("numberOfDay"~, trackerViewModel.complitionsCount)
 
         if trackerViewModel.isComplited {
             compliteButton.setImage(.complited, for: .normal)
