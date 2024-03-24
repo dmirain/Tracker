@@ -221,9 +221,9 @@ extension EditTrackerView: UICollectionViewDataSource {
         case .properties:
             sectionTitle = ""
         case .emoji:
-            sectionTitle = "Emoji"
+            sectionTitle = "EditTracker.sectionTitle.emoji"~
         case .color:
-            sectionTitle = "Цвет"
+            sectionTitle = "EditTracker.sectionTitle.color"~
         case .buttons:
             sectionTitle = ""
         }

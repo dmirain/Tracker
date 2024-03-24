@@ -1,0 +1,79 @@
+"SelectCategory.NavTitle" = "Category";
+"SelectCategory.createButton" = "Add a category";
+"SelectCategory.emptyList" = "Habits and events can be combined in meaning";
+
+"SelectSchedule.NavTitle" = "Schedule";
+"SelectSchedule.acceptButton" = "Done";
+
+"SelectFilter.NavTitle" = "Filters";
+
+"Onboarding.first.text" = "Track only what you want";
+"Onboarding.first.buttonText" = "These are the technologies!";
+"Onboarding.second.text" = "Even if it's not liters of water and yoga";
+"Onboarding.second.buttonText" = "These are the technologies!";
+
+"AddTracker.NavTitle" = "Creating a tracker";
+"AddTracker.createHabit" = "Habit";
+"AddTracker.createEvent" = "Irregular Event";
+
+"EditTracker.NavTitle.event" = "A new irregular event";
+"EditTracker.NavTitle.habit" = "A new habit";
+"EditTracker.sectionTitle.emoji" = "Emoji";
+"EditTracker.sectionTitle.color" = "Color";
+"EditTracker.NameCell.nameField" = "Enter the name of the tracker";
+"EditTracker.PropertiesCell.categoryButton" = "Category";
+"EditTracker.PropertiesCell.scheduleButton" = "Schedule";
+"EditTracker.ButtonsCell.cancelButton" = "Cancel";
+"EditTracker.ButtonsCell.createButton" = "Create";
+"EditTracker.ButtonsCell.saveButton" = "Save";
+
+
+"CreateCategory.NavTitle" = "New category";
+"CreateCategory.nameField" = "Enter the name of the category";
+"CreateCategory.createButton" = "Done";
+
+"TabBar.trackerTab" = "Trackers";
+"TabBar.statTab" = "Statistics";
+
+"TrackerList.pinned" = "Pinned";
+"TrackerList.NavTitle" = "Trackers";
+"TrackerList.searchBar" = "Search";
+"TrackerList.searchBar.cancel" = "Cancel";
+"TrackerList.emptyList" = "What are we going to track?";
+"TrackerList.filterButton" = "Filters";
+"TrackerList.pin" = "Pin";
+"TrackerList.unpin" = "Unpin";
+"TrackerList.edit" = "Edit";
+"TrackerList.delete" = "Delete";
+"TrackerList.Cell.nameLabel" = "Any text";
+
+"Statistic.header" = "Statistics";
+"Statistic.rowBestPeriod" = "Best Period";
+"Statistic.rowBestDaysCount" = "Best days";
+"Statistic.rowCompleted" = "Trackers completed";
+"Statistic.rowAverageValue" = "The average value";
+"Statistic.emptyList" = "There is nothing to analyze yet";
+
+"TrackerType.event" = "Event";
+"TrackerType.habit" = "Habit";
+
+"monday" = "Monday";
+"tuesday" = "Tuesday";
+"wednesday" = "Wednesday";
+"thursday" = "Thursday";
+"friday" = "Friday";
+"saturday" = "Saturday";
+"sunday" = "Sunday";
+
+"monday.short" = "Mn";
+"tuesday.short" = "Ts";
+"wednesday.short" = "Wd";
+"thursday.short" = "Th";
+"friday.short" = "Fr";
+"saturday.short" = "St";
+"sunday.short" = "Sn";
+
+"TrackerFilter.all" = "All trackers";
+"TrackerFilter.today" = "Trackers for today";
+"TrackerFilter.completed" = "Completed";
+"TrackerFilter.notCompleted" = "Not completed";

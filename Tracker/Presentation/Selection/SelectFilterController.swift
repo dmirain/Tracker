@@ -16,7 +16,7 @@ final class SelectFilterController: UIViewController {
 
         self.contentView.controller = self
 
-        navigationItem.title = "Фильтры"
+        navigationItem.title = "SelectFilter.NavTitle"~
         navigationItem.hidesBackButton = true
     }
 

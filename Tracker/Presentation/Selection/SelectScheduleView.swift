@@ -29,7 +29,7 @@ final class SelectScheduleView: UIView {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.backgroundColor = .ypBlack
-        view.setTitle("Готово", for: .normal)
+        view.setTitle("SelectSchedule.acceptButton"~, for: .normal)
         view.setTitleColor(.ypWhite, for: .normal)
 
         NSLayoutConstraint.activate([

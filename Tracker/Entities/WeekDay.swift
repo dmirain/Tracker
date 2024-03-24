@@ -26,19 +26,19 @@ struct WeekDaySet: OptionSet, Codable, Hashable {
     func asText() -> String {
         switch self {
         case .monday:
-            return "Понедельник"
+            return "monday"~
         case .tuesday:
-            return "Вторник"
+            return "tuesday"~
         case .wednesday:
-            return "Среда"
+            return "wednesday"~
         case .thursday:
-            return "Четверг"
+            return "thursday"~
         case .friday:
-            return "Пятница"
+            return "friday"~
         case .saturday:
-            return "Суббота"
+            return "saturday"~
         case .sunday:
-            return "Воскресенье"
+            return "sunday"~
         default:
             return Self.allDays()
                 .filter { day in self.contains(day) }
@@ -50,19 +50,19 @@ struct WeekDaySet: OptionSet, Codable, Hashable {
     func asShortText() -> String {
         switch self {
         case .monday:
-            return "Пн"
+            return "monday.short"~
         case .tuesday:
-            return "Вт"
+            return "tuesday.short"~
         case .wednesday:
-            return "Ср"
+            return "wednesday.short"~
         case .thursday:
-            return "Чт"
+            return "thursday.short"~
         case .friday:
-            return "Пт"
+            return "friday.short"~
         case .saturday:
-            return "Сб"
+            return "saturday.short"~
         case .sunday:
-            return "Вс"
+            return "sunday.short"~
         default:
             return Self.allDays()
                 .filter { day in self.contains(day) }

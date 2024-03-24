@@ -5,29 +5,29 @@ final class StatisticView: UIView {
     private lazy var header: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.text = "Статистика"
+        view.text = "Statistic.header"~
         view.textColor = .ypBlack
         view.font = UIFont.systemFont(ofSize: 34, weight: .heavy)
         return view
     }()
 
     private lazy var rowBestPeriod: StatisticRowView = {
-        let view = StatisticRowView(title: "Лучший период")
+        let view = StatisticRowView(title: "Statistic.rowBestPeriod"~)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private lazy var rowBestDaysCount: StatisticRowView = {
-        let view = StatisticRowView(title: "Идеальные дни")
+        let view = StatisticRowView(title: "Statistic.rowBestDaysCount"~)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private lazy var rowCompleted: StatisticRowView = {
-        let view = StatisticRowView(title: "Трекеров завершено")
+        let view = StatisticRowView(title: "Statistic.rowCompleted"~)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     private lazy var rowAverageValue: StatisticRowView = {
-        let view = StatisticRowView(title: "Среднее значение")
+        let view = StatisticRowView(title: "Statistic.rowAverageValue"~)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -45,7 +45,7 @@ final class StatisticView: UIView {
     }()
 
     private lazy var emptyListView: UIView = {
-        let view = EmptyListView(text: "Анализировать пока нечего", image: .emptyStat)
+        let view = EmptyListView(text: "Statistic.emptyList"~, image: .emptyStat)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

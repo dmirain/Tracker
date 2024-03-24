@@ -31,7 +31,7 @@ final class TrackerListCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.numberOfLines = 2
 
-        view.text = "Какой-то текст"
+        view.text = "TrackerList.Cell.nameLabel"~
         view.textColor = .ypWhite
         view.font = view.font.withSize(12)
 

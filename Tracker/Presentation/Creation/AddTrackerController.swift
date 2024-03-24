@@ -18,7 +18,7 @@ final class AddTrackerController: UIViewController {
 
         contentView.controller = self
 
-        navigationItem.title = "Создание трекера"
+        navigationItem.title = "AddTracker.NavTitle"~
     }
 
     @available(*, unavailable)

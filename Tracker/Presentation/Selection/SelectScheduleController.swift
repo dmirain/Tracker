@@ -17,7 +17,7 @@ final class SelectScheduleController: UIViewController {
 
         self.contentView.controller = self
 
-        navigationItem.title = "Расписание"
+        navigationItem.title = "SelectSchedule.NavTitle"~
         navigationItem.hidesBackButton = true
     }
 

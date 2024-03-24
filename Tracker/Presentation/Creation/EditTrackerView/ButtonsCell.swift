@@ -11,7 +11,7 @@ final class ButtonsCell: UICollectionViewCell {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.backgroundColor = .ypWhite
-        view.setTitle("Отменить", for: .normal)
+        view.setTitle("EditTracker.ButtonsCell.cancelButton"~, for: .normal)
         view.setTitleColor(.ypRed, for: .normal)
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.ypRed.cgColor
@@ -31,7 +31,7 @@ final class ButtonsCell: UICollectionViewCell {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.backgroundColor = .ypGray
-        view.setTitle("Создать", for: .normal)
+        view.setTitle("EditTracker.ButtonsCell.createButton"~, for: .normal)
         view.setTitleColor(.ypWhite, for: .normal)
 
         NSLayoutConstraint.activate([
@@ -71,9 +71,9 @@ final class ButtonsCell: UICollectionViewCell {
 
     func setButtonsState(to state: ButtonsState, isNew: Bool) {
         if isNew {
-            createButton.setTitle("Создать", for: .normal)
+            createButton.setTitle("EditTracker.ButtonsCell.createButton"~, for: .normal)
         } else {
-            createButton.setTitle("Сохранить", for: .normal)
+            createButton.setTitle("EditTracker.ButtonsCell.saveButton"~, for: .normal)
         }
 
         switch state {

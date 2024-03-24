@@ -25,9 +25,9 @@ final class EditTrackerController: UIViewController {
 
         switch editTrackerViewModel.type {
         case .event:
-            navigationItem.title = "Новое нерегулярное событие"
+            navigationItem.title = "EditTracker.NavTitle.event"~
         case .habit:
-            navigationItem.title = "Новая привычка"
+            navigationItem.title = "EditTracker.NavTitle.habit"~
         }
         navigationItem.hidesBackButton = true
     }

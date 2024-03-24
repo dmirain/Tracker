@@ -1,4 +1,13 @@
 enum TrackerType: String, Codable {
-    case event = "Событие"
-    case habit = "Привычка"
+    case event
+    case habit
+
+    func asText() -> String {
+        switch self {
+        case .event:
+            "TrackerType.event"~
+        case .habit:
+            "TrackerType.habit"~
+        }
+    }
 }

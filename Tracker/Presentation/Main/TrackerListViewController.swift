@@ -101,7 +101,7 @@ extension TrackerListViewController: TrackerListViewDelegate {
 
     func sectionTitle(_ section: Int) -> String {
         let name = trackerStore.sectionName(section)
-        return name == Constants.pinSlug ? "Закреплённые" : name
+        return name == Constants.pinSlug ? "TrackerList.pinned"~ : name
     }
 
     func addTrackerClicked() {

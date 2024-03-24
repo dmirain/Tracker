@@ -8,7 +8,7 @@ final class PropertiesCell: UICollectionViewCell {
     private lazy var categoryButton: PropertyButton = {
         let view = PropertyButton(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("Категория", for: .normal)
+        view.setTitle("EditTracker.PropertiesCell.categoryButton"~, for: .normal)
 
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 75)
@@ -21,7 +21,7 @@ final class PropertiesCell: UICollectionViewCell {
     private lazy var scheduleButton: PropertyButton = {
         let view = PropertyButton()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("Расписание", for: .normal)
+        view.setTitle("EditTracker.PropertiesCell.scheduleButton"~, for: .normal)
         view.addSeparator()
         view.isHidden = true
 

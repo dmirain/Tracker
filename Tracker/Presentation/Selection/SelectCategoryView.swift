@@ -32,7 +32,7 @@ final class SelectCategoryView: UIView {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.backgroundColor = .ypBlack
-        view.setTitle("Добавить категорию", for: .normal)
+        view.setTitle("SelectCategory.createButton"~, for: .normal)
         view.setTitleColor(.ypWhite, for: .normal)
 
         NSLayoutConstraint.activate([
@@ -45,7 +45,10 @@ final class SelectCategoryView: UIView {
     }()
 
     private lazy var emptyListView: UIView = {
-        let view = EmptyListView(text: "Привычки и события можно\nобъединить по смыслу", image: .emptyList)
+        let view = EmptyListView(
+            text: "SelectCategory.emptyList"~,
+            image: .emptyList
+        )
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

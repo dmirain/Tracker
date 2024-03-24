@@ -49,11 +49,13 @@ final class TrackerListView: UIView {
         )
         navItem.leftBarButtonItem?.tintColor = .ypBlack
         navItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
-        navItem.title = "Трекеры"
+        navItem.title = "TrackerList.NavTitle"~
 
         navItem.searchController = UISearchController(searchResultsController: nil)
-        navItem.searchController?.searchBar.placeholder = "Поиск"
-        navItem.searchController?.searchBar.setValue("Отменить", forKey: "cancelButtonText")
+        navItem.searchController?.searchBar.placeholder = "TrackerList.searchBar"~
+        navItem.searchController?.searchBar.setValue(
+            "TrackerList.searchBar.cancel"~, forKey: "cancelButtonText"
+        )
 
         view.setItems([navItem], animated: false)
 
@@ -78,7 +80,7 @@ final class TrackerListView: UIView {
     }()
 
     private lazy var emptyListView: UIView = {
-        let view = EmptyListView(text: "Что будем отслеживать?", image: .emptyList)
+        let view = EmptyListView(text: "TrackerList.emptyList"~, image: .emptyList)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -86,7 +88,7 @@ final class TrackerListView: UIView {
     private lazy var filterButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("Фильтры", for: .normal)
+        view.setTitle("TrackerList.filterButton"~, for: .normal)
         view.setTitleColor(.ypAlwaysWhite, for: .normal)
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = true
@@ -291,7 +293,7 @@ extension TrackerListView: UICollectionViewDelegate {
             let trackerViewModel = controller?.tracker(byIndexPath: indexPath)
         else { return nil }
 
-        let pinAction = trackerViewModel.tracker.isPinned ? "Открепить" : "Закрепить"
+        let pinAction = trackerViewModel.tracker.isPinned ? "TrackerList.unpin"~ : "TrackerList.pin"~
 
         return UIContextMenuConfiguration(
             actionProvider: { _ in
@@ -299,10 +301,10 @@ extension TrackerListView: UICollectionViewDelegate {
                     UIAction(title: pinAction) { [weak self] _ in
                         self?.controller?.togglePin(at: indexPath)
                     },
-                    UIAction(title: "Редактировать") { [weak self] _ in
+                    UIAction(title: "TrackerList.edit"~) { [weak self] _ in
                         self?.controller?.editTrackerClicked(at: indexPath)
                     },
-                    UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                    UIAction(title: "TrackerList.delete"~, attributes: .destructive) { [weak self] _ in
                         self?.controller?.deleteTracker(at: indexPath)
                     }
                 ])

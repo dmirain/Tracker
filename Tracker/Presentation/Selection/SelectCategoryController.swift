@@ -27,7 +27,7 @@ final class SelectCategoryController: UIViewController {
 
         self.contentView.controller = self
 
-        navigationItem.title = "Категория"
+        navigationItem.title = "SelectCategory.NavTitle"~
         navigationItem.hidesBackButton = true
     }
 

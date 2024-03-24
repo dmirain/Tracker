@@ -17,7 +17,7 @@ final class CreateCategoryController: UIViewController {
 
         self.contentView.controller = self
 
-        navigationItem.title = "Новая категория"
+        navigationItem.title = "CreateCategory.NavTitle"~
         navigationItem.hidesBackButton = true
     }
 

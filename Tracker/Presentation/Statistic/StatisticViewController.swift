@@ -37,7 +37,7 @@ final class StatisticViewController: UIViewController {
             bestPeriod: 0,
             bestDaysCount: 0,
             completed: records.count,
-            averageValue: grouped.values.reduce(0, +) / grouped.count
+            averageValue: grouped.isEmpty ? 0 : grouped.values.reduce(0, +) / grouped.count
         )
     }
 }
