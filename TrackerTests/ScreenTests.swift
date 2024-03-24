@@ -7,7 +7,8 @@ final class TrackerTests: XCTestCase {
         let viewCtl = TrackerListViewController(
             depsFactory: TrackerViewControllerDepsFactoryMock(),
             contentView: TrackerListView(),
-            trackerStore: TrackerStoreMock()
+            trackerStore: TrackerStoreMock(), 
+            logger: LogMock()
         )
 
         viewCtl.selectedDate = testDate
@@ -93,4 +94,9 @@ final class TrackerStoreMock: TrackerStore {
     func add(_ record: Tracker) {}
     func delete(at indexPath: IndexPath) {}
     func update(record: Tracker) {}
+    func fetchAllRecords() -> [TrackerRecord] { return [] }
+}
+
+final class LogMock: Log {
+    func report(event: LogEvent, screen: Screen) {}
 }
