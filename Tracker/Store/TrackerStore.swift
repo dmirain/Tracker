@@ -7,6 +7,8 @@ protocol TrackerStore {
 
     func toggleComplete(at indexPath: IndexPath, on selectedDate: DateWoTime)
 
+    func fetchAllRecords() -> [TrackerRecord]
+
     func fetchData(with filter: FilterParams) throws
     func numberOfRowsInSection(_ section: Int) -> Int
     func sectionName(_ section: Int) -> String
@@ -62,6 +64,13 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         try super.fetchData(controller: controller)
     }
 
+    func fetchAllRecords() -> [TrackerRecord] {
+        let request = TrackerRecordCD.fetchRequest()
+        request.sortDescriptors = [NSSortDescriptor(keyPath: \TrackerRecordCD.date, ascending: true)]
+        let result = (try? cdContext.fetch(request)) ?? []
+        return result.compactMap { $0.toEntity() }
+    }
+
     private func predicate(with filter: FilterParams) -> NSPredicate {
         var predicateFormats: [String] = []
         var predicareArgs: [Any] = []
@@ -112,7 +121,6 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         )
         return (try? cdContext.fetch(request)) ?? []
     }
-
 }
 
 extension Tracker: CDStorableObject {

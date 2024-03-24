@@ -2,9 +2,11 @@ import UIKit
 
 final class StatisticViewController: UIViewController {
     private let contentView: StatisticView
+    private var trackerStore: TrackerStore
 
-    init(contentView: StatisticView) {
+    init(contentView: StatisticView, trackerStore: TrackerStore) {
         self.contentView = contentView
+        self.trackerStore = trackerStore
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -19,12 +21,19 @@ final class StatisticViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        contentView.initData(StatisticData(
-            bestPeriod: Int.random(in: 0...10),
-            bestDaysCount: Int.random(in: 0...10),
-            completed: Int.random(in: 0...10),
-            averageValue: Int.random(in: 0...10)
-        ))
+        contentView.initData(calculateData())
+    }
+
+    private func calculateData() -> StatisticData {
+        let records = trackerStore.fetchAllRecords()
+        let grouped = Dictionary(grouping: records) { $0.date }.mapValues { items in items.count }
+
+        return StatisticData(
+            bestPeriod: 0,
+            bestDaysCount: 0,
+            completed: records.count,
+            averageValue: grouped.values.reduce(0, +) / grouped.count
+        )
     }
 }
 

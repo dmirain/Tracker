@@ -98,9 +98,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             )
         }
 
-        container.register(StatisticViewController.self) { _ in
+        container.register(StatisticViewController.self) { diResolver in
             StatisticViewController(
-                contentView: StatisticView()
+                contentView: StatisticView(),
+                trackerStore: diResolver.resolve(TrackerStore.self)!
             )
         }
 
