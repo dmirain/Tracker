@@ -24,6 +24,11 @@ final class StatisticViewController: UIViewController {
         contentView.initData(calculateData())
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        contentView.addGradienBorder()
+    }
+
     private func calculateData() -> StatisticData {
         let records = trackerStore.fetchAllRecords()
         let grouped = Dictionary(grouping: records) { $0.date }.mapValues { items in items.count }

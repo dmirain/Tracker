@@ -73,6 +73,7 @@
 		799D40462B67907C005B1478 /* AddParentDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D40452B67907C005B1478 /* AddParentDelegateProtocol.swift */; };
 		799D404B2B68128E005B1478 /* DateWoTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799D404A2B68128E005B1478 /* DateWoTime.swift */; };
 		79A4F6C82BB03E4F00F24103 /* StatisticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A4F6C72BB03E4F00F24103 /* StatisticView.swift */; };
+		79A4F6CA2BB09BEB00F24103 /* CALayer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A4F6C92BB09BEB00F24103 /* CALayer+Extensions.swift */; };
 		79E9CA042B938DFC00D18198 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E9CA032B938DFB00D18198 /* Store.swift */; };
 		79E9CA062B94EC4A00D18198 /* StoreUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E9CA052B94EC4A00D18198 /* StoreUpdate.swift */; };
 		79F8C0912B6D33AB000E9866 /* Library.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 79F8C08F2B6D33AB000E9866 /* Library.xcdatamodeld */; };
@@ -169,6 +170,7 @@
 		799D40452B67907C005B1478 /* AddParentDelegateProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddParentDelegateProtocol.swift; sourceTree = "<group>"; };
 		799D404A2B68128E005B1478 /* DateWoTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateWoTime.swift; sourceTree = "<group>"; };
 		79A4F6C72BB03E4F00F24103 /* StatisticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticView.swift; sourceTree = "<group>"; };
+		79A4F6C92BB09BEB00F24103 /* CALayer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Extensions.swift"; sourceTree = "<group>"; };
 		79E9CA032B938DFB00D18198 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		79E9CA052B94EC4A00D18198 /* StoreUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreUpdate.swift; sourceTree = "<group>"; };
 		79F8C0902B6D33AB000E9866 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				79860B832AF975DD00B95344 /* UIView+Extensions.swift */,
 				79860B862AF975DD00B95344 /* UIColor+Extensions.swift */,
 				79860BA12AF97C8600B95344 /* UIImage+Extensions.swift */,
+				79A4F6C92BB09BEB00F24103 /* CALayer+Extensions.swift */,
 				799D404A2B68128E005B1478 /* DateWoTime.swift */,
 				790C461A2B9C6F5600C03E1D /* Binding.swift */,
 				793E20F62BB02D360020271D /* Log.swift */,
@@ -760,6 +763,7 @@
 				793889F12B5331A400FD1F92 /* EditTrackerView.swift in Sources */,
 				790B25A02B5D21A1003BB290 /* TrackerListView.swift in Sources */,
 				79A4F6C82BB03E4F00F24103 /* StatisticView.swift in Sources */,
+				79A4F6CA2BB09BEB00F24103 /* CALayer+Extensions.swift in Sources */,
 				799D40442B675C2A005B1478 /* CategoryWithTrackers.swift in Sources */,
 				790B259B2B5C4DBC003BB290 /* SectionHeaderView.swift in Sources */,
 				790B25A92B6549C2003BB290 /* TrackerListViewModel.swift in Sources */,

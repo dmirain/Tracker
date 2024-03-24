@@ -104,6 +104,12 @@ final class StatisticView: UIView {
             rowAverageValue.initData(value: data.averageValue)
         }
     }
+
+    func addGradienBorder() {
+        rows.arrangedSubviews.forEach {
+            $0.layer.addGradienBorder(colors: [.ypGLeft, .ypGCenter, .ypGRight], width: 1)
+        }
+    }
 }
 
 final class StatisticRowView: UIView {
@@ -141,11 +147,6 @@ final class StatisticRowView: UIView {
         self.title = title
 
         super.init(frame: .zero)
-
-        layer.cornerRadius = 16
-        layer.masksToBounds = true
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.ypRed.cgColor
 
         backgroundColor = .ypWhite
         addSubview(rows)
