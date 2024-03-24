@@ -10,6 +10,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     override init() {
         super.init()
 
+        container.register(Log.self) { _ in
+            LogImpl()
+        }
+        .inObjectScope(.container)
+
         container.register(Settings.self) { _ in
             SettingsProd()
         }
@@ -88,7 +93,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             TrackerListViewController(
                 depsFactory: self,
                 contentView: TrackerListView(),
-                trackerStore: diResolver.resolve(TrackerStore.self)!
+                trackerStore: diResolver.resolve(TrackerStore.self)!,
+                logger: diResolver.resolve(Log.self)!
             )
         }
 

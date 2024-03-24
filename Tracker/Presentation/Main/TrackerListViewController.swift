@@ -19,6 +19,7 @@ protocol TrackerViewControllerDepsFactory: AnyObject {
 
 final class TrackerListViewController: UIViewController {
     private let depsFactory: TrackerViewControllerDepsFactory
+    private let logger: Log
     private let contentView: TrackerListView
     private var openedView: UIViewController?
     private var trackerStore: TrackerStore
@@ -29,11 +30,13 @@ final class TrackerListViewController: UIViewController {
     init(
         depsFactory: TrackerViewControllerDepsFactory,
         contentView: TrackerListView,
-        trackerStore: TrackerStore
+        trackerStore: TrackerStore,
+        logger: Log
     ) {
         self.depsFactory = depsFactory
         self.contentView = contentView
         self.trackerStore = trackerStore
+        self.logger = logger
 
         super.init(nibName: nil, bundle: nil)
 
@@ -53,6 +56,15 @@ final class TrackerListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         refreshData()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        logger.report(event: .close, screen: .main)
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        logger.report(event: .open, screen: .main)
     }
 
     func refreshData() {
@@ -93,6 +105,8 @@ extension TrackerListViewController: TrackerListViewDelegate {
     }
 
     func addTrackerClicked() {
+        logger.report(event: .click(item: .addTrack), screen: .main)
+
         let addTrackerController = depsFactory.getAddController(
             parentDelegate: self,
             selectedDate: selectedDate
@@ -106,6 +120,8 @@ extension TrackerListViewController: TrackerListViewDelegate {
     }
 
     func editTrackerClicked(at indexPath: IndexPath) {
+        logger.report(event: .click(item: .edit), screen: .main)
+
         guard let tracker = trackerStore.object(atIndexPath: indexPath) else { return }
 
         let editTrackerController = depsFactory.editTrackerController(
@@ -121,6 +137,8 @@ extension TrackerListViewController: TrackerListViewDelegate {
     }
 
     func filterClicked() {
+        logger.report(event: .click(item: .filter), screen: .main)
+
         let selectFilterController = depsFactory.selectFilterController(
             delegate: self,
             currentFilter: selectedFilter
@@ -135,19 +153,27 @@ extension TrackerListViewController: TrackerListViewDelegate {
     }
 
     func deleteTracker(at indexPath: IndexPath) {
+        logger.report(event: .click(item: .delete), screen: .main)
+
         trackerStore.delete(at: indexPath)
     }
 
     func dateSelected(date: DateWoTime) {
+        logger.report(event: .click(item: .dateChanged), screen: .main)
+
         selectedDate = date
         refreshData()
     }
 
     func toggleComplete(at indexPath: IndexPath) {
+        logger.report(event: .click(item: .track), screen: .main)
+
         trackerStore.toggleComplete(at: indexPath, on: selectedDate)
     }
 
     func togglePin(at indexPath: IndexPath) {
+        logger.report(event: .click(item: .pinned), screen: .main)
+
         guard let trackerViewModel = tracker(byIndexPath: indexPath) else { return }
         let model = EditTrackerViewModel(tracker: trackerViewModel.tracker)
         model.isPinned.toggle()

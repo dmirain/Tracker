@@ -1,3 +1,9 @@
+included:
+  - Tracker
+
+excluded:
+  - Pods
+
 opt_in_rules:
   - weak_delegate
   - vertical_parameter_alignment_on_call
