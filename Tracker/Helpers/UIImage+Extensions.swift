@@ -14,4 +14,5 @@ extension UIImage {
     static var selected = UIImage(named: "Selected") ?? UIImage()
     static var obImageFirst = UIImage(named: "OBImageFirst") ?? UIImage()
     static var obImageSecond = UIImage(named: "OBImageSecond") ?? UIImage()
+    static var pin = UIImage(named: "Pin") ?? UIImage()
 }

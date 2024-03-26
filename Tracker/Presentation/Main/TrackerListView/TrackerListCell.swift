@@ -38,6 +38,19 @@ final class TrackerListCell: UICollectionViewCell {
         return view
     }()
 
+    private lazy var pinImage: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.image = .pin
+
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: 24),
+            view.widthAnchor.constraint(equalToConstant: 24)
+        ])
+
+        return view
+    }()
+
     private lazy var periodeLable: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -78,6 +91,7 @@ final class TrackerListCell: UICollectionViewCell {
 
         view.addSubview(emojiLable)
         view.addSubview(nameLabel)
+        view.addSubview(pinImage)
 
         view.addInteraction(UIContextMenuInteraction(delegate: self))
 
@@ -89,7 +103,10 @@ final class TrackerListCell: UICollectionViewCell {
 
             nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             nameLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -12),
-            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12)
+            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+
+            pinImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
+            pinImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -4)
         ])
         return view
     }()
@@ -156,6 +173,8 @@ final class TrackerListCell: UICollectionViewCell {
         nameView.backgroundColor = trackerViewModel.tracker.color
 
         compliteButton.isEnabled = DateWoTime() >= trackerViewModel.selectedDate
+
+        pinImage.isHidden = !trackerViewModel.tracker.isPinned
     }
 
     @objc
