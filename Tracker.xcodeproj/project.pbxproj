@@ -77,6 +77,7 @@
 		79A4F6D92BB0A28000F24103 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 79A4F6DB2BB0A28000F24103 /* Localizable.strings */; };
 		79A4F6DE2BB0B06D00F24103 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A4F6DD2BB0B06D00F24103 /* String+Extension.swift */; };
 		79A4F6E12BB0B6CA00F24103 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 79A4F6E32BB0B6CA00F24103 /* Localizable.stringsdict */; };
+		79A4F6E62BB35C0700F24103 /* StatisticRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79A4F6E52BB35C0700F24103 /* StatisticRowView.swift */; };
 		79E9CA042B938DFC00D18198 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E9CA032B938DFB00D18198 /* Store.swift */; };
 		79E9CA062B94EC4A00D18198 /* StoreUpdate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E9CA052B94EC4A00D18198 /* StoreUpdate.swift */; };
 		79F8C0912B6D33AB000E9866 /* Library.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 79F8C08F2B6D33AB000E9866 /* Library.xcdatamodeld */; };
@@ -179,6 +180,7 @@
 		79A4F6DD2BB0B06D00F24103 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
 		79A4F6E22BB0B6CA00F24103 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		79A4F6E42BB0B6CD00F24103 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		79A4F6E52BB35C0700F24103 /* StatisticRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticRowView.swift; sourceTree = "<group>"; };
 		79E9CA032B938DFB00D18198 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		79E9CA052B94EC4A00D18198 /* StoreUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreUpdate.swift; sourceTree = "<group>"; };
 		79F8C0902B6D33AB000E9866 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 			children = (
 				79860BA82B00BE9200B95344 /* StatisticViewController.swift */,
 				79A4F6C72BB03E4F00F24103 /* StatisticView.swift */,
+				79A4F6E52BB35C0700F24103 /* StatisticRowView.swift */,
 			);
 			path = Statistic;
 			sourceTree = "<group>";
@@ -766,6 +769,7 @@
 				793889D52B52FC4800FD1F92 /* TrackerCategory.swift in Sources */,
 				795912772B6E738B0080548A /* Settings.swift in Sources */,
 				793889E12B532EE400FD1F92 /* SelectCategoryController.swift in Sources */,
+				79A4F6E62BB35C0700F24103 /* StatisticRowView.swift in Sources */,
 				7959127B2B7CA4380080548A /* TrackerCategoryStore.swift in Sources */,
 				793889E32B532F0300FD1F92 /* SelectScheduleController.swift in Sources */,
 				793E20EA2BAF49760020271D /* TrackerFilter.swift in Sources */,
