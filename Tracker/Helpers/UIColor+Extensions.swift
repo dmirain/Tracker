@@ -39,4 +39,6 @@ extension UIColor {
     static var ypGLeft = UIColor(red: 0, green: 123 / 255, blue: 250 / 255, alpha: 1)
     static var ypGCenter = UIColor(red: 70 / 255, green: 230 / 255, blue: 157 / 255, alpha: 1)
     static var ypGRight = UIColor(red: 253 / 255, green: 76 / 255, blue: 73 / 255, alpha: 1)
+
+    static var ypColorBorder = UIColor(red: 51 / 255, green: 207 / 255, blue: 105 / 255, alpha: 0.3)
 }

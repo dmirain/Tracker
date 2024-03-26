@@ -24,7 +24,7 @@ final class ColorCell: UICollectionViewCell {
         view.layer.cornerRadius = 12
         view.layer.masksToBounds = true
         view.backgroundColor = .clear
-        view.layer.borderColor = UIColor.ypGray.cgColor
+        view.layer.borderColor = UIColor.ypColorBorder.cgColor
 
         view.addSubview(colorLabel)
 
