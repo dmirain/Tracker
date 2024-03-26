@@ -185,6 +185,21 @@ final class TrackerListView: UIView {
         controller?.toggleComplete(at: indexPath)
     }
 
+    func togglePin(_ cell: UICollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        controller?.togglePin(at: indexPath)
+    }
+
+    func editTrackerClicked(_ cell: UICollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        controller?.editTrackerClicked(at: indexPath)
+    }
+
+    func deleteTracker(_ cell: UICollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        controller?.deleteTracker(at: indexPath)
+    }
+
     @objc
     private func addTrackerClicked() {
         controller?.addTrackerClicked()
@@ -280,39 +295,6 @@ extension TrackerListView: UICollectionViewDelegateFlowLayout {
         CGSize(width: collectionView.bounds.width, height: 42)
     }
 
-}
-
-extension TrackerListView: UICollectionViewDelegate {
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        contextMenuConfigurationForItemsAt
-        indexPaths: [IndexPath],
-        point: CGPoint
-    ) -> UIContextMenuConfiguration? {
-        guard
-            let indexPath = indexPaths.first,
-            let trackerViewModel = controller?.tracker(byIndexPath: indexPath)
-        else { return nil }
-
-        let pinAction = trackerViewModel.tracker.isPinned ? "TrackerList.unpin"~ : "TrackerList.pin"~
-
-        return UIContextMenuConfiguration(
-            actionProvider: { _ in
-                UIMenu(children: [
-                    UIAction(title: pinAction) { [weak self] _ in
-                        self?.controller?.togglePin(at: indexPath)
-                    },
-                    UIAction(title: "TrackerList.edit"~) { [weak self] _ in
-                        self?.controller?.editTrackerClicked(at: indexPath)
-                    },
-                    UIAction(title: "TrackerList.delete"~, attributes: .destructive) { [weak self] _ in
-                        self?.controller?.deleteTracker(at: indexPath)
-                    }
-                ])
-            }
-        )
-    }
 }
 
 extension TrackerListView: UISearchResultsUpdating {

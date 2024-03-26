@@ -68,8 +68,8 @@ final class TrackerListCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var nameView: UIView = {
-        let view = UIView()
+    private lazy var nameView: UIControl = {
+        let view = UIControl()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .ypColorSelection01
 
@@ -78,6 +78,8 @@ final class TrackerListCell: UICollectionViewCell {
 
         view.addSubview(emojiLable)
         view.addSubview(nameLabel)
+
+        view.addInteraction(UIContextMenuInteraction(delegate: self))
 
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 90),
@@ -160,5 +162,35 @@ final class TrackerListCell: UICollectionViewCell {
     private func compliteButtonClicked() {
         guard let delegate else { return }
         delegate.toggleComplete(self)
+    }
+}
+
+extension TrackerListCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let trackerViewModel else { return nil }
+
+        let pinAction = trackerViewModel.tracker.isPinned ? "TrackerList.unpin"~ : "TrackerList.pin"~
+
+        return UIContextMenuConfiguration(
+            actionProvider: { _ in
+                UIMenu(children: [
+                    UIAction(title: pinAction) { [weak self] _ in
+                        guard let self else { return }
+                        self.delegate?.togglePin(self)
+                    },
+                    UIAction(title: "TrackerList.edit"~) { [weak self] _ in
+                        guard let self else { return }
+                        self.delegate?.editTrackerClicked(self)
+                    },
+                    UIAction(title: "TrackerList.delete"~, attributes: .destructive) { [weak self] _ in
+                        guard let self else { return }
+                        self.delegate?.deleteTracker(self)
+                    }
+                ])
+            }
+        )
     }
 }

@@ -49,7 +49,7 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
     func fetchData(with filter: FilterParams) throws {
         let fetchRequest = TrackerCD.fetchRequest()
         fetchRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \TrackerCD.categoryName, ascending: true),
+            NSSortDescriptor(keyPath: \TrackerCD.categoryName, ascending: false),
             NSSortDescriptor(keyPath: \TrackerCD.name, ascending: true)
         ]
 

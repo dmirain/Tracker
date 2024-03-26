@@ -85,7 +85,7 @@ extension TrackerListViewController: TrackerListViewDelegate {
         searchText = text
         refreshData()
     }
-    
+
     func numberOfSections() -> Int {
         trackerStore.numberOfSections
     }
