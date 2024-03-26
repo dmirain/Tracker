@@ -26,6 +26,7 @@ final class TrackerListViewController: UIViewController {
 
     var selectedDate = DateWoTime()
     var selectedFilter = TrackerFilter.all
+    var searchText = ""
 
     init(
         depsFactory: TrackerViewControllerDepsFactory,
@@ -70,7 +71,7 @@ final class TrackerListViewController: UIViewController {
     func refreshData() {
         do {
             try trackerStore.fetchData(
-                with: FilterParams(date: selectedDate, filter: selectedFilter, name: nil)
+                with: FilterParams(date: selectedDate, filter: selectedFilter, name: searchText)
             )
         } catch {
             assertionFailure(error.localizedDescription)
@@ -80,6 +81,11 @@ final class TrackerListViewController: UIViewController {
 }
 
 extension TrackerListViewController: TrackerListViewDelegate {
+    func searchTextChanged(text: String) {
+        searchText = text
+        refreshData()
+    }
+    
     func numberOfSections() -> Int {
         trackerStore.numberOfSections
     }

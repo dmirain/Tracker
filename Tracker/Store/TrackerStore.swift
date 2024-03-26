@@ -21,7 +21,7 @@ protocol TrackerStore {
 struct FilterParams {
     let date: DateWoTime
     let filter: TrackerFilter
-    let name: String?
+    let name: String
 }
 
 final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
@@ -84,11 +84,11 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
             filter.date.value
         ])
 
-        if let name = filter.name {
+        if !filter.name.isEmpty {
             predicateFormats.append("%K CONTAINS[n] %@")
             predicareArgs.append(contentsOf: [
                 #keyPath(TrackerCD.name),
-                name
+                filter.name
             ])
         }
 
@@ -98,28 +98,15 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         case .today:
             break
         case .completed:
-            predicateFormats.append("id IN %@")
-            predicareArgs.append(contentsOf: [
-                fetchRecords(on: filter.date).compactMap { $0.tracker?.id }
-            ])
+            predicateFormats.append("SUBQUERY(records, $record, $record.date == %@).@count > 0")
+            predicareArgs.append(filter.date.value)
         case .notCompleted:
-            predicateFormats.append("NOT id IN %@")
-            predicareArgs.append(contentsOf: [
-                fetchRecords(on: filter.date).compactMap { $0.tracker?.id }
-            ])
+            predicateFormats.append("SUBQUERY(records, $record, $record.date == %@).@count == 0")
+            predicareArgs.append(filter.date.value)
         }
 
         let format = predicateFormats.joined(separator: " AND ")
         return NSPredicate(format: format, argumentArray: predicareArgs)
-    }
-
-    private func fetchRecords(on date: DateWoTime) -> [TrackerRecordCD] {
-        let request = TrackerRecordCD.fetchRequest()
-        request.predicate = NSPredicate(
-            format: "%K == %@",
-            argumentArray: [#keyPath(TrackerRecordCD.date), date.value]
-        )
-        return (try? cdContext.fetch(request)) ?? []
     }
 }
 

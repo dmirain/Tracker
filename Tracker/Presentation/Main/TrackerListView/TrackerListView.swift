@@ -11,7 +11,7 @@ protocol TrackerListViewDelegate: AnyObject {
     func dateSelected(date: DateWoTime)
     func filterClicked()
     func toggleComplete(at indexPath: IndexPath)
-
+    func searchTextChanged(text: String)
     func numberOfSections() -> Int
     func numberOfRowsInSection(_ section: Int) -> Int
     func tracker(byIndexPath: IndexPath) -> TrackerViewModel?
@@ -52,10 +52,12 @@ final class TrackerListView: UIView {
         navItem.title = "TrackerList.NavTitle"~
 
         navItem.searchController = UISearchController(searchResultsController: nil)
+        navItem.searchController?.obscuresBackgroundDuringPresentation = false
         navItem.searchController?.searchBar.placeholder = "TrackerList.searchBar"~
         navItem.searchController?.searchBar.setValue(
             "TrackerList.searchBar.cancel"~, forKey: "cancelButtonText"
         )
+        navItem.searchController?.searchResultsUpdater = self
 
         view.setItems([navItem], animated: false)
 
@@ -310,5 +312,11 @@ extension TrackerListView: UICollectionViewDelegate {
                 ])
             }
         )
+    }
+}
+
+extension TrackerListView: UISearchResultsUpdating {
+   func updateSearchResults(for searchController: UISearchController) {
+       controller?.searchTextChanged(text: searchController.searchBar.text ?? "")
     }
 }
