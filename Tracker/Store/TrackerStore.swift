@@ -50,7 +50,7 @@ final class TrackerStoreCD: BaseCDStore<TrackerCD>, TrackerStore {
         let fetchRequest = TrackerCD.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \TrackerCD.categoryName, ascending: false),
-            NSSortDescriptor(keyPath: \TrackerCD.name, ascending: true)
+            NSSortDescriptor(keyPath: \TrackerCD.id, ascending: true)
         ]
 
         fetchRequest.predicate = predicate(with: filter)
