@@ -1,10 +1,17 @@
 import UIKit
 
 protocol TrackerListViewDelegate: AnyObject {
-    func addTrackerClicked()
-    func dateSelected(date: DateWoTime)
-    func toggleComplete(at indexPath: IndexPath)
+    var selectedDate: DateWoTime { get }
+    var selectedFilter: TrackerFilter { get }
 
+    func addTrackerClicked()
+    func editTrackerClicked(at indexPath: IndexPath)
+    func togglePin(at indexPath: IndexPath)
+    func deleteTracker(at indexPath: IndexPath)
+    func dateSelected(date: DateWoTime)
+    func filterClicked()
+    func toggleComplete(at indexPath: IndexPath)
+    func searchTextChanged(text: String)
     func numberOfSections() -> Int
     func numberOfRowsInSection(_ section: Int) -> Int
     func tracker(byIndexPath: IndexPath) -> TrackerViewModel?
@@ -42,11 +49,15 @@ final class TrackerListView: UIView {
         )
         navItem.leftBarButtonItem?.tintColor = .ypBlack
         navItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
-        navItem.title = "Трекеры"
+        navItem.title = "TrackerList.NavTitle"~
 
         navItem.searchController = UISearchController(searchResultsController: nil)
-        navItem.searchController?.searchBar.placeholder = "Поиск"
-        navItem.searchController?.searchBar.setValue("Отменить", forKey: "cancelButtonText")
+        navItem.searchController?.obscuresBackgroundDuringPresentation = false
+        navItem.searchController?.searchBar.placeholder = "TrackerList.searchBar"~
+        navItem.searchController?.searchBar.setValue(
+            "TrackerList.searchBar.cancel"~, forKey: "cancelButtonText"
+        )
+        navItem.searchController?.searchResultsUpdater = self
 
         view.setItems([navItem], animated: false)
 
@@ -57,6 +68,7 @@ final class TrackerListView: UIView {
         let view = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         view.translatesAutoresizingMaskIntoConstraints = false
         view.allowsMultipleSelection = false
+        view.alwaysBounceVertical = true
         view.backgroundColor = .ypWhite
 
         view.register(TrackerListCell.self, forCellWithReuseIdentifier: TrackerListCell.reuseIdentifier)
@@ -70,7 +82,7 @@ final class TrackerListView: UIView {
     }()
 
     private lazy var emptyListView: UIView = {
-        let view = EmptyListView(text: "Что будем отслеживать?")
+        let view = EmptyListView(text: "TrackerList.emptyList"~, image: .emptyList)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -78,8 +90,8 @@ final class TrackerListView: UIView {
     private lazy var filterButton: UIButton = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setTitle("Фильтры", for: .normal)
-        view.setTitleColor(.ypWhite, for: .normal)
+        view.setTitle("TrackerList.filterButton"~, for: .normal)
+        view.setTitleColor(.ypAlwaysWhite, for: .normal)
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = true
         view.backgroundColor = .ypBlue
@@ -89,7 +101,7 @@ final class TrackerListView: UIView {
             view.widthAnchor.constraint(equalToConstant: 114)
         ])
 
-//        view.addTarget(self, action: #selector(filterClicked), for: .touchUpInside)
+        view.addTarget(self, action: #selector(filterClicked), for: .touchUpInside)
 
         return view
     }()
@@ -153,7 +165,10 @@ final class TrackerListView: UIView {
     }
 
     func reloadData() {
+        guard let controller else { return }
         collectionView.reloadData()
+        datePicker.date = controller.selectedDate.value
+        filterButton.setTitleColor(controller.selectedFilter.isRed ? .ypRed : .ypAlwaysWhite, for: .normal)
         setEmptyListState()
     }
 
@@ -170,6 +185,21 @@ final class TrackerListView: UIView {
         controller?.toggleComplete(at: indexPath)
     }
 
+    func togglePin(_ cell: UICollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        controller?.togglePin(at: indexPath)
+    }
+
+    func editTrackerClicked(_ cell: UICollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        controller?.editTrackerClicked(at: indexPath)
+    }
+
+    func deleteTracker(_ cell: UICollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        controller?.deleteTracker(at: indexPath)
+    }
+
     @objc
     private func addTrackerClicked() {
         controller?.addTrackerClicked()
@@ -178,6 +208,11 @@ final class TrackerListView: UIView {
     @objc
     private func dateSelected(_ sender: UIDatePicker) {
         controller?.dateSelected(date: DateWoTime(sender.date))
+    }
+
+    @objc
+    private func filterClicked() {
+        controller?.filterClicked()
     }
 }
 
@@ -260,4 +295,10 @@ extension TrackerListView: UICollectionViewDelegateFlowLayout {
         CGSize(width: collectionView.bounds.width, height: 42)
     }
 
+}
+
+extension TrackerListView: UISearchResultsUpdating {
+   func updateSearchResults(for searchController: UISearchController) {
+       controller?.searchTextChanged(text: searchController.searchBar.text ?? "")
+    }
 }

@@ -31,9 +31,22 @@ final class TrackerListCell: UICollectionViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.numberOfLines = 2
 
-        view.text = "Какой-то текст"
+        view.text = "TrackerList.Cell.nameLabel"~
         view.textColor = .ypWhite
         view.font = view.font.withSize(12)
+
+        return view
+    }()
+
+    private lazy var pinImage: UIImageView = {
+        let view = UIImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.image = .pin
+
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: 24),
+            view.widthAnchor.constraint(equalToConstant: 24)
+        ])
 
         return view
     }()
@@ -68,8 +81,8 @@ final class TrackerListCell: UICollectionViewCell {
         return view
     }()
 
-    private lazy var nameView: UIView = {
-        let view = UIView()
+    private lazy var nameView: UIControl = {
+        let view = UIControl()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .ypColorSelection01
 
@@ -78,6 +91,9 @@ final class TrackerListCell: UICollectionViewCell {
 
         view.addSubview(emojiLable)
         view.addSubview(nameLabel)
+        view.addSubview(pinImage)
+
+        view.addInteraction(UIContextMenuInteraction(delegate: self))
 
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 90),
@@ -87,7 +103,10 @@ final class TrackerListCell: UICollectionViewCell {
 
             nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             nameLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -12),
-            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12)
+            nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+
+            pinImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 12),
+            pinImage.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -4)
         ])
         return view
     }()
@@ -140,7 +159,7 @@ final class TrackerListCell: UICollectionViewCell {
 
         emojiLable.text = trackerViewModel.tracker.emoji
         nameLabel.text = trackerViewModel.tracker.name
-        periodeLable.text = "\(trackerViewModel.complitionsCount) дней"
+        periodeLable.text = String.localizedStringWithFormat("numberOfDay"~, trackerViewModel.complitionsCount)
 
         if trackerViewModel.isComplited {
             compliteButton.setImage(.complited, for: .normal)
@@ -154,11 +173,43 @@ final class TrackerListCell: UICollectionViewCell {
         nameView.backgroundColor = trackerViewModel.tracker.color
 
         compliteButton.isEnabled = DateWoTime() >= trackerViewModel.selectedDate
+
+        pinImage.isHidden = !trackerViewModel.tracker.isPinned
     }
 
     @objc
     private func compliteButtonClicked() {
         guard let delegate else { return }
         delegate.toggleComplete(self)
+    }
+}
+
+extension TrackerListCell: UIContextMenuInteractionDelegate {
+    func contextMenuInteraction(
+        _ interaction: UIContextMenuInteraction,
+        configurationForMenuAtLocation location: CGPoint
+    ) -> UIContextMenuConfiguration? {
+        guard let trackerViewModel else { return nil }
+
+        let pinAction = trackerViewModel.tracker.isPinned ? "TrackerList.unpin"~ : "TrackerList.pin"~
+
+        return UIContextMenuConfiguration(
+            actionProvider: { _ in
+                UIMenu(children: [
+                    UIAction(title: pinAction) { [weak self] _ in
+                        guard let self else { return }
+                        self.delegate?.togglePin(self)
+                    },
+                    UIAction(title: "TrackerList.edit"~) { [weak self] _ in
+                        guard let self else { return }
+                        self.delegate?.editTrackerClicked(self)
+                    },
+                    UIAction(title: "TrackerList.delete"~, attributes: .destructive) { [weak self] _ in
+                        guard let self else { return }
+                        self.delegate?.deleteTracker(self)
+                    }
+                ])
+            }
+        )
     }
 }

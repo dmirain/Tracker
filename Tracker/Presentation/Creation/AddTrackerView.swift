@@ -13,7 +13,7 @@ final class AddTrackerView: UIView {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.backgroundColor = .ypBlack
-        view.setTitle("Привычка", for: .normal)
+        view.setTitle("AddTracker.createHabit"~, for: .normal)
         view.setTitleColor(.ypWhite, for: .normal)
 
         NSLayoutConstraint.activate([
@@ -31,7 +31,7 @@ final class AddTrackerView: UIView {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.backgroundColor = .ypBlack
-        view.setTitle("Нерегулярные событие", for: .normal)
+        view.setTitle("AddTracker.createEvent"~, for: .normal)
         view.setTitleColor(.ypWhite, for: .normal)
 
         NSLayoutConstraint.activate([

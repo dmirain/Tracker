@@ -1,4 +1,5 @@
 enum EditAction {
-    case save
+    case create(tracker: Tracker)
+    case update(tracker: Tracker)
     case cancel
 }

@@ -10,6 +10,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     override init() {
         super.init()
 
+        container.register(Log.self) { _ in
+            LogImpl()
+        }
+        .inObjectScope(.container)
+
         container.register(Settings.self) { _ in
             SettingsProd()
         }
@@ -45,6 +50,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             CreateCategoryController(contentView: CreateCategoryView())
         }
 
+        container.register(SelectFilterController.self) { _ in
+            SelectFilterController(
+                contentView: SelectFilterView()
+            )
+        }
+
         container.register(SelectCategoryViewModel.self) { diResolver in
             SelectCategoryViewModelImpl(
                 store: diResolver.resolve(TrackerCategoryStore.self)!
@@ -78,21 +89,25 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         .inObjectScope(.transient)
 
-        container.register(TrackerViewController.self) { diResolver in
-            TrackerViewController(
+        container.register(TrackerListViewController.self) { diResolver in
+            TrackerListViewController(
                 depsFactory: self,
                 contentView: TrackerListView(),
+                trackerStore: diResolver.resolve(TrackerStore.self)!,
+                logger: diResolver.resolve(Log.self)!
+            )
+        }
+
+        container.register(StatisticViewController.self) { diResolver in
+            StatisticViewController(
+                contentView: StatisticView(),
                 trackerStore: diResolver.resolve(TrackerStore.self)!
             )
         }
 
-        container.register(StatisticViewController.self) { _ in
-            StatisticViewController()
-        }
-
         container.register(TabBarController.self) { diResolver in
             TabBarController(
-                trackerViewController: diResolver.resolve(TrackerViewController.self)!,
+                trackerViewController: diResolver.resolve(TrackerListViewController.self)!,
                 statisticViewController: diResolver.resolve(StatisticViewController.self)!
             )
         }
@@ -134,6 +149,15 @@ extension SceneDelegate: OnboardingControllerDelegate {
 }
 
 extension SceneDelegate: TrackerViewControllerDepsFactory {
+    func editTrackerController(
+        parentDelegate: AddParentDelegateProtocol,
+        editTrackerModel: EditTrackerViewModel
+    ) -> EditTrackerController? {
+        let editTrackerController = container.resolve(EditTrackerController.self)
+        editTrackerController?.initData(parentDelegate: parentDelegate, editTrackerModel: editTrackerModel)
+        return editTrackerController
+    }
+
     func getAddController(
         parentDelegate: AddParentDelegateProtocol,
         selectedDate: DateWoTime
@@ -141,6 +165,13 @@ extension SceneDelegate: TrackerViewControllerDepsFactory {
         let addTrackerController = container.resolve(AddTrackerController.self)
         addTrackerController?.initData(parentDelegate: parentDelegate, selectedDate: selectedDate)
         return addTrackerController
+    }
+
+    func selectFilterController(delegate: SelectFilterControllerDelegate, currentFilter: TrackerFilter) -> SelectFilterController? {
+        let selectFilterController = container.resolve(SelectFilterController.self)
+        selectFilterController?.initData(currentFilter: currentFilter)
+        selectFilterController?.delegate = delegate
+        return selectFilterController
     }
 }
 

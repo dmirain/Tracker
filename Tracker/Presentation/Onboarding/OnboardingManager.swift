@@ -12,13 +12,13 @@ final class OnboardingManager {
             pages: [
                 OnboardingPageViewModel(
                     image: .obImageFirst,
-                    text: "Отслеживайте только то, что хотите",
-                    buttonText: "Вот это технологии!"
+                    text: "Onboarding.first.text"~,
+                    buttonText: "Onboarding.first.buttonText"~
                 ),
                 OnboardingPageViewModel(
                     image: .obImageSecond,
-                    text: "Даже если это не литры воды и йога",
-                    buttonText: "Вот это технологии!"
+                    text: "Onboarding.second.text"~,
+                    buttonText: "Onboarding.second.buttonText"~
                 )
             ]
         )

@@ -1,11 +1,11 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-    private let trackerViewController: TrackerViewController
+    private let trackerViewController: TrackerListViewController
     private let statisticViewController: StatisticViewController
 
     init(
-        trackerViewController: TrackerViewController,
+        trackerViewController: TrackerListViewController,
         statisticViewController: StatisticViewController
     ) {
         self.trackerViewController = trackerViewController
@@ -16,14 +16,14 @@ final class TabBarController: UITabBarController {
         viewControllers = [self.trackerViewController, self.statisticViewController]
 
         self.trackerViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: "TabBar.trackerTab"~,
             image: UIImage.trackerTab,
             selectedImage: nil
         )
         self.trackerViewController.tabBarItem.imageInsets = UIEdgeInsets(top: 28, left: 28, bottom: 28, right: 28)
 
         self.statisticViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: "TabBar.statTab"~,
             image: UIImage.statTab,
             selectedImage: nil
         )

@@ -8,9 +8,10 @@ protocol StoreDelegate: AnyObject {
 protocol CDObject: NSManagedObject {
     associatedtype StorableObject: CDStorableObject
     func toEntity() -> StorableObject?
+    func update(by: StorableObject)
 }
 
-protocol CDStorableObject {
+protocol CDStorableObject: Identifiable {
     associatedtype StoredObject: CDObject
     func toCD(context: NSManagedObjectContext) -> StoredObject
 }
@@ -64,7 +65,17 @@ class BaseCDStore<StoredObject: CDObject>: NSObject, NSFetchedResultsControllerD
         cdContext.delete(record)
         save()
     }
-    func update(at indexPath: IndexPath) {}
+    func update(record newState: StoredObject.StorableObject) {
+        let request = StoredObject.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %@", argumentArray: [newState.id])
+        guard
+            let record = (try? cdContext.fetch(request))?.first,
+            let record = record as? StoredObject
+        else { return }
+
+        record.update(by: newState)
+        save()
+    }
 
     func save() {
         if cdContext.hasChanges {

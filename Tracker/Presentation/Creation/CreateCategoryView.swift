@@ -6,7 +6,7 @@ final class CreateCategoryView: UIView {
     private lazy var nameField: PaddingTextField = {
         let view = PaddingTextField()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.placeholder = "Введите название категории"
+        view.placeholder = "CreateCategory.nameField"~
         view.backgroundColor = .ypBackground
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
@@ -25,7 +25,7 @@ final class CreateCategoryView: UIView {
         view.layer.cornerRadius = 16
         view.layer.masksToBounds = true
         view.backgroundColor = .ypGray
-        view.setTitle("Готово", for: .normal)
+        view.setTitle("CreateCategory.createButton"~, for: .normal)
         view.setTitleColor(.ypWhite, for: .normal)
 
         NSLayoutConstraint.activate([

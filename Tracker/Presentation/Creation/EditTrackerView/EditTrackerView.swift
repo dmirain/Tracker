@@ -6,7 +6,8 @@ protocol EditTrackerViewDelegat: AnyObject {
     func selectSchedule()
     func selectCategory()
     func nameChanged(_ name: String)
-    func compleateEdit(action: EditAction)
+    func cancelEdit()
+    func compleateEdit()
 }
 
 private enum ViewSections: Int, CaseIterable {
@@ -72,8 +73,12 @@ final class EditTrackerView: UIView {
         collectionView.reloadItems(at: [IndexPath(row: 0, section: ViewSections.buttons.rawValue)])
     }
 
+    func cancelEdit() {
+        controller?.cancelEdit()
+    }
+
     func compleateEdit(action: EditAction) {
-        controller?.compleateEdit(action: action)
+        controller?.compleateEdit()
     }
 }
 
@@ -191,9 +196,9 @@ extension EditTrackerView: UICollectionViewDataSource {
         guard let viewModel = controller?.viewModel else { return cell }
 
         if viewModel.toTracker() == nil {
-            cell.setButtonsState(to: .edit)
+            cell.setButtonsState(to: .edit, isNew: viewModel.isNew)
         } else {
-            cell.setButtonsState(to: .save)
+            cell.setButtonsState(to: .save, isNew: viewModel.isNew)
         }
 
         return cell
@@ -216,9 +221,9 @@ extension EditTrackerView: UICollectionViewDataSource {
         case .properties:
             sectionTitle = ""
         case .emoji:
-            sectionTitle = "Emoji"
+            sectionTitle = "EditTracker.sectionTitle.emoji"~
         case .color:
-            sectionTitle = "Цвет"
+            sectionTitle = "EditTracker.sectionTitle.color"~
         case .buttons:
             sectionTitle = ""
         }

@@ -2,11 +2,12 @@ import UIKit
 
 final class EmptyListView: UIView {
     private let text: String
+    private let image: UIImage
 
-    private lazy var image: UIImageView = {
+    private lazy var imageView: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.image = UIImage.emptyList
+        view.image = image
         NSLayoutConstraint.activate([
             view.widthAnchor.constraint(equalToConstant: 80),
             view.heightAnchor.constraint(equalToConstant: 80)
@@ -26,7 +27,7 @@ final class EmptyListView: UIView {
     }()
 
     private lazy var rows: UIStackView = {
-        let view = UIStackView(arrangedSubviews: [image, lable])
+        let view = UIStackView(arrangedSubviews: [imageView, lable])
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .vertical
         view.alignment = .center
@@ -35,8 +36,9 @@ final class EmptyListView: UIView {
         return view
     }()
 
-    init(text: String) {
+    init(text: String, image: UIImage) {
         self.text = text
+        self.image = image
 
         super.init(frame: .zero)
 
